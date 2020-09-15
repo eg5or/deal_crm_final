@@ -1,0 +1,21 @@
+.clientInvoice {
+    background-color: #EBDCB2;
+    height: 100px;
+    display: grid;
+    grid-template-rows: 4fr 1fr;
+}
+
+.nameCompany {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.sum {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 11px;
+}

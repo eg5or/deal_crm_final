@@ -1,0 +1,399 @@
+
+
+.deal {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-template-rows: 470px;
+    grid-template-areas: "leftBlock centerBlock rightBlock";
+    background-color: #EBDCB2;
+    margin-bottom: 20px;
+}
+
+.leftBlock {
+    grid-area: leftBlock;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "title title"
+                         "approved providerPaid"
+                         "delivered clientPaid"
+                         "docSigned docSigned"
+                         "docCollected docCollected";
+
+}
+
+.centerBlock {
+    grid-area: centerBlock;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "clientInvoices"
+                         "providerInvoices"
+                         "allDocs";
+}
+
+.rightBlock {
+    grid-area: rightBlock;
+    display: grid;
+    background-color: #662E1C;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 7fr 4fr;
+    grid-template-areas: "titleDeliver . . sumDeliver"
+                         "drivers drivers forwarders forwarders"
+                         "commentsBlock commentsBlock commentsBlock commentsBlock";
+}
+
+.title {
+    grid-area: title;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "date"
+                         "client"
+                         "manager";
+
+}
+
+.date {
+    grid-area: date;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.client {
+    grid-area: client;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.manager {
+    grid-area: manager;
+    background-color: #662E1C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #EBDCB2;
+
+}
+
+.buttonLeft {
+    background-color: #AF4425;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    color: #EBDCB2;
+
+
+}
+
+.buttonLeft:hover {
+    background-color: #C9A66B;
+    color: black;
+    cursor: pointer;
+}
+
+.approved {
+    grid-area: approved;
+
+}
+
+.providerPaid {
+    grid-area: providerPaid;
+
+}
+
+.delivered {
+    grid-area: delivered;
+
+}
+
+.clientPaid {
+    grid-area: clientPaid;
+
+}
+
+.docSigned {
+    grid-area: docSigned;
+
+}
+
+.docCollected {
+    grid-area: docCollected;
+
+}
+
+.docsFilesItems {
+    padding-left: 10px;
+    padding-top: 10px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(5, 75px);
+}
+
+.addFile {
+    background-color: #C9A66B;
+    height: 100px;
+    display: grid;
+    grid-template-rows: 4fr 2fr;
+    text-align: center;
+    color: #EBDCB2;
+}
+
+.addFile:hover {
+    color: #662E1C;
+    cursor: pointer;
+    background-color: #EBDCB2;
+}
+
+
+.plus {
+    font-size: 60px;
+    font-weight: bold;
+    line-height: 60px;
+}
+
+.addFileText {
+    font-size: 9px;
+    text-transform: uppercase;
+}
+
+.clientInvoices {
+    grid-area: clientInvoices;
+    background-color: #662E1C;
+}
+
+.clientInvoicesItems{
+
+}
+
+.headerClientInvoices {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: "titleClientInvoices sumClientInvoices";
+}
+
+.titleClientInvoices {
+    grid-area: titleClientInvoices;
+    padding-left: 10px;
+    color: #C9A66B;
+}
+
+.sumClientInvoices {
+    grid-area: sumClientInvoices;
+    background-color: #AF4425;
+    padding: 5px 10px;
+    text-align: right;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.providerInvoices {
+    grid-area: providerInvoices;
+    background-color: #662E1C;
+}
+
+.providerInvoicesItems{
+
+}
+
+.headerProviderInvoices {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: "titleProviderInvoices sumProviderInvoices";
+}
+
+.titleProviderInvoices {
+    grid-area: titleProviderInvoices;
+    padding-left: 10px;
+    color: #C9A66B;
+}
+
+.sumProviderInvoices {
+    grid-area: sumProviderInvoices;
+    background-color: #AF4425;
+    padding: 5px 10px;
+    text-align: right;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.allDocs {
+    grid-area: allDocs;
+    background-color: #662E1C;
+}
+
+.docsItems{
+
+}
+
+.headerAllDoc {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: "titleAllDoc delta";
+}
+
+.titleAllDoc {
+    grid-area: titleAllDoc;
+    padding-left: 10px;
+    color: #C9A66B;
+}
+
+.delta {
+    grid-area: delta;
+    background-color: #C9A66B;
+    padding: 5px 10px;
+    text-align: right;
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.titleDeliver {
+    grid-area: titleDeliver;
+    background-color: #C9A66B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    color: #662E1C;
+
+}
+.sumDeliver {
+    grid-area: sumDeliver;
+    background-color: #AF4425;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+.drivers {
+    grid-area: drivers;
+}
+
+.titleDriversForwarders {
+    margin: 10px 0;
+    padding-left: 10px;
+    color: #EBDCB2;
+}
+
+.driversItems {
+    padding-left: 10px;
+}
+
+.addDriverForwarder {
+    background-color: #AF4425;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: #EBDCB2;
+}
+
+.addDriverForwarder:hover {
+    background-color: #C9A66B;
+    color: #662E1C;
+    cursor: pointer;
+}
+.addDriverForwarder:active {
+    background-color: #EBDCB2;
+}
+
+.forwarders {
+    grid-area: forwarders;
+}
+
+.forwardersItems {
+    padding: 0 10px;
+}
+
+.commentsBlock {
+    background-color: #AF4425;
+    grid-area:commentsBlock;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr 3fr;
+    grid-template-areas: "commentTitleManager editCommentManager"
+                         "commentManager commentManager"
+                         "commentTitleHead editCommentHead"
+                         "commentHead commentHead"       ;
+}
+
+.commentTitleManager {
+    grid-area: commentTitleManager;
+}
+
+.commentTitleHead {
+    grid-area: commentTitleHead;
+}
+
+.commentTitle {
+    padding: 3px 0 0 10px;
+    font-size: 13px;
+    color: #EBDCB2;
+}
+
+.commentManager {
+    grid-area: commentManager;
+}
+
+.commentHead {
+    grid-area: commentHead;
+}
+
+.comment {
+    padding: 5px 20px;
+    color: white;
+    font-size: 13px;
+}
+
+.editCommentManager {
+    grid-area: editCommentManager;
+}
+
+.editCommentHead {
+    grid-area: editCommentHead;
+}
+
+.editComment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #C9A66B;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #662E1C;
+}
+
+.editComment:hover {
+    background-color: #662E1C;
+    cursor: pointer;
+    color: #EBDCB2;
+}
+
+.editComment:active {
+    background-color: #EBDCB2;
+    color: #662E1C;
+}
+

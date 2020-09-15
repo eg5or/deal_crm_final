@@ -1,0 +1,26 @@
+.driver {
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 30px;
+    margin-bottom: 7px;
+    font-size: 13px;
+}
+
+.driverName {
+    background-color: #AF4425;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 3px 5px;
+    color: #EBDCB2;
+}
+
+.sum {
+    background-color: #EBDCB2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 5px;
+    font-weight: bolder;
+    color: #662E1C;
+}

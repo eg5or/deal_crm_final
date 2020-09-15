@@ -1,0 +1,13 @@
+.dealsPage {
+    display: grid;
+    grid-template-rows: 100px auto;
+    grid-gap: 10px;
+}
+
+.filters {
+    background-color: #EBDCB2;
+}
+
+.dealsPageItems {
+
+}

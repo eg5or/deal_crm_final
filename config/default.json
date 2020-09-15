@@ -1,0 +1,4 @@
+{
+  "port": 5000,
+  "mongoUri": "mongodb+srv://eg5or:eg5or@cluster0.xbmbp.azure.mongodb.net/socialnet?retryWrites=true&w=majority"
+}
