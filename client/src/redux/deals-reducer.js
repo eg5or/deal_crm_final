@@ -13,8 +13,6 @@ const ADD_FORWARDER = 'ADD_FORWARDER';
 const EDIT_MANAGER_COMMENT = 'EDIT_MANAGER_COMMENT';
 const EDIT_HEAD_COMMENT = 'EDIT_HEAD_COMMENT';
 
-
-
 let initialState = {
     deals: [
         {

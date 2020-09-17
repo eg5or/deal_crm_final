@@ -14,5 +14,5 @@ const mapDispatchToProps = (dispatch) => {
         }
     }
 
-export const DealsPageContaine = connect(mapStateToProps, mapDispatchToProps)(DealsPage);
+export const DealsPageContainer = connect(mapStateToProps, mapDispatchToProps)(DealsPage);
 
