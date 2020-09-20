@@ -26,11 +26,11 @@ const SideBarVars = (props) => {
                 </div>
                 <div className={classes.item}>
                     <NavLink
-                        to='/vars/managers'
+                        to='/vars/employees'
                         className={classes.link}
                         activeClassName={classes.active}
                     >
-                        Менеджеры
+                        Сотрудники
                     </NavLink>
                 </div>
             </div>

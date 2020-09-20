@@ -66,17 +66,36 @@ export const forwardersAPI = {
     }
 }
 
-export const managersAPI = {
+export const employeesAPI = {
+    getAllEmployees() {
+        return instance.get(`employees`).then(response => response.data)
+    },
     getAllManagers() {
-        return instance.get(`managers`).then(response => response.data)
+        return instance.get(`employees/managers`).then(response => response.data)
     },
-    addNewManager(name, head, tel) {
-        return instance.post(`managers/add`, {name: name, head: head, tel: tel})
+    addNewEmployee(position, name, head, location, tel, intel, birthday) {
+        return instance.post(`employees/add`, {
+            position: position,
+            name: name,
+            head: head,
+            location: location,
+            tel: tel,
+            intel: intel,
+            birthday: birthday
+        })
     },
-    updateManager(id, name, head, tel) {
-        return instance.patch(`managers/${id}`, {name: name, head: head, tel: tel})
+    updateEmployee(id, position, name, head, location, tel, intel, birthday) {
+        return instance.patch(`employees/${id}`, {
+            position: position,
+            name: name,
+            head: head,
+            location: location,
+            tel: tel,
+            intel: intel,
+            birthday: birthday
+        })
     },
-    deleteManager(id) {
-        return instance.delete(`managers/${id}`)
+    deleteEmployee(id) {
+        return instance.delete(`employees/${id}`)
     }
 }

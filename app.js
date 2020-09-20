@@ -10,7 +10,7 @@ const companiesRoutes = require('./routes/companies.routes')
 const dealsRoutes = require('./routes/deals.routes')
 const driversRoutes = require('./routes/drivers.routes')
 const forwardersRoutes = require('./routes/forwarders.routes')
-const managersRoutes = require('./routes/managers.routes')
+const employeesRoutes = require('./routes/employees.routes')
 const testRoutes = require('./routes/test.routes')
 
 mongoose.connect(config.get('mongoUri'), {
@@ -35,7 +35,7 @@ app.use('/api/companies', companiesRoutes)
 app.use('/api/deals', dealsRoutes)
 app.use('/api/drivers', driversRoutes)
 app.use('/api/forwarders', forwardersRoutes)
-app.use('/api/managers', managersRoutes)
+app.use('/api/employees', employeesRoutes)
 app.use('/api/test', testRoutes)
 
 module.exports = app

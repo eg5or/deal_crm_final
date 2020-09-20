@@ -4,7 +4,7 @@ import authReducer from "./auth-reducer";
 import companiesReducer from "./companies-reducer";
 import driversReducer from "./drivers-reducer";
 import forwardersReducer from "./forwarders-reducer";
-import managersReducer from "./managers-reducer";
+import employeesReducer from "./employees-reducer";
 
 let reducers = combineReducers({
     dealsPage: dealsReducer,
@@ -12,7 +12,7 @@ let reducers = combineReducers({
     companiesPage: companiesReducer,
     driversPage: driversReducer,
     forwardersPage: forwardersReducer,
-    managersPage: managersReducer
+    employeesPage: employeesReducer
 });
 
 let store = createStore(reducers);

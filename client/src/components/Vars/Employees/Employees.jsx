@@ -2,7 +2,7 @@ import React from 'react';
 import MaterialTable from "material-table";
 
 
-const Managers = (props) => {
+const Employees = (props) => {
     const localization = {
         pagination: {
             labelDisplayedRows: '{from}-{to} из {count}',
@@ -44,16 +44,30 @@ const Managers = (props) => {
 
         }
     }
-    let data = Array.from(props.managersTableData)
+    let data = props.employeesTableData
     return (
         <div>
             <MaterialTable
-                title="Менеджеры"
+                title="Сотрудники"
                 columns={
                     [
+                        {
+                            title: 'Должность', field: 'position', lookup: {
+                                chief: 'Нач.отдела',
+                                manager: 'Менеджер',
+                                director: 'Директор',
+                                secretary: 'Офис менеджер'
+                            }
+                        },
                         {title: 'Имя', field: 'name'},
                         {title: 'Начальник', field: 'head'},
+                        {title: 'Офис', field: 'location', lookup: {
+                                korolev: 'Королёв',
+                                tushino: 'Тушино'
+                            }},
                         {title: 'Телефон', field: 'tel'},
+                        {title: 'Внутр.тел.', field: 'intel'},
+                        {title: 'День рождения', field: 'birthday'},
                     ]}
                 data={data}
                 options={{
@@ -63,27 +77,47 @@ const Managers = (props) => {
                     addRowPosition: "first",
                     columnsButton: true,
                     searchAutoFocus: true,
-                    draggable: false
+                    draggable: false,
+                    rowStyle: {
+                        fontSize: 13,
+                    }
                 }}
                 editable={{
                     onRowAdd: newData =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                props.addManager(newData.name, newData.head, newData.tel)
+                                props.addEmployee(
+                                    newData.position,
+                                    newData.name,
+                                    newData.head,
+                                    newData.location,
+                                    newData.tel,
+                                    newData.intel,
+                                    newData.birthday
+                                )
                                 resolve();
                             }, 1000)
                         }),
                     onRowUpdate: (newData, oldData) =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                props.updateManager(oldData._id, newData.name, newData.head, newData.tel)
+                                props.updateEmployee(
+                                    oldData._id,
+                                    newData.position,
+                                    newData.name,
+                                    newData.head,
+                                    newData.location,
+                                    newData.tel,
+                                    newData.intel,
+                                    newData.birthday
+                                )
                                 resolve();
                             }, 1000);
                         }),
                     onRowDelete: oldData =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                props.deleteManager(oldData._id)
+                                props.deleteEmployee(oldData._id)
                                 resolve();
                             }, 1000);
                         })
@@ -95,4 +129,4 @@ const Managers = (props) => {
     )
 }
 
-export default Managers;
+export default Employees;

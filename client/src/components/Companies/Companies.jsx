@@ -1,5 +1,6 @@
 import React from 'react';
 import MaterialTable from "material-table";
+import {transformString} from '../../utils/transformString'
 
 
 const Companies = (props) => {
@@ -44,7 +45,13 @@ const Companies = (props) => {
 
         }
     }
-    let data = Array.from(props.tableData)
+    let data = props.tableCompaniesData
+    let managersArray = props.managers.map(manager => manager.name)
+    const managers = {}
+    for (const item of managersArray) {
+        const translitItem = transformString.toTranslit(item.toLowerCase().split(' ').join(''))
+        managers[translitItem] = item;
+    }
     return (
         <div>
             <MaterialTable
@@ -53,7 +60,7 @@ const Companies = (props) => {
                     [
                         {title: 'Тип', field: 'type'},
                         {title: 'Название', field: 'name'},
-                        {title: 'Менеджер', field: 'manager'},
+                        {title: 'Менеджер', field: 'manager', lookup: managers},
                         {title: 'Сделки', field: 'deals', type: 'numeric'},
                     ]}
                 data={data}

@@ -1,14 +1,17 @@
 import React from "react";
 import Companies from "./Companies";
 import {connect} from "react-redux";
-import {companiesAPI} from "../../API/api";
-import {setDataTable, setNewCompanyData} from "../../redux/companies-reducer";
+import {companiesAPI, employeesAPI} from "../../API/api";
+import {setCompaniesDataTable, setManagers, setNewCompanyData} from "../../redux/companies-reducer";
 import classes from './CompaniesContainer.css'
 
 class CompaniesContainer extends React.Component {
     componentDidMount() {
         companiesAPI.getAllCompanies().then(data => {
-            this.props.setDataTable(data)
+            this.props.setCompaniesDataTable(data)
+        })
+        employeesAPI.getAllManagers().then(data => {
+            this.props.setManagers(data)
         })
     }
 
@@ -19,11 +22,9 @@ class CompaniesContainer extends React.Component {
         } catch (e) {
             alert(e.response.data.message)
         }
-
-
         this.props.setNewCompanyData('', '', '')
         companiesAPI.getAllCompanies().then(data => {
-            this.props.setDataTable(data)
+            this.props.setCompaniesDataTable(data)
         })
 
     }
@@ -35,7 +36,7 @@ class CompaniesContainer extends React.Component {
             alert(e.response.data.message)
         }
         companiesAPI.getAllCompanies().then(data => {
-            this.props.setDataTable(data)
+            this.props.setCompaniesDataTable(data)
         })
     }
 
@@ -46,14 +47,15 @@ class CompaniesContainer extends React.Component {
             alert(e.response.data.message)
         }
         companiesAPI.getAllCompanies().then(data => {
-            this.props.setDataTable(data)
+            this.props.setCompaniesDataTable(data)
         })
 
     }
 
     render() {
         return <div className={classes.companiesContainer}><Companies
-            tableData={this.props.tableData}
+            tableCompaniesData={this.props.tableCompaniesData}
+            managers={this.props.managers}
             setNewCompanyData={this.props.setNewCompanyData}
             addCompany={this.addCompany}
             updateCompany={this.updateCompany}
@@ -68,10 +70,11 @@ class CompaniesContainer extends React.Component {
 
 }
 const mapStateToProps = (state) => ({
-    tableData: state.companiesPage.tableData,
+    tableCompaniesData: state.companiesPage.tableCompaniesData,
+    managers: state.companiesPage.managers,
     newCompanyType: state.companiesPage.newCompanyType,
     newCompanyName: state.companiesPage.newCompanyName,
     newCompanyManager: state.companiesPage.newCompanyManager
 })
 
-export default connect(mapStateToProps, {setDataTable, setNewCompanyData})(CompaniesContainer)
+export default connect(mapStateToProps, {setCompaniesDataTable, setNewCompanyData, setManagers})(CompaniesContainer)

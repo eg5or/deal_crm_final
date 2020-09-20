@@ -1,9 +1,20 @@
-const Manager = require('../models/Manager')
+const Employee = require('../models/Employee')
 const errorHandler = require('../utils/errorHandler')
 
 module.exports.getAll = async function (req, res) {
     try {
-        await Manager.find({}, function (error, result) {
+        await Employee.find({}, function (error, result) {
+            res.status(200).json(result)
+        })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+}
+
+module.exports.getAllManagersNames = async function (req, res) {
+    try {
+        await Employee.find({position: 'manager'}, '-_id -position -head -location -tel -intel -birthday -__v', function (error, result) {
             res.status(200).json(result)
         })
     } catch (e) {
@@ -13,21 +24,25 @@ module.exports.getAll = async function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
-    const candidate = await Manager.findOne({name: req.body.name}) // проверяем на наличие такого пользователя
+    const candidate = await Employee.findOne({name: req.body.name}) // проверяем на наличие такого пользователя
     if (candidate != null) {
         res.status(409).json({
-            message: 'Менеджер с таким именем уже существует'
+            message: 'Сотрудник с таким именем уже существует'
         })
     } else {
-        const manager = new Manager({
+        const employee = new Employee({
+            position: req.body.position,
             name: req.body.name,
             head: req.body.head,
-            tel: req.body.tel
+            location: req.body.location,
+            tel: req.body.tel,
+            intel: req.body.intel,
+            birthday: req.body.birthday
         })
         try {
-            await manager.save()
+            await employee.save()
             // Передаем статус 201 Created - что-то создано в БД
-            res.status(201).json(manager)
+            res.status(201).json(employee)
         } catch (e) {
             // Обработать ошибку
             errorHandler(res, e)
@@ -42,13 +57,13 @@ module.exports.getById = function (req, res) {
 }
 
 module.exports.remove = async function (req, res) {
-    const candidate = await Manager.findOne({_id: req.params.id})
+    const candidate = await Employee.findOne({_id: req.params.id})
     if (candidate) {
         try {
-            await Manager.findOneAndDelete({_id: req.params.id})
+            await Employee.findOneAndDelete({_id: req.params.id})
             // Передаем статус 201 Created - что-то создано в БД
             res.status(201).json({
-                message: `Менеджер с id ${req.params.id} удален`
+                message: `Сотрудник с id ${req.params.id} удален`
             })
         } catch (e) {
             // Обработать ошибку
@@ -56,22 +71,26 @@ module.exports.remove = async function (req, res) {
         }
     } else {
         res.status(409).json({
-            message: `Менеджера с id ${req.params.id} не существует!`
+            message: `Сотрудника с id ${req.params.id} не существует!`
         })
     }
 }
 
 module.exports.update = async function (req, res) {
-    const candidate = await Manager.findOne({_id: req.params.id})
+    const candidate = await Employee.findOne({_id: req.params.id})
     if (candidate) {
         try {
-            Manager.updateOne(
+            Employee.updateOne(
                 {_id: req.params.id},
                 {
                     $set: {
+                        "position": req.body.position,
                         "name": req.body.name,
                         "head": req.body.head,
-                        "tel": req.body.tel
+                        "location": req.body.location,
+                        "tel": req.body.tel,
+                        "intel": req.body.intel,
+                        "birthday": req.body.birthday
                     }
                 },
                 function (err, result) {
@@ -79,7 +98,7 @@ module.exports.update = async function (req, res) {
                 }
             );
             res.status(201).json({
-                message: `Менеджер с id ${req.params.id} изменен`
+                message: `Сотрудник с id ${req.params.id} изменен`
             })
         } catch (e) {
             // Обработать ошибку
@@ -87,7 +106,7 @@ module.exports.update = async function (req, res) {
         }
     } else {
         res.status(409).json({
-            message: `Менеджера с id ${req.params.id} не существует!`
+            message: `Сотрудника с id ${req.params.id} не существует!`
         })
     }
 }
