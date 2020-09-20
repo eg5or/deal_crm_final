@@ -4,7 +4,7 @@ import classes from './SideBar.module.css'
 const SideBar = (props) => {
     return (
         <div className={classes.sidebar}>
-            SideBar
+            <div className={classes.sidebarContainer}>SideBar</div>
         </div>
     )
 }

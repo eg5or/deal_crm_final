@@ -4,7 +4,9 @@ import classes from './Header.module.css'
 const Header = () => {
     return (
         <header className={classes.header}>
-            <img src='https://pkf-demir.ru/assets/images/header/logo2_min_white.png'/>
+            <div className={classes.headerContainer}>
+                <span className={classes.dealCRM}>Deal CRM</span>
+            </div>
         </header>
     )
 }

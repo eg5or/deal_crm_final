@@ -1,0 +1,8 @@
+.AuthBlock {
+ padding: 10px;
+}
+.btnBlock {
+ padding-top: 5px;
+ display: flex;
+ justify-content: center;
+}

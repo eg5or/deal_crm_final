@@ -1,4 +1,13 @@
 .headerRight {
     grid-area: hr;
-    background-color: #662E1C;
+    padding-top: 5px;
+    padding-right: 5px;
+
+}
+
+.headerRightContainer {
+    background-color: #eceff1;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+    height: 100%;
 }

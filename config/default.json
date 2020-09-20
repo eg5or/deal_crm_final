@@ -1,4 +1,5 @@
 {
   "port": 5000,
-  "mongoUri": "mongodb+srv://eg5or:eg5or@cluster0.xbmbp.azure.mongodb.net/socialnet?retryWrites=true&w=majority"
+  "mongoUri": "mongodb+srv://eg5or:eg5or@cluster0.z1v29.gcp.mongodb.net/deal_crm?retryWrites=true&w=majority\n",
+  "jwt": "dev-jwt"
 }

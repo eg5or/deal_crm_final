@@ -2,16 +2,33 @@
   margin: auto;
   display: grid;
   width: 1400px;
-  grid-template-rows: 90px 40px 1fr;
+  grid-template-rows: 110px 40px 1fr;
   grid-template-columns: 2fr 8fr 2fr;
   grid-gap: 10px;
   grid-template-areas:
   "h h hr"
   "nb nb hr"
-  "sb c c";
+  "p p p";
 }
 
 .app-wrapper-content {
+  grid-area: p;
+  padding: 0 5px 5px 5px;
+}
+
+.app-wrapper-content-with-sidebar {
+
+  display: grid;
+  grid-template-columns: 2fr 10fr;
+  grid-gap: 10px;
+  grid-template-rows: 1fr;
+  grid-template-areas: "sb c";
+}
+
+.content {
   grid-area: c;
-  background-color: white;
+}
+
+.sidebar {
+  grid-area: sb;
 }

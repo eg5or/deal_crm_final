@@ -1,5 +1,11 @@
 .sidebar {
     grid-area: sb;
-    background-color: #EBDCB2;
-    padding: 20px;
+    padding: 0 0 5px 5px;
+}
+
+.sidebarContainer {
+    background-color: #eceff1;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+    height: 100%;
 }
