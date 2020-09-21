@@ -7,20 +7,20 @@
 }
 
 .driverName {
-    background-color: #AF4425;
+    background-color: #607d8b;
     display: flex;
     justify-content: left;
     align-items: center;
     padding: 3px 5px;
-    color: #EBDCB2;
+    color: white;
 }
 
 .sum {
-    background-color: #EBDCB2;
+    background-color: #b0bec5;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 3px 5px;
     font-weight: bolder;
-    color: #662E1C;
+    color: #263238;
 }

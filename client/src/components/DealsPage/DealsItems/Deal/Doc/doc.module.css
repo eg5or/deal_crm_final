@@ -1,8 +1,9 @@
 .doc {
-    background-color: #EBDCB2;
+    background-color: #b0bec5;
     height: 100px;
     display: grid;
     grid-template-rows: 4fr 1fr;
+    color: #263238;
 }
 
 .nameCompany {

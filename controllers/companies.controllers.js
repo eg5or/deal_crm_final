@@ -12,6 +12,17 @@ module.exports.getAll = async function (req, res) {
     }
 }
 
+module.exports.getAllNames = async function (req, res) {
+    try {
+        await Company.find({}, '-_id -type -manager -__v', function (error, result) {
+            res.status(200).json(result)
+        })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+}
+
 module.exports.create = async function (req, res) {
     const candidate = await Company.findOne({name: req.body.name}) // проверяем на наличие такого пользователя
     if (candidate != null) {

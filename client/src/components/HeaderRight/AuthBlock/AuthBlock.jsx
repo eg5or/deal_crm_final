@@ -19,9 +19,7 @@ const AuthBlock = (props) => {
 
     let onEmailChange = () => {
         let text = newEmailElement.current.value
-        console.log(text)
         props.newEmailTextAC(text)
-
     }
 
     let onPasswordChange = () => {

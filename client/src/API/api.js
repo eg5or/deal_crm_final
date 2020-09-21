@@ -24,6 +24,9 @@ export const companiesAPI = {
     getAllCompanies() {
         return instance.get(`companies`).then(response => response.data)
     },
+    getAllCompaniesNames() {
+        return instance.get(`companies/names`).then(response => response.data)
+    },
     addNewCompany(type, name, manager) {
         return instance.post(`companies/add`, {type: type, name: name, manager: manager})
     },
