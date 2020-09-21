@@ -12,7 +12,7 @@ import HeaderRightContainer from "./components/HeaderRight/HeaderRightContainer"
 import {ThemeProvider} from '@material-ui/core/styles'
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import blueGrey from "@material-ui/core/colors/blueGrey";
-import CompaniesContainer from "./components/Companies/CompaniesContainer";
+import CompaniesContainer from "./components/Clients/ClientsContainer";
 import SideBarVars from "./components/SideBar/SideBarVars/SideBarVars";
 import SideBarCompanies from "./components/SideBar/SideBarCompanies/SideBarCompanies";
 
@@ -36,7 +36,7 @@ const App = () => {
                 <HeaderRightContainer/>
                 <div className='app-wrapper-content'>
                     <Route path='/calculator' render={() => <Calculator/>}/>
-                    <Route path='/companies' render={() => {
+                    <Route path='/clients' render={() => {
                         return <div className='app-wrapper-content-with-sidebar'>
                             <div className='content'><CompaniesContainer/></div>
                             <div className='sidebar'><SideBarCompanies/></div>

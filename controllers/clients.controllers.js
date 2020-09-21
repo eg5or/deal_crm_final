@@ -1,9 +1,9 @@
-const Company = require('../models/Company')
+const Client = require('../models/Client')
 const errorHandler = require('../utils/errorHandler')
 
 module.exports.getAll = async function (req, res) {
     try {
-        await Company.find({}, function (error, result) {
+        await Client.find({}, function (error, result) {
             res.status(200).json(result)
         })
     } catch (e) {
@@ -14,7 +14,7 @@ module.exports.getAll = async function (req, res) {
 
 module.exports.getAllNames = async function (req, res) {
     try {
-        await Company.find({}, '-_id -type -manager -__v', function (error, result) {
+        await Client.find({}, '-_id -type -manager -__v', function (error, result) {
             res.status(200).json(result)
         })
     } catch (e) {
@@ -24,21 +24,21 @@ module.exports.getAllNames = async function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
-    const candidate = await Company.findOne({name: req.body.name}) // проверяем на наличие такого пользователя
+    const candidate = await Client.findOne({name: req.body.name}) // проверяем на наличие такого пользователя
     if (candidate != null) {
         res.status(409).json({
-            message: 'Компания с таким названием уже существует'
+            message: 'Клиент с таким названием уже существует'
         })
     } else {
-        const company = new Company({
+        const client = new Client({
             type: req.body.type,
             name: req.body.name,
             manager: req.body.manager,
         })
         try {
-            await company.save()
+            await client.save()
             // Передаем статус 201 Created - что-то создано в БД
-            res.status(201).json(company)
+            res.status(201).json(client)
         } catch (e) {
             // Обработать ошибку
             errorHandler(res, e)
@@ -47,13 +47,13 @@ module.exports.create = async function (req, res) {
 }
 
 module.exports.remove = async function (req, res) {
-    const candidate = await Company.findOne({_id: req.params.id})
+    const candidate = await Client.findOne({_id: req.params.id})
     if (candidate) {
         try {
-            await Company.findOneAndDelete({_id: req.params.id})
+            await Client.findOneAndDelete({_id: req.params.id})
             // Передаем статус 201 Created - что-то создано в БД
             res.status(201).json({
-                message: `Компания с id ${req.params.id} удалена`
+                message: `Клиент с id ${req.params.id} удален`
             })
         } catch (e) {
             // Обработать ошибку
@@ -61,16 +61,16 @@ module.exports.remove = async function (req, res) {
         }
     } else {
         res.status(409).json({
-            message: `Компании с id ${req.params.id} не существует!`
+            message: `Клиента с id ${req.params.id} не существует!`
         })
     }
 }
 
 module.exports.update = async function (req, res) {
-    const candidate = await Company.findOne({_id: req.params.id})
+    const candidate = await Client.findOne({_id: req.params.id})
     if (candidate) {
         try {
-            Company.updateOne(
+            Client.updateOne(
                 {_id: req.params.id},
                 {
                     $set: {
@@ -84,7 +84,7 @@ module.exports.update = async function (req, res) {
                 }
             );
             res.status(201).json({
-                message: `Компания с id ${req.params.id} изменена`
+                message: `Клиент с id ${req.params.id} изменен`
             })
         } catch (e) {
             // Обработать ошибку
@@ -92,7 +92,7 @@ module.exports.update = async function (req, res) {
         }
     } else {
         res.status(409).json({
-            message: `Компании с id ${req.params.id} не существует!`
+            message: `Клиента с id ${req.params.id} не существует!`
         })
     }
 }

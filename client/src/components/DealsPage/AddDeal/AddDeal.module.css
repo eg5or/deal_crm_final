@@ -1,13 +1,58 @@
-.filters {
+/*
+#263238 - самый темный - most_dark
+#455a64 - темный - dark
+#607d8b - средний - middle
+#b0bec5 - светлый - light
+#eceff1 - самый светлый - most_light
+white - белый - white
+ */
+
+.most_dark_bg {
+    background-color: #263238;
+}
+.dark_bg {
+    background-color: #455a64;
+}
+.middle_bg {
+    background-color: #607d8b;
+}
+.light_bg {
+    background-color: #b0bec5;
+}
+.most_light_bg {
     background-color: #eceff1;
+}
+.white_bg {
+    background-color: white;
+}
+
+.most_dark_txt {
+    color: #263238;
+}
+.dark_txt {
+    color: #455a64;
+}
+.middle_txt {
+    color: #607d8b;
+}
+.light_txt {
+    color: #b0bec5;
+}
+.most_light_txt {
+    color: #eceff1;
+}
+.white_txt {
+    color: white;
+}
+
+/* == Шапка (кнопки, фильтры) ==  */
+
+.filters {
     border-bottom: 6px solid #263238;
     padding: 10px;
 }
-.addDeal {
-    height: 0;
-    overflow: hidden;
-    transition: all 0.3s linear;
-}
+
+/* == Всплывающие и скрытые блоки == */
 
 .dropDownClients {
     height:0;
@@ -16,14 +61,11 @@
 }
 
 .dropDownClientsTitle {
-    color: #607d8b;
     font-size: 13px;
     padding: 3px;
     border-bottom: 1px solid #607d8b;
     width: 100%;
 }
-
-
 
 .dropDownClientsItems{
     padding: 4px 4px 4px 10px;
@@ -33,51 +75,29 @@
     cursor: pointer;
     background-color: #263238;
     color: white;
-
 }
 
+/* == общий контейнер == */
 
+.addDeal {
+    height: 0;
+    overflow: hidden;
+    transition: all 0.3s linear;
+}
 
 .deal {
-
     display: grid;
     grid-gap: 10px;
     grid-template-columns: 1fr 2fr 2fr;
     grid-template-rows: 470px 70px;
     grid-template-areas: "leftBlock centerBlock rightBlock"
-                         "addButtonBlock addButtonBlock addButtonBlock"   ;
-    background-color: #eceff1;
+                         "addButtonBlock addButtonBlock addButtonBlock";
     margin-bottom: 20px;
     border-width: 0 0 3px 0;
     border-bottom: 6px solid #263238;
-
 }
 
-.addButtonBlock {
-    grid-area: addButtonBlock;
-    background-color: #263238;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 70px;
-    color: #b0bec5;
-}
-
-.addButtonText {
-
-    line-height: 25px;
-    font-size: 25px;
-    text-transform: uppercase;
-}
-
-.addButtonBlock:hover {
-    background-color: #455a64;
-    color: white;
-    cursor: pointer;
-}
-.addButtonBlock:active {
-    background-color: #b0bec5;
-}
+/* == Левый блок == */
 
 .leftBlock {
     grid-area: leftBlock;
@@ -90,29 +110,6 @@
                          "delivered clientPaid"
                          "docSigned docSigned"
                          "docCollected docCollected";
-
-}
-
-.centerBlock {
-    grid-area: centerBlock;
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-areas: "clientInvoices"
-                         "providerInvoices"
-                         "allDocs";
-}
-
-.rightBlock {
-    grid-area: rightBlock;
-    display: grid;
-    background-color: #455a64;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 7fr 4fr;
-    grid-template-areas: "titleDeliver . . sumDeliver"
-                         "drivers drivers forwarders forwarders"
-                         "commentsBlock commentsBlock commentsBlock commentsBlock";
 }
 
 .title {
@@ -123,7 +120,6 @@
     grid-template-areas: "date"
                          "client"
                          "manager";
-
 }
 
 .date {
@@ -134,6 +130,7 @@
     font-weight: bold;
     font-size: 25px;
     color: #263238;
+    padding: 5px;
 }
 
 .client {
@@ -153,8 +150,9 @@
     justify-content: center;
     align-items: center;
     color: white;
-
 }
+
+/* кнопки статусов */
 
 .buttonLeft {
     background-color: #607d8b;
@@ -166,8 +164,6 @@
     font-weight: bold;
     font-size: 14px;
     color: white;
-
-
 }
 
 .buttonLeft:hover {
@@ -176,75 +172,46 @@
     cursor: pointer;
 }
 
+/* статусы */
+
 .approved {
     grid-area: approved;
-
 }
 
 .providerPaid {
     grid-area: providerPaid;
-
 }
 
 .delivered {
     grid-area: delivered;
-
 }
 
 .clientPaid {
     grid-area: clientPaid;
-
 }
 
 .docSigned {
     grid-area: docSigned;
-
 }
 
 .docCollected {
     grid-area: docCollected;
-
 }
 
-.docsFilesItems {
-    padding-left: 10px;
-    padding-top: 10px;
+/* == Средний блок == */
+
+.centerBlock {
+    grid-area: centerBlock;
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(5, 75px);
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "clientInvoices"
+                         "providerInvoices"
+                         "allDocs";
 }
 
-.addFile {
-    background-color: #607d8b;
-    height: 100px;
-    display: grid;
-    grid-template-rows: 4fr 2fr;
-    text-align: center;
-    color: white;
-}
-
-.addFile:hover {
-    cursor: pointer;
-    background-color: #263238;
-}
-
-.addFile:active {
-    background-color: #b0bec5;
-    color: #263238;
-
-}
-
-
-.plus {
-    font-size: 60px;
-    font-weight: bold;
-    line-height: 60px;
-}
-
-.addFileText {
-    font-size: 9px;
-    text-transform: uppercase;
-}
+/* Счета клиента */
 
 .clientInvoices {
     grid-area: clientInvoices;
@@ -277,6 +244,8 @@
     font-weight: bold;
 }
 
+/* Счета поставщиков */
+
 .providerInvoices {
     grid-area: providerInvoices;
     background-color: #455a64;
@@ -307,6 +276,8 @@
     font-size: 15px;
     font-weight: bold;
 }
+
+/* Документы по сделке */
 
 .allDocs {
     grid-area: allDocs;
@@ -339,6 +310,60 @@
     font-weight: bold;
 }
 
+/* Документы и кнопка на добавление документа */
+
+.docsFilesItems {
+    padding-left: 10px;
+    padding-top: 10px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(5, 75px);
+}
+
+.addFile {
+    background-color: #607d8b;
+    height: 100px;
+    display: grid;
+    grid-template-rows: 4fr 2fr;
+    text-align: center;
+    color: white;
+}
+
+.addFile:hover {
+    cursor: pointer;
+    background-color: #263238;
+}
+
+.addFile:active {
+    background-color: #b0bec5;
+    color: #263238;
+}
+
+.plus {
+    font-size: 60px;
+    font-weight: bold;
+    line-height: 60px;
+}
+
+.addFileText {
+    font-size: 9px;
+    text-transform: uppercase;
+}
+
+/* == Правый блок == */
+
+.rightBlock {
+    grid-area: rightBlock;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 7fr 4fr;
+    grid-template-areas: "titleDeliver . . sumDeliver"
+                         "drivers drivers forwarders forwarders"
+                         "commentsBlock commentsBlock commentsBlock commentsBlock";
+}
+
+/* Доставка Авто и Экспедиторы */
+
 .titleDeliver {
     grid-area: titleDeliver;
     background-color: #607d8b;
@@ -350,8 +375,8 @@
     font-size: 15px;
     font-weight: bold;
     color: white;
-
 }
+
 .sumDeliver {
     grid-area: sumDeliver;
     background-color: #607d8b;
@@ -363,6 +388,7 @@
     font-size: 15px;
     font-weight: bold;
 }
+
 .drivers {
     grid-area: drivers;
 }
@@ -393,6 +419,7 @@
     color: white;
     cursor: pointer;
 }
+
 .addDriverForwarder:active {
     background-color: #b0bec5;
     color: #263238;
@@ -405,6 +432,8 @@
 .forwardersItems {
     padding: 0 10px;
 }
+
+/* Блок Комментариев */
 
 .commentsBlock {
     background-color: #607d8b;
@@ -474,3 +503,42 @@
     background-color: #b0bec5;
     color: #263238;
 }
+
+/* == Футер - кнопка ДОБАВИТЬ СДЕЛКУ == */
+
+.addButtonBlock {
+    grid-area: addButtonBlock;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+}
+
+.addButtonText {
+    line-height: 25px;
+    font-size: 25px;
+    text-transform: uppercase;
+}
+
+.addButtonBlock:hover {
+    background-color: #455a64;
+    color: white;
+    cursor: pointer;
+}
+.addButtonBlock:active {
+    background-color: #b0bec5;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

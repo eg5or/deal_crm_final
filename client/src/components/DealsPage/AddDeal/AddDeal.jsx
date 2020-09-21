@@ -2,64 +2,36 @@ import React from 'react';
 import classes from './AddDeal.module.css'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import {newClientInputText} from '../../../redux/add-deal-reducer';
+import ClientInvoice from "../DealsItems/Deal/ClientInvoice/ClientInvoice";
+import {closeDialog} from "../../../redux/add-deal-reducer";
 
 const AddDeal = (props) => {
-    const handleChange = (event) => {
-        // setAge(event.target.value);
-    };
 
-    const clients = [
-        {
-            id: 1,
-            name: 'Бозон',
-            manager: 'Артём Соловьев'
-        },
-        {
-            id: 2,
-            name: 'Гефест',
-            manager: 'Артём Рыбаков'
-        },
-        {
-            id: 3,
-            name: 'Алик',
-            manager: 'Артём Соловьев'
-        },
-        {
-            id: 4,
-            name: 'Баллон',
-            manager: 'Артём Соловьев'
-        },
-        {
-            id: 5,
-            name: 'Гарман',
-            manager: 'Артём Рыбаков'
-        },
-        {
-            id: 6,
-            name: 'Арбуз',
-            manager: 'Артём Соловьев'
-        },
-    ]
+    // == Левый блок ==
+    // ** Дата - ввод даты
+    // ** Клиент - выбор клиента
+    // создаем ссылку на input для ввода клиента
     let newClientInputElement = React.createRef()
+    // ф-я для flux - при изменении текста
     let onClientInputChange = () => {
         let text = newClientInputElement.current.value
-        props.newClientInputText(text)
-        props.searchClients(text)
+        props.newClientInputText(text) // обновляем переменную в state
+        props.searchClients(text) // ф-я из Контейнера для поиска/фильтрации клиентов
+
+        // убираем панель найденных клиентов, если input пустой
         if (text === '') {
             props.closeDropDownClients()
         }
     }
 
-    let one = (text) => {
+    // вставляем выбранное значение из найденных в поле ввода
+    let setFoundClientToInput = (text) => {
         props.newClientInputText(text)
         props.closeDropDownClients()
     }
 
-    return <div className={classes.addDealBlock}>
-        <div className={classes.filters}>
+    return <div>
+        <div className={`${classes.filters} ${classes.most_light_bg}`}>
             <Button onClick={props.handleClick} variant="contained" color="primary" size="large">Добавить сделку</Button>
         </div>
         <div className={classes.addDeal} style={
@@ -67,7 +39,7 @@ const AddDeal = (props) => {
                 height: (props.buttonToggle ? '550px' : 0)
             }
         }>
-            <div className={classes.deal} >
+            <div className={`${classes.deal} ${classes.most_light_bg}`} >
                 <div className={classes.leftBlock}>
                     <div className={classes.title}>
                         <div className={classes.date}>
@@ -75,11 +47,10 @@ const AddDeal = (props) => {
                                 id="date"
                                 label="Дата сделки"
                                 type="date"
-                                defaultValue="2017-05-24"
-                                className={classes.textField}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
+                                fullWidth={true}
                             />
                         </div>
                         <div className={classes.client}>
@@ -101,11 +72,11 @@ const AddDeal = (props) => {
                                 height: (props.toggleDropDownClients ? '550px' : 0)
                             }
                         }>
-                            <div className={classes.dropDownClientsTitle}>Выберите клиента:</div>
+                            <div className={`${classes.dropDownClientsTitle} ${classes.middle_txt}`}>Выберите клиента:</div>
                                 {props.dataFoundClients
                                     .map(client =><div
                                         className={classes.dropDownClientsItems}
-                                        onClick={() => one(client.name)}
+                                        onClick={() => setFoundClientToInput(client.name)}
                                     >
                                         {client.name}
                                     </div>)}
@@ -126,7 +97,15 @@ const AddDeal = (props) => {
                             <div className={classes.sumClientInvoices}>250 000 руб.</div>
                         </div>
                         <div className={`${classes.clientInvoicesItems} ${classes.docsFilesItems}`}>
-                            clientInvoicesElements
+                            {props.clientInvoicesData
+                                .map(clientInvoice => <ClientInvoice
+                                    key={clientInvoice._id}
+                                    company={clientInvoice.company}
+                                    sum={clientInvoice.sum}
+                                    toggleDialog={clientInvoice.toggleDialog}
+                                    openDialog={clientInvoice.openDialog}
+                                    closeDialog={clientInvoice.closeDialog}
+                                />)}
                             <div className={classes.addFile}>
                                 <div className={classes.plus}>+</div>
                                 <div className={classes.addFileText}>Добавить<br />файл</div>
@@ -160,7 +139,7 @@ const AddDeal = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className={classes.rightBlock}>
+                <div className={`${classes.rightBlock} ${classes.dark_bg}`}>
                     <div className={classes.titleDeliver}>Доставка</div>
                     <div className={classes.sumDeliver}>29 400 руб.</div>
                     <div className={classes.drivers}>
@@ -186,7 +165,9 @@ const AddDeal = (props) => {
                         <div className={`${classes.comment} ${classes.commentHead}`}>бла бла</div>
                     </div>
                 </div>
-                <div className={classes.addButtonBlock}><span className={classes.addButtonText}>+ Добавить сделку</span></div>
+                <div className={`${classes.addButtonBlock} ${classes.most_dark_bg} ${classes.light_txt}`}>
+                    <span className={classes.addButtonText}>+ Добавить сделку</span>
+                </div>
             </div>
         </div>
     </div>

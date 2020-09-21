@@ -18,11 +18,11 @@ const NavBar = () => {
                 </div>
                 <div className={classes.item}>
                     <NavLink
-                        to='/companies'
+                        to='/clients'
                         className={classes.link}
                         activeClassName={classes.active}
                     >
-                        Компании
+                        Клиенты
                     </NavLink>
                 </div>
                 <div className={classes.item}>

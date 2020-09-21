@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const controller = require('../controllers/companies.controllers')
+const controller = require('../controllers/clients.controllers')
 
-// /api/companies
+// /api/clients
 router.get('/', controller.getAll)
 router.get('/names', controller.getAllNames)
 router.post('/add', controller.create)

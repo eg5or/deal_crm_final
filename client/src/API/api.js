@@ -20,21 +20,21 @@ export const authAPI = {
     }
 }
 
-export const companiesAPI = {
-    getAllCompanies() {
-        return instance.get(`companies`).then(response => response.data)
+export const clientsAPI = {
+    getAllClients() {
+        return instance.get(`clients`).then(response => response.data)
     },
-    getAllCompaniesNames() {
-        return instance.get(`companies/names`).then(response => response.data)
+    getAllClientsNames() {
+        return instance.get(`clients/names`).then(response => response.data)
     },
-    addNewCompany(type, name, manager) {
-        return instance.post(`companies/add`, {type: type, name: name, manager: manager})
+    addNewClient(type, name, manager) {
+        return instance.post(`clients/add`, {type: type, name: name, manager: manager})
     },
-    updateCompany(id, type, name, manager) {
-        return instance.patch(`companies/${id}`, {type: type, name: name, manager: manager})
+    updateClient(id, type, name, manager) {
+        return instance.patch(`clients/${id}`, {type: type, name: name, manager: manager})
     },
-    deleteCompany(id) {
-        return instance.delete(`companies/${id}`)
+    deleteClient(id) {
+        return instance.delete(`clients/${id}`)
     }
 
 }
@@ -100,5 +100,21 @@ export const employeesAPI = {
     },
     deleteEmployee(id) {
         return instance.delete(`employees/${id}`)
+    }
+}
+
+export const clientInvoicesAPI = {
+    getAllClientInvoicesForDeal(id) {
+        return instance.get(`clientinvoices/deal/${id}`).then(response => response.data)
+    },
+    addNewClientInvoice(deal, company, sum) {
+        return instance.post(`clientinvoices`, {
+            deal: deal,
+            company: company,
+            sum: sum,
+        })
+    },
+    deleteClientInvoice(id) {
+        return instance.delete(`clientinvoices/${id}`)
     }
 }

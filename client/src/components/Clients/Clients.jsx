@@ -3,7 +3,7 @@ import MaterialTable from "material-table";
 import {transformString} from '../../utils/transformString'
 
 
-const Companies = (props) => {
+const Clients = (props) => {
     const localization = {
         pagination: {
             labelDisplayedRows: '{from}-{to} из {count}',
@@ -45,7 +45,7 @@ const Companies = (props) => {
 
         }
     }
-    let data = props.tableCompaniesData
+    let data = props.tableClientsData
     let managersArray = props.managers.map(manager => manager.name)
     const managers = {}
     for (const item of managersArray) {
@@ -77,21 +77,21 @@ const Companies = (props) => {
                     onRowAdd: newData =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                props.addCompany(newData.type, newData.name, newData.manager)
+                                props.addClient(newData.type, newData.name, newData.manager)
                                 resolve();
                             }, 1000)
                         }),
                     onRowUpdate: (newData, oldData) =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                props.updateCompany(oldData._id, newData.type, newData.name, newData.manager)
+                                props.updateClient(oldData._id, newData.type, newData.name, newData.manager)
                                 resolve();
                             }, 1000);
                         }),
                     onRowDelete: oldData =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                props.deleteCompany(oldData._id)
+                                props.deleteClient(oldData._id)
                                 resolve();
                             }, 1000);
                         })
@@ -103,4 +103,4 @@ const Companies = (props) => {
     )
 }
 
-export default Companies;
+export default Clients;
