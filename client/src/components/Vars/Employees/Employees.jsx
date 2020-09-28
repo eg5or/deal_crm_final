@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import MaterialTable from "material-table";
 
 
 const Employees = (props) => {
+
+    let data = props.employeesTableData
+
     const localization = {
         pagination: {
             labelDisplayedRows: '{from}-{to} из {count}',
@@ -44,7 +47,7 @@ const Employees = (props) => {
 
         }
     }
-    let data = props.employeesTableData
+
     return (
         <div>
             <MaterialTable
@@ -60,6 +63,7 @@ const Employees = (props) => {
                             }
                         },
                         {title: 'Имя', field: 'name'},
+                        {title: 'E-mail', field: 'email', editable: 'never'},
                         {title: 'Начальник', field: 'head'},
                         {title: 'Офис', field: 'location', lookup: {
                                 korolev: 'Королёв',
@@ -83,21 +87,6 @@ const Employees = (props) => {
                     }
                 }}
                 editable={{
-                    onRowAdd: newData =>
-                        new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                props.addEmployee(
-                                    newData.position,
-                                    newData.name,
-                                    newData.head,
-                                    newData.location,
-                                    newData.tel,
-                                    newData.intel,
-                                    newData.birthday
-                                )
-                                resolve();
-                            }, 1000)
-                        }),
                     onRowUpdate: (newData, oldData) =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {

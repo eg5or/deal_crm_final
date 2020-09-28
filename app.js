@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const passport = require('passport')
+const multer = require('multer')
 const config = require('config')
 const cors = require('cors')
 const bodyParser = require('body-parser')
@@ -24,6 +25,8 @@ mongoose.connect(config.get('mongoUri'), {
 
 app.use(passport.initialize()) // инициализируем модуль паспорт
 require('./middleware/passport')(passport)
+
+
 
 app.use(require('morgan')('dev'))
 app.use(cors())

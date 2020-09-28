@@ -3,6 +3,7 @@ import classes from './AuthBlock.module.css'
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Alert from '@material-ui/lab/Alert';
 
 const AuthBlock = (props) => {
 
@@ -10,11 +11,11 @@ const AuthBlock = (props) => {
     let newPasswordElement = React.createRef()
 
     let onRegister = () => {
-        props.register()
+        props.register(props.newEmailText, props.newPasswordText)
     }
 
     let onLogin = () => {
-        props.login()
+        props.login(props.newEmailText, props.newPasswordText)
     }
 
     let onEmailChange = () => {
@@ -67,7 +68,6 @@ const AuthBlock = (props) => {
                     >Регистрация</Button>
                 </ButtonGroup>
             </div>
-
         </div>
     )
 }

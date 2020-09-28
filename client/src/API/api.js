@@ -4,9 +4,15 @@ const instance = axios.create({
     baseURL: 'http://localhost:5000/api/'
 });
 
-export const testAPI = {
-    postTest(test) {
-        return instance.post(`deals/addTest`, test)
+export const uploadAPI = {
+    savePhoto(file) {
+        const formData = new FormData()
+        formData.append('filedata', file)
+        return instance.post(`deals/upload`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
     },
 }
 
@@ -17,6 +23,14 @@ export const authAPI = {
 
     loginToCRM(email, password) {
         return instance.post(`auth/login`, {email: email, password: password})
+    },
+
+    logoutFromCRM(id) {
+        return instance.delete(`auth/logout/${id}`)
+    },
+
+    authorized(id) {
+        return instance.get(`auth/authorized/${id}`).then(response => response.data)
     }
 }
 

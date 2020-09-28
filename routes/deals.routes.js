@@ -9,5 +9,6 @@ router.post('/add', controller.create)
 router.get('/:id', controller.getById)
 router.delete('/:id', controller.remove)
 router.patch('/:id', controller.update)
+router.post('/upload', controller.upload)
 
 module.exports = router

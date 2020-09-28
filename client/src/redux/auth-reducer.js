@@ -1,8 +1,11 @@
+import {authAPI} from "../API/api";
+
 const SET_USER_DATA = 'SET_USER_DATA';
 const UPDATE_NEW_EMAIL_TEXT = 'UPDATE_NEW_EMAIL_TEXT';
 const UPDATE_NEW_PASSWORD_TEXT = 'UPDATE_NEW_PASSWORD_TEXT';
 const DELETE_USER_DATA = 'DELETE_USER_DATA';
 const CLEAR_EMAIL_AND_PASSWORD = 'CLEAR_EMAIL_AND_PASSWORD';
+const SET_RESPONSE_MESSAGE = 'SET_RESPONSE_MESSAGE';
 
 let initialState = {
     userId: null,
@@ -10,7 +13,8 @@ let initialState = {
     isAuth: false,
     newEmailText: '',
     newPasswordText: '',
-    token: ''
+    token: '',
+    responseMessage: ''
 }
 
 const authReducer = (state = initialState, action) => {
@@ -18,8 +22,7 @@ const authReducer = (state = initialState, action) => {
         case SET_USER_DATA:
             return {
                 ...state,
-                ...action.data,
-                isAuth: true,
+                ...action.payload,
                 newEmailText: '',
                 newPasswordText: ''
             };
@@ -48,16 +51,74 @@ const authReducer = (state = initialState, action) => {
                 newEmailText: '',
                 newPasswordText: ''
             };
+        case SET_RESPONSE_MESSAGE:
+            return {
+                ...state,
+                responseMessage: action.message
+            };
         default:
             return state;
     }
 };
 
-export const setAuthUserData = (userId, email, token) => ({type: SET_USER_DATA, data: {userId, email, token}});
+// ActionCreators
+
+export const setAuthUserData = (userId, email, token, isAuth) => ({
+    type: SET_USER_DATA,
+    payload: {userId, email, token, isAuth}
+});
 export const newEmailTextAC = (text) => ({type: UPDATE_NEW_EMAIL_TEXT, text});
 export const newPasswordTextAC = (text) => ({type: UPDATE_NEW_PASSWORD_TEXT, text});
 export const exitAuth = () => ({type: DELETE_USER_DATA});
 export const clearEmailAndPassword = () => ({type: CLEAR_EMAIL_AND_PASSWORD});
+export const setResponseMessage = (message) => ({type: SET_RESPONSE_MESSAGE, message});
 
+// Thunks
+
+export const getAuthUserData = () => async (dispatch) => {
+
+    const userData = JSON.parse(localStorage.getItem('userData'))
+    if (userData) {
+        let data = await authAPI.authorized(userData.id)
+        if (userData.token === data.token) {
+            let {id, email, token} = userData
+            dispatch(setAuthUserData(id, email, token, true))
+        } else {
+            logout(userData.id)
+        }
+    } else return Promise
+};
+
+export const login = (email, password) => async (dispatch) => {
+    const response = await authAPI.loginToCRM(email, password).catch(err => err.response.data)
+    if (response.statusText === 'OK') {
+        dispatch(setAuthUserData(response.data.userId, response.data.email, response.data.token, true))
+        localStorage.setItem('userData', JSON.stringify({
+            id: response.data.userId,
+            email: response.data.email,
+            token: response.data.token
+        }))
+    } else {
+        dispatch(setResponseMessage(response.message))
+    }
+
+
+}
+
+export const logout = (id) => async (dispatch) => {
+    const response = await authAPI.logoutFromCRM(id)
+    dispatch(setAuthUserData(null, null, null, false))
+    localStorage.removeItem('userData')
+}
+
+export const register = (email, password) => async (dispatch) => {
+    const data = await authAPI.registerToCRM(email, password).catch(err => err.response.data)
+    if (data.message) {
+        dispatch(setResponseMessage(data.message))
+    } else {
+        dispatch(clearEmailAndPassword())
+    }
+
+}
 
 export default authReducer;
