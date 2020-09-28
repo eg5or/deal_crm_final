@@ -23,8 +23,8 @@ mongoose.connect(config.get('mongoUri'), {
     .then(() => console.log('MongoDB connected.'))
     .catch(error => console.log(error))
 
-app.use(passport.initialize()) // инициализируем модуль паспорт
-require('./middleware/passport')(passport)
+// app.use(passport.initialize()) // инициализируем модуль паспорт
+// require('./middleware/passport')(passport)
 
 
 

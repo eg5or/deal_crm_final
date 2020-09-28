@@ -32,14 +32,21 @@ const AddDeal = (props) => {
 
     return <div>
         <div className={`${classes.filters} ${classes.most_light_bg}`}>
-            <Button onClick={props.handleClick} variant="contained" color="primary" size="large">Добавить сделку</Button>
+            <Button
+                onClick={props.handleClick}
+                variant="contained"
+                color="primary"
+                size="large"
+            >
+                {props.buttonToggle ? 'Отмена' : 'Добавить сделку'}
+            </Button>
         </div>
         <div className={classes.addDeal} style={
             {
-                height: (props.buttonToggle ? '550px' : 0)
+                height: (props.buttonToggle ? '470px' : 0)
             }
         }>
-            <div className={`${classes.deal} ${classes.most_light_bg}`} >
+            <div className={`${classes.deal} ${classes.most_light_bg}`}>
                 <div className={classes.leftBlock}>
                     <div className={classes.title}>
                         <div className={classes.date}>
@@ -69,100 +76,50 @@ const AddDeal = (props) => {
                         </div>
                         <div className={classes.dropDownClients} style={
                             {
-                                height: (props.toggleDropDownClients ? '550px' : 0)
+                                height: (props.toggleDropDownClients ? '470px' : 0)
                             }
                         }>
-                            <div className={`${classes.dropDownClientsTitle} ${classes.middle_txt}`}>Выберите клиента:</div>
-                                {props.dataFoundClients
-                                    .map(client =><div
-                                        className={classes.dropDownClientsItems}
-                                        onClick={() => setFoundClientToInput(client.name)}
-                                    >
-                                        {client.name}
-                                    </div>)}
-                        </div>
-                        <div className={classes.manager}>Артём Соловьёв</div>
-                    </div>
-                    <div className={`${classes.approved} ${classes.buttonLeft}`}>Одобрено</div>
-                    <div className={`${classes.providerPaid} ${classes.buttonLeft}`}>Закупка не оплачена</div>
-                    <div className={`${classes.delivered} ${classes.buttonLeft}`}>Не вывезли</div>
-                    <div className={`${classes.clientPaid} ${classes.buttonLeft}`}>Клиент не оплатил</div>
-                    <div className={`${classes.docSigned} ${classes.buttonLeft}`}>Документы не подписаны</div>
-                    <div className={`${classes.docCollected} ${classes.buttonLeft}`}>Документы не собраны</div>
-                </div>
-                <div className={classes.centerBlock}>
-                    <div className={classes.clientInvoices}>
-                        <div className={classes.headerClientInvoices}>
-                            <div className={classes.titleClientInvoices}>счета клиенту</div>
-                            <div className={classes.sumClientInvoices}>250 000 руб.</div>
-                        </div>
-                        <div className={`${classes.clientInvoicesItems} ${classes.docsFilesItems}`}>
-                            {props.clientInvoicesData
-                                .map(clientInvoice => <ClientInvoice
-                                    key={clientInvoice._id}
-                                    company={clientInvoice.company}
-                                    sum={clientInvoice.sum}
-                                    toggleDialog={clientInvoice.toggleDialog}
-                                    openDialog={clientInvoice.openDialog}
-                                    closeDialog={clientInvoice.closeDialog}
-                                />)}
-                            <div className={classes.addFile}>
-                                <div className={classes.plus}>+</div>
-                                <div className={classes.addFileText}>Добавить<br />файл</div>
+                            <div className={`${classes.dropDownClientsTitle} ${classes.middle_txt}`}>Выберите клиента:
                             </div>
+                            {props.dataFoundClients
+                                .map(client => <div
+                                    className={classes.dropDownClientsItems}
+                                    onClick={() => setFoundClientToInput(client.name)}
+                                >
+                                    {client.name}
+                                </div>)}
                         </div>
+                        <div className={classes.manager}>{props.currentEmployeeName}</div>
                     </div>
-                    <div className={classes.providerInvoices}>
-                        <div className={classes.headerProviderInvoices}>
-                            <div className={classes.titleProviderInvoices}>счета поставщиков</div>
-                            <div className={classes.sumProviderInvoices}>250 000 руб.</div>
-                        </div>
-                        <div className={`${classes.providerInvoicesItems} ${classes.docsFilesItems}`}>
-                            providerInvoicesElements
-                            <div className={classes.addFile}>
-                                <div className={classes.plus}>+</div>
-                                <div className={classes.addFileText}>Добавить<br />файл</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={classes.allDocs}>
-                        <div className={classes.headerAllDoc}>
-                            <div className={classes.titleAllDoc}>документы</div>
-                            <div className={classes.delta}>250 000 руб.</div>
-                        </div>
-                        <div className={`${classes.docsItems} ${classes.docsFilesItems}`}>
-                            docsElements
-                            <div className={classes.addFile}>
-                                <div className={classes.plus}>+</div>
-                                <div className={classes.addFileText}>Добавить<br />файл</div>
-                            </div>
-                        </div>
+                    <div className={classes.leftUnderManager}>* начните вводить название клиента и тут появятся
+                        подсказки
                     </div>
                 </div>
                 <div className={`${classes.rightBlock} ${classes.dark_bg}`}>
-                    <div className={classes.titleDeliver}>Доставка</div>
-                    <div className={classes.sumDeliver}>29 400 руб.</div>
-                    <div className={classes.drivers}>
-                        <div className={classes.titleDriversForwarders}>Водители:</div>
-                        <div className={classes.driversItems}>
-                            driversElements
-                            <div className={classes.addDriverForwarder}>+ добавить водителя</div>
-                        </div>
-                    </div>
-                    <div className={classes.forwarders}>
-                        <div className={classes.titleDriversForwarders}>Экспедиторы:</div>
-                        <div className={classes.forwardersItems}>
-                            forwardersElements
-                            <div className={classes.addDriverForwarder}>+ добавить экспедитора</div>
-                        </div>
-                    </div>
-                    <div className={classes.commentsBlock}>
-                        <div className={`${classes.commentTitle} ${classes.commentTitleManager}`}>Комментарий менеджера:</div>
-                        <div className={`${classes.editComment} ${classes.editCommentManager}`}>редактировать</div>
-                        <div className={`${classes.comment} ${classes.commentManager}`}>бла бла</div>
-                        <div className={`${classes.commentTitle} ${classes.commentTitleHead}`}>Комментарий руководителя:</div>
-                        <div className={`${classes.editComment} ${classes.editCommentHead}`}>редактировать</div>
-                        <div className={`${classes.comment} ${classes.commentHead}`}>бла бла</div>
+                    <div className={classes.titleDeliver}>Инструкция</div>
+                    <div className={classes.text}>
+                        <p>
+                            Для того, чтобы добавить сделку, введите дату, затем начните вводить в поле "Клиент" первые
+                            буквы вашего клиента.
+                            Ниже появятся совпадения, найденные в базе данных. Если ваш клиент появился в списке, вы
+                            можете щелкнуть по
+                            нему и его название автоматически вставится в поле ввода. Если в списке ниже пусто или ваш
+                            клиент отсутствует,
+                            то либо вы опечатались, либо клиент отсутствует в базе данных. В последнем случае,
+                            обратитесь к администратору.
+                        </p>
+                        <p>
+                            Далее нажмите на кнопку "Добавить сделку". Сделка подгрузится в общем списке и вы сможете
+                            добавить туда дополнительные данные, такие как:
+                        </p>
+                        <ul>
+                            <li>Счета клиента</li>
+                            <li>Счета поставщиков</li>
+                            <li>Документы по сделке</li>
+                            <li>Водители</li>
+                            <li>Экспедиторы</li>
+                            <li>Комментарий</li>
+                        </ul>
                     </div>
                 </div>
                 <div className={`${classes.addButtonBlock} ${classes.most_dark_bg} ${classes.light_txt}`}>

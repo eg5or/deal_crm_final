@@ -12,10 +12,9 @@ module.exports.getAll = async function (req, res) {
     }
 }
 
-module.exports.getAllManagersNames = async function (req, res) {
+module.exports.getOne = async function (req, res) {
     try {
-        await Employee.find({position: 'manager'},
-            '-_id -position -head -location -tel -intel -birthday -__v -email -password', function (error, result) {
+        await Employee.findOne({_id: req.params.id}, function (error, result) {
             res.status(200).json(result)
         })
     } catch (e) {
@@ -23,6 +22,22 @@ module.exports.getAllManagersNames = async function (req, res) {
         errorHandler(res, e)
     }
 }
+module.exports.getAllManagersNames = async function (req, res) {
+    try {
+        await Employee.find({position: 'manager'},
+            '-_id -position -head -location -tel -intel -birthday -__v -email -password', function (error, result) {
+                res.status(200).json(result)
+            })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+}
+
+
+
+
+
 
 module.exports.remove = async function (req, res) {
     const candidate = await Employee.findOne({_id: req.params.id})

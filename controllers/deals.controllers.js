@@ -1,23 +1,27 @@
 const multer = require('multer')
 const path = require('path')
+const pdf = require('pdf-poppler');
 
 // Загрузка файлов MULTER
-
+// настройка:
 const storageConfig = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads');
+        cb(null, 'uploads'); // путь для загружаемых файлов
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
+        cb(null, Date.now() + path.extname(file.originalname)); // устанавливаем новое имя файлу
     }
 });
 
-// определение фильтра
+// определяем фильтр
 const fileFilter = (req, file, cb) => {
     const ext = path.extname(file.originalname)
-    if (ext !== '.jpg' && ext !== '.jpeg' && ext !== '.png') {
-        const err = new Error('Extension')
-        err.code = 'EXTENSION'
+    if (ext !== '.jpg'
+        && ext !== '.jpeg'
+        && ext !== '.png'
+        && ext !== '.pdf') {
+        const err = new Error('Extension') // создаем новую ошибку
+        err.code = 'EXTENSION' // ставим код ошибки для неправильного расширения файла
         return cb(err)
     }
     cb(null, true)
@@ -25,11 +29,66 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
     storage: storageConfig,
-    limits: {fileSize: 2 * 1024 * 1024},
+    limits: {fileSize: 2 * 1024 * 1024}, // ограничение размера загружаемого файла
     fileFilter: fileFilter
 }).single('filedata')
 
 // ---------------------------
+
+module.exports.upload = function (req, res) {
+    upload(req, res, function (err) {
+        let error = ''
+        let ok = true
+        // проверка на ошибки
+        if (err) {
+            if (err.code === 'LIMIT_FILE_SIZE') {
+                error = 'Картинка не более 2 Мб'
+            }
+            if (err.code === 'EXTENSION') {
+                error = 'Только jpeg, png или pdf'
+            }
+            ok = false
+        }
+        // отправляем результат проверки на фронт
+        res.json({
+            ok: ok,
+            error
+        })
+
+        // записываем путь загруженного файла
+        let file = req.file.path
+
+        // ЛОГИ на серваке
+        console.log(err);
+        console.log(req.headers);
+        console.log(req.file.path);
+
+        // проверяем тип загруженного файла
+        // если PDF то отправляем в конвертер
+        if (path.extname(file) === '.pdf') {
+            // ОПЦИИ конвертирования
+            let opts = {
+                format: 'jpeg',
+                out_dir: path.dirname(file),
+                out_prefix: path.basename(file, path.extname(file)),
+                page: 1
+            }
+            // процесс конвертации
+            pdf.convert(file, opts)
+                .then(res => {
+                    console.log('Конвертация завершилась успешно');
+                    // удаляем входной файл
+
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+        }
+
+
+
+    })
+}
 
 module.exports.getAll = function (req, res) {
     res.status(200).json({
@@ -61,28 +120,3 @@ module.exports.update = function (req, res) {
     })
 }
 
-module.exports.upload = function (req, res) {
-    upload(req, res, function (err) {
-        let error = ''
-        let ok = true
-        if (err) {
-            if (err.code === 'LIMIT_FILE_SIZE') {
-                error = 'Картинка не более 2 Мб'
-            }
-            if (err.code === 'EXTENSION') {
-                error = 'Только jpeg и png'
-            }
-            ok = false
-        }
-        res.json({
-            ok: ok,
-            error
-        })
-        console.log(err);
-        console.log(req.headers);
-        console.log(req.file);
-
-    })
-
-
-}

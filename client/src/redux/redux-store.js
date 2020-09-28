@@ -8,6 +8,7 @@ import employeesReducer from "./employees-reducer";
 import addDealReducer from './add-deal-reducer';
 import thunkMiddleware from 'redux-thunk'
 import appReducer from "./appReducer";
+import profileReducer from "./profileReducer";
 
 let reducers = combineReducers({
     dealsPage: dealsReducer,
@@ -17,7 +18,8 @@ let reducers = combineReducers({
     forwardersPage: forwardersReducer,
     employeesPage: employeesReducer,
     addDealBlock: addDealReducer,
-    app: appReducer
+    app: appReducer,
+    profilePage: profileReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

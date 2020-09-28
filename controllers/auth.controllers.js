@@ -22,7 +22,8 @@ module.exports.login = async function (req, res) {
             res.status(200).json({
                 token: `Bearer ${token}`,
                 email: candidate.email,
-                userId: candidate._id
+                userId: candidate._id,
+                name: candidate.name
             })
 
             // записываем пользователя в таблицу UserLogin, где находятся все залогиненые пользователи
@@ -65,7 +66,8 @@ module.exports.authorized = async function (req, res) {
             res.status(200).json({
                 id: candidate.id,
                 email: candidate.email,
-                token: candidate.token
+                token: candidate.token,
+                name: candidate.name
             })
         } catch (e) {
             // Обработать ошибку

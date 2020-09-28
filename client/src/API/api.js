@@ -90,6 +90,9 @@ export const employeesAPI = {
     getAllManagers() {
         return instance.get(`employees/managers`).then(response => response.data)
     },
+    getEmployeeData(id) {
+        return instance.get(`employees/${id}`).then(response => response.data)
+    },
     addNewEmployee(position, name, head, location, tel, intel, birthday) {
         return instance.post(`employees/add`, {
             position: position,

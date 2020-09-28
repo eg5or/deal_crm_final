@@ -10,6 +10,7 @@ const SET_RESPONSE_MESSAGE = 'SET_RESPONSE_MESSAGE';
 let initialState = {
     userId: null,
     email: null,
+    name: null,
     isAuth: false,
     newEmailText: '',
     newPasswordText: '',
@@ -63,9 +64,9 @@ const authReducer = (state = initialState, action) => {
 
 // ActionCreators
 
-export const setAuthUserData = (userId, email, token, isAuth) => ({
+export const setAuthUserData = (userId, email, token, name, isAuth) => ({
     type: SET_USER_DATA,
-    payload: {userId, email, token, isAuth}
+    payload: {userId, email, token, name, isAuth}
 });
 export const newEmailTextAC = (text) => ({type: UPDATE_NEW_EMAIL_TEXT, text});
 export const newPasswordTextAC = (text) => ({type: UPDATE_NEW_PASSWORD_TEXT, text});
@@ -76,15 +77,14 @@ export const setResponseMessage = (message) => ({type: SET_RESPONSE_MESSAGE, mes
 // Thunks
 
 export const getAuthUserData = () => async (dispatch) => {
-
-    const userData = JSON.parse(localStorage.getItem('userData'))
-    if (userData) {
-        let data = await authAPI.authorized(userData.id)
-        if (userData.token === data.token) {
-            let {id, email, token} = userData
-            dispatch(setAuthUserData(id, email, token, true))
+    const userDataLocalStorage = JSON.parse(localStorage.getItem('userData'))
+    if (userDataLocalStorage) {
+        let data = await authAPI.authorized(userDataLocalStorage.id)
+        if (userDataLocalStorage.token === data.token) {
+            let {id, email, token, name} = userDataLocalStorage
+            dispatch(setAuthUserData(id, email, token, name, true))
         } else {
-            logout(userData.id)
+            logout(userDataLocalStorage.id)
         }
     } else return Promise
 };
@@ -92,17 +92,16 @@ export const getAuthUserData = () => async (dispatch) => {
 export const login = (email, password) => async (dispatch) => {
     const response = await authAPI.loginToCRM(email, password).catch(err => err.response.data)
     if (response.statusText === 'OK') {
-        dispatch(setAuthUserData(response.data.userId, response.data.email, response.data.token, true))
+        dispatch(setAuthUserData(response.data.userId, response.data.email, response.data.token, response.data.name, true))
         localStorage.setItem('userData', JSON.stringify({
             id: response.data.userId,
             email: response.data.email,
-            token: response.data.token
+            token: response.data.token,
+            name: response.data.name
         }))
     } else {
         dispatch(setResponseMessage(response.message))
     }
-
-
 }
 
 export const logout = (id) => async (dispatch) => {

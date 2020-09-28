@@ -9,7 +9,8 @@ import {
     setDataClientTable,
     setDataFoundClients
 } from '../../../redux/add-deal-reducer';
-import {clientInvoicesAPI, clientsAPI} from '../../../API/api';
+import {clientInvoicesAPI, clientsAPI, employeesAPI} from '../../../API/api';
+import {setCurrentEmployeeData} from "../../../redux/profileReducer";
 
 class AddDealContainer extends React.Component {
     componentDidMount() {
@@ -17,7 +18,7 @@ class AddDealContainer extends React.Component {
         clientsAPI.getAllClientsNames().then(data => {
             this.props.setDataClientTable(data)
         })
-        // загружаем все счета клиентов для этой сделки
+        // загружаем все счета клиентов для этой сделки (переместить в Deal.jsx)
         clientInvoicesAPI.getAllClientInvoicesForDeal('103').then(data => {
             this.props.setDataClientInvoices(data)
         })
@@ -52,6 +53,7 @@ class AddDealContainer extends React.Component {
             toggleDialog={this.props.toggleDialog}
             openDialog={this.props.openDialog}
             closeDialog={this.props.closeDialog}
+            currentEmployeeName={this.props.currentEmployeeName}
         />
     }
 
@@ -65,6 +67,7 @@ const mapStateToProps = (state) => ({
     toggleDropDownClients: state.addDealBlock.toggleDropDownClients, // переключатель для показа выпадающего списка найденных клиентов (boolean)
     clientInvoicesData: state.addDealBlock.clientInvoicesData, // счета клиента
     toggleDialog: state.addDealBlock.toggleDialog, // состояние диалога
+    currentEmployeeName: state.authBlock.name, // имя текущего сотрудника
 })
 
 export default connect(mapStateToProps, {
@@ -76,5 +79,6 @@ export default connect(mapStateToProps, {
     closeDropDownClients,
     setDataClientInvoices,
     openDialog,
-    closeDialog
+    closeDialog,
+    setCurrentEmployeeData
 })(AddDealContainer)

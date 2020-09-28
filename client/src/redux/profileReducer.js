@@ -1,26 +1,26 @@
 import {uploadAPI} from "../API/api";
 
 
-const INITIALIZED_SUCCESS = 'social-net/app/INITIALIZED_SUCCESS';
+const SET_CURRENT_EMPLOYEE_DATA = 'social-net/app/SET_CURRENT_EMPLOYEE_DATA';
 
 
 let initialState = {
-    initialized: false,
+    currentEmployeeData: {},
 }
 
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
-        case INITIALIZED_SUCCESS:
+        case SET_CURRENT_EMPLOYEE_DATA:
             return {
                 ...state,
-                initialized: true
+                currentEmployeeData: action.data
             };
         default:
             return state;
     }
 }
 
-export const initializedSuccess = () => ({type: INITIALIZED_SUCCESS})
+export const setCurrentEmployeeData = (data) => ({type: SET_CURRENT_EMPLOYEE_DATA, data})
 
 export const savePhoto = (file) => async (dispatch) => {
     let response = await uploadAPI.savePhoto(file)
