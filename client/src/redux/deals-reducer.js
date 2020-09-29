@@ -39,8 +39,8 @@ export const addDeal = (date, client, name) => async (dispatch) => {
     dispatch(loadingDealsTableData())
 }
 
-export const saveFile = (file, id, company, sum) => async (dispatch) => {
-    let response = await uploadAPI.saveFile(file, id, company, sum)
+export const saveFile = (file, id, company, sum, type) => async (dispatch) => {
+    let response = await uploadAPI.saveFile(file, id, company, sum, type)
     console.log(response.data)
 }
 

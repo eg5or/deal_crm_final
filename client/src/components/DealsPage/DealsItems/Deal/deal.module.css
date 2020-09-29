@@ -71,6 +71,10 @@
 
 }
 
+.inputUpload {
+    display: none;
+}
+
 .titleDoneSwitcher {
     text-transform: uppercase;
 }

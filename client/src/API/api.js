@@ -5,10 +5,10 @@ const instance = axios.create({
 });
 
 export const uploadAPI = {
-    saveFile(file, id, company, sum) {
+    saveFile(file, id, company, sum, type) {
         const formData = new FormData()
         formData.append('filedata', file)
-        return instance.post(`deals/upload?id=${id}&company=${company}&sum=${sum}`, formData, {
+        return instance.post(`deals/upload?id=${id}&company=${company}&sum=${sum}&type=${type}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

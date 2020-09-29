@@ -94,7 +94,8 @@ module.exports.upload = function (req, res) {
                 deal: req.query.id,
                 company: req.query.company,
                 fileUrl: `/${path.dirname(file)}/${path.basename(file, '.pdf')}-1.jpg`,
-                sum: req.query.sum
+                sum: req.query.sum,
+                typeFile: req.query.type
             })
             try {
                 await clientInvoice.save()
@@ -107,11 +108,12 @@ module.exports.upload = function (req, res) {
 
         } else {
             const clientInvoice = new ClientInvoice({
-            deal: req.query.id,
-            company: req.query.company,
-            fileUrl: req.file.path,
-            sum: req.query.sum
-        })
+                deal: req.query.id,
+                company: req.query.company,
+                fileUrl: req.file.path,
+                sum: req.query.sum,
+                typeFile: req.query.type
+            })
             try {
                 await clientInvoice.save()
                 // Передаем статус 201 Created - что-то создано в БД

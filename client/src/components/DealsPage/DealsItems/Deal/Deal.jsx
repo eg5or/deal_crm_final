@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import classes from './deal.module.css'
 import {NavLink} from 'react-router-dom';
 import Driver from './Driver/Driver';
@@ -13,6 +13,14 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import {saveFile} from "../../../../redux/deals-reducer";
+import {useFormik} from "formik";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import BusinessIcon from '@material-ui/icons/Business';
+import Grid from "@material-ui/core/Grid";
 
 const Deal = (props) => {
 
@@ -51,22 +59,45 @@ const Deal = (props) => {
     let dateString = convertedDate.getDate() + '.' + (convertedDate.getMonth() + 1) + '.' + convertedDate.getFullYear()
 
     const [open, setOpen] = React.useState(false);
-    const onAddFileOpen = () => {
+    const [typeFile, setTypeFile] = useState('')
+
+    const onAddFileOpenCI = () => {
         setOpen(true)
+        setTypeFile('CI')
     }
+
+    const onAddFileOpenPI = () => {
+        setOpen(true)
+        setTypeFile('PI')
+    }
+
+    const onAddFileOpenDOC = () => {
+        setOpen(true)
+        setTypeFile('DOC')
+    }
+
     const onAddFileClose = () => {
         setOpen(false)
     }
 
+    const formik = useFormik({
+        initialValues: {
+            company: '',
+            sum: '',
+        },
+        onSubmit: values => {
+            alert(JSON.stringify(values, null, 2));
+        },
+    });
+    console.log(formik.values.company, Number(formik.values.sum))
+
     const onUploadFile = (e) => {
-        const typeFile = 'CI'
-        const company = 'МС'
-        const sum = 2500
         if (e.target.files.length) {
-            props.saveFile(e.target.files[0], props.id, e, sum)
+            props.saveFile(e.target.files[0], props.id, formik.values.company, Number(formik.values.sum), typeFile)
+            onAddFileClose()
         }
     }
-
+    console.log(typeFile)
     return (
         <div className={classes.deal}>
             <Dialog onClose={onAddFileClose} aria-labelledby="customized-dialog-title" open={open}>
@@ -74,13 +105,72 @@ const Deal = (props) => {
                     Загрузить файл
                 </DialogTitle>
                 <DialogContent dividers>
-                    <input type={'file'} onChange={onUploadFile}/>
-                    <input type={'text'} />
+                    <div>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <BusinessIcon />
+                            </Grid>
+                            <Grid item>
+                                { typeFile === 'CI'
+                                ? <Select
+                                    native
+                                    value={formik.values.company}
+                                    onChange={formik.handleChange}
+                                    inputProps={{
+                                        name: 'company',
+                                        id: 'company',
+                                    }}
+                                >
+                                    <option value="" disabled>
+                                        Выберите компанию
+                                    </option>
+                                    <option value={'Демир'}>Демир</option>
+                                    <option value={'АСТ'}>АСТ</option>
+                                    <option value={'ТП'}>ТП</option>
+                                </Select>
+                                    : <TextField
+                                        id="company"
+                                        label="Компания"
+                                        type='text'
+                                        name='company'
+                                        onChange={formik.handleChange}
+                                        on
+                                        value={formik.values.company}
+                                        size="small"
+                                    />}
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <MonetizationOnIcon />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    id="sum"
+                                    label="Сумма счета"
+                                    type='text'
+                                    name='sum'
+                                    onChange={formik.handleChange}
+                                    on
+                                    value={formik.values.sum}
+                                    size="small"
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div>
+                        <input className={classes.inputUpload} type={'file'} id="contained-button-file" onChange={onUploadFile}/>
+                    </div>
                 </DialogContent>
                 <DialogActions>
-                    <Button color="primary">
-                        Загрузить
-                    </Button><Button onClick={onAddFileClose} color="primary">
+                    <label htmlFor="contained-button-file">
+                        <Button variant="contained" color="primary" component="span">
+                            Загрузить
+                        </Button>
+                    </label>
+                    <Button onClick={onAddFileClose} color="primary">
                         Закрыть
                     </Button>
                 </DialogActions>
@@ -112,7 +202,7 @@ const Deal = (props) => {
                     </div>
                     <div className={`${classes.clientInvoicesItems} ${classes.docsFilesItems}`}>
                         {clientInvoicesElements}
-                        <div className={classes.addFile} onClick={onAddFileOpen}>
+                        <div className={classes.addFile} onClick={onAddFileOpenCI}>
                             <div className={classes.plus}>+</div>
                             <div className={classes.addFileText}>Добавить<br/>файл</div>
                         </div>
@@ -125,7 +215,7 @@ const Deal = (props) => {
                     </div>
                     <div className={`${classes.providerInvoicesItems} ${classes.docsFilesItems}`}>
                         {providerInvoicesElements}
-                        <div className={classes.addFile}>
+                        <div className={classes.addFile} onClick={onAddFileOpenPI}>
                             <div className={classes.plus}>+</div>
                             <div className={classes.addFileText}>Добавить<br/>файл</div>
                         </div>
@@ -138,7 +228,7 @@ const Deal = (props) => {
                     </div>
                     <div className={`${classes.docsItems} ${classes.docsFilesItems}`}>
                         {docsElements}
-                        <div className={classes.addFile}>
+                        <div className={classes.addFile} onClick={onAddFileOpenDOC}>
                             <div className={classes.plus}>+</div>
                             <div className={classes.addFileText}>Добавить<br/>файл</div>
                         </div>
