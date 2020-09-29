@@ -1,34 +1,56 @@
-const SET_DATA_FORWARDERS_TABLE = 'SET_DATA_FORWARDERS_TABLE';
-const SET_NEW_FORWARDERS_DATA = 'SET_NEW_FORWARDERS_DATA';
+import {forwardersAPI} from "../API/api";
 
+// constants
+const SET_FORWARDERS_DATA_TABLE = 'SET_FORWARDERS_DATA_TABLE';
 
+// state
 let initialState = {
     forwardersTableData: {},
-    newForwarderName: '',
-    newForwarderTel: ''
 }
 
+// cases
 const forwardersReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_DATA_FORWARDERS_TABLE:
+        case SET_FORWARDERS_DATA_TABLE:
             return {
                 ...state,
                 forwardersTableData: action.data
             }
-        case SET_NEW_FORWARDERS_DATA:
-            return {
-                ...state,
-                newForwarderName: action.newForwarderName,
-                newForwarderTel: action.newForwarderTel
-            }
-
         default:
             return state;
     }
 };
 
-export const setDataForwardersTable = (data) => ({type: SET_DATA_FORWARDERS_TABLE, data});
-export const setNewForwarderData = (newForwarderName, newForwarderTel) => ({type: SET_NEW_FORWARDERS_DATA, newForwarderName, newForwarderTel});
+// ActionCreators
+export const setForwardersDataTable = (data) => ({type: SET_FORWARDERS_DATA_TABLE, data});
 
+// Thunks
+export const loadingForwarderTableData = () => async (dispatch) => {
+    try {
+        const tableData = await forwardersAPI.getAllForwarders()
+        dispatch(setForwardersDataTable(tableData))
+    } catch (e) { alert(e.response.data.message)}
+}
+
+export const addForwarder = (name, tel) => async (dispatch) => {
+    try {
+        await forwardersAPI.addNewForwarder(name, tel)
+    } catch (e) { alert(e.response.data.message)}
+    dispatch(loadingForwarderTableData())
+}
+
+export const updateForwarder = (id, name, tel) => async (dispatch) => {
+    try {
+        await forwardersAPI.updateForwarder(id, name, tel)
+    } catch (e) { alert(e.response.data.message)}
+    dispatch(loadingForwarderTableData())
+}
+
+export const deleteForwarder = (id) => async (dispatch) => {
+    try {
+        await forwardersAPI.deleteForwarder(id)
+    } catch (e) { alert(e.response.data.message)}
+    dispatch(loadingForwarderTableData())
+}
 
 export default forwardersReducer;

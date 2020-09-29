@@ -1,36 +1,57 @@
-const SET_DATA_DRIVERS_TABLE = 'SET_DATA_DRIVERS_TABLE';
-const SET_NEW_DRIVER_DATA = 'SET_NEW_DRIVER_DATA';
+import {clientsAPI, driversAPI} from "../API/api";
 
+// constants
+const SET_DRIVERS_DATA_TABLE = 'SET_DRIVERS_DATA_TABLE';
 
+// state
 let initialState = {
     driversTableData: {},
-    newDriverName: '',
-    newDriverTel: '',
-    newDriverAuto: ''
 }
 
+// cases
 const driversReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_DATA_DRIVERS_TABLE:
+        case SET_DRIVERS_DATA_TABLE:
             return {
                 ...state,
                 driversTableData: action.data
             }
-        case SET_NEW_DRIVER_DATA:
-            return {
-                ...state,
-                newDriverName: action.newDriverName,
-                newDriverTel: action.newDriverTel,
-                newDriverAuto: action.newDriverAuto
-            }
-
         default:
             return state;
     }
 };
 
-export const setDataDriversTable = (data) => ({type: SET_DATA_DRIVERS_TABLE, data});
-export const setNewDriverData = (newDriverName, newDriverTel, newDriverAuto) => ({type: SET_NEW_DRIVER_DATA, newDriverName, newDriverTel, newDriverAuto});
+// ActionCreators
+export const setDriversDataTable = (data) => ({type: SET_DRIVERS_DATA_TABLE, data});
+
+// Thunks
+export const loadingDriversTableData = () => async (dispatch) => {
+    try {
+        const tableData = await driversAPI.getAllDrivers()
+        dispatch(setDriversDataTable(tableData))
+    } catch (e) { alert(e.response.data.message)}
+}
+
+export const addDriver = (name, tel, auto) => async (dispatch) => {
+    try {
+        await driversAPI.addNewDriver(name, tel, auto)
+    } catch (e) { alert(e.response.data.message)}
+    dispatch(loadingDriversTableData())
+}
+
+export const updateDriver = (id, name, tel, auto) => async (dispatch) => {
+    try {
+        await driversAPI.updateDriver(id, name, tel, auto)
+    } catch (e) { alert(e.response.data.message)}
+    dispatch(loadingDriversTableData())
+}
+
+export const deleteDriver = (id) => async (dispatch) => {
+    try {
+        await driversAPI.deleteDriver(id)
+    } catch (e) { alert(e.response.data.message)}
+    dispatch(loadingDriversTableData())
+}
 
 
 export default driversReducer;

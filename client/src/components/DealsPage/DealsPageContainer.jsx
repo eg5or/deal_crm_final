@@ -1,18 +1,38 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import DealsPage from './DealsPage';
+import {loadingDealsTableData, saveFile} from "../../redux/deals-reducer";
+import classes from "./DealsPage.module.css";
+import AddDealContainer from "./AddDeal/AddDealContainer";
+import DealsItems from "./DealsItems/DealsItems";
 
-const mapStateToProps = (state) => {
-    return {
-        dealsPage: state.dealsPage
+class DealsPage extends React.Component {
+    componentDidMount() {
+        this.props.loadingDealsTableData()
+    }
+
+    render() {
+        return (
+            <div className={classes.dealsPage}>
+                <AddDealContainer/>
+                <div className={classes.dealsPageItems}>
+                    <DealsItems
+                        deals={this.props.dealsData}
+                        saveFile={this.props.saveFile}
+                    />
+                </div>
+            </div>
+        )
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
     return {
-
-        }
+        dealsData: state.dealsPage.dealsData
     }
+}
 
-export const DealsPageContainer = connect(mapStateToProps, mapDispatchToProps)(DealsPage);
+export const DealsPageContainer = connect(mapStateToProps, {
+    loadingDealsTableData,
+    saveFile
+})(DealsPage);
 

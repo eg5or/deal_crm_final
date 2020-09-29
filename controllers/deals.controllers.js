@@ -1,6 +1,10 @@
+const fs = require('fs')
 const multer = require('multer')
 const path = require('path')
 const pdf = require('pdf-poppler');
+const Deal = require('../models/Deal')
+const ClientInvoice = require('../models/ClientInvoice')
+const errorHandler = require('../utils/errorHandler')
 
 // Загрузка файлов MULTER
 // настройка:
@@ -36,7 +40,7 @@ const upload = multer({
 // ---------------------------
 
 module.exports.upload = function (req, res) {
-    upload(req, res, function (err) {
+    upload(req, res, async function (err) {
         let error = ''
         let ok = true
         // проверка на ошибки
@@ -59,9 +63,9 @@ module.exports.upload = function (req, res) {
         let file = req.file.path
 
         // ЛОГИ на серваке
-        console.log(err);
+        /*console.log(err);
         console.log(req.headers);
-        console.log(req.file.path);
+        console.log(req.file.path);*/
 
         // проверяем тип загруженного файла
         // если PDF то отправляем в конвертер
@@ -76,30 +80,79 @@ module.exports.upload = function (req, res) {
             // процесс конвертации
             pdf.convert(file, opts)
                 .then(res => {
-                    console.log('Конвертация завершилась успешно');
+                    console.log(`Конвертация завершилась успешно.`);
                     // удаляем входной файл
-
+                    fs.unlink(file, err => {
+                        if (err) throw err
+                        console.log(`Old file: ${file} Deleted`)
+                    })
                 })
                 .catch(error => {
                     console.error(error);
                 })
+            const clientInvoice = new ClientInvoice({
+                deal: req.query.id,
+                company: req.query.company,
+                fileUrl: `/${path.dirname(file)}/${path.basename(file, '.pdf')}-1.jpg`,
+                sum: req.query.sum
+            })
+            try {
+                await clientInvoice.save()
+                // Передаем статус 201 Created - что-то создано в БД
+                res.status(201).json(clientInvoice)
+            } catch (e) {
+                // Обработать ошибку
+                errorHandler(res, e)
+            }
+
+        } else {
+            const clientInvoice = new ClientInvoice({
+            deal: req.query.id,
+            company: req.query.company,
+            fileUrl: req.file.path,
+            sum: req.query.sum
+        })
+            try {
+                await clientInvoice.save()
+                // Передаем статус 201 Created - что-то создано в БД
+                res.status(201).json(clientInvoice)
+            } catch (e) {
+                // Обработать ошибку
+                errorHandler(res, e)
+            }
         }
 
-
-
     })
 }
 
-module.exports.getAll = function (req, res) {
-    res.status(200).json({
-        message: 'getAll deals OK'
-    })
+module.exports.getAll = async function (req, res) {
+    try {
+        await Deal.find({}, function (error, result) {
+            res.status(200).json(result)
+            console.log(typeof result[0].date)
+        })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
 }
 
-module.exports.create = function (req, res) {
-    res.status(200).json({
-        message: 'add deals OK'
+module.exports.create = async function (req, res) {
+    const deal = new Deal({
+        date: req.body.date,
+        client: req.body.client,
+        responsibility: {
+            name: req.body.responsibility.name
+        }
     })
+    try {
+        await deal.save()
+        // Передаем статус 201 Created - что-то создано в БД
+        res.status(201).json(deal)
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
 }
 
 module.exports.getById = function (req, res) {

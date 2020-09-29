@@ -1,12 +1,10 @@
 const {Schema, model} = require('mongoose')
 
 const dealSchema = new Schema({
-    _id: Schema.Types.ObjectId,
     date: {type: Date, required: true},
     client: {type: String, required: true},
     responsibility: {
-        type: Schema.Types.ObjectId,
-        ref: 'Manager'
+        name: {type: String, required: true},
     },
     dealStatus: {
         approved: {type: Boolean, default: false},
@@ -23,21 +21,19 @@ const dealSchema = new Schema({
                 ref: 'ClientInvoice'
             }
         ],
-        sumClientInvoices: {type: Number, required: true},
         providerInvoices: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'ProviderInvoice'
             }
         ],
-        sumProviderInvoices: {type: Number, required: true},
         allDocs: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'AllDocs'
             }
         ],
-        delta: {type: Number, required: true}
+        delta: {type: Number, default: ''}
     },
     deliver: {
         drivers: [
@@ -53,8 +49,8 @@ const dealSchema = new Schema({
             }
         ]
     },
-    commentManager: {type: String, required: true},
-    commentHead: {type: String, required: true}
+    commentManager: {type: String, default: ''},
+    commentHead: {type: String, default: ''}
 
 })
 

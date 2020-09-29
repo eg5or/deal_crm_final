@@ -27,7 +27,6 @@ export const setDataEmployeesTable = (data) => ({type: SET_DATA_EMPLOYEES_TABLE,
 
 export const getEmployees = () => async (dispatch) => {
     try {
-        console.log('getEmployees')
         const data = await employeesAPI.getAllEmployees()
         dispatch(setDataEmployeesTable(data))
     } catch (e) {
@@ -37,7 +36,6 @@ export const getEmployees = () => async (dispatch) => {
 
 export const updateEmployee = (id, position, name, head, location, tel, intel, birthday) => async (dispatch) => {
     try {
-        console.log('updateEmployee')
         await employeesAPI.updateEmployee(id, position, name, head, location, tel, intel, birthday)
         const data = await employeesAPI.getAllEmployees()
         await dispatch(setDataEmployeesTable(data))

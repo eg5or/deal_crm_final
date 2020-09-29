@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './Profile.module.css'
+import Preloader from "../../common/Preloader/Preloader";
 
 const Profile = (props) => {
     const onChanged = (e) => {
@@ -10,7 +11,7 @@ const Profile = (props) => {
 
     return (
         <div>
-            <input type={'file'} onChange={onChanged} />
+            <Preloader />
         </div>
     )
 }

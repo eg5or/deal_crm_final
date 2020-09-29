@@ -52,12 +52,27 @@
 .title {
     grid-area: title;
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 3fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    grid-template-areas: "date"
-                         "client"
-                         "manager";
+    grid-template-areas: "date doneSwitcher"
+                         "client doneSwitcher"
+                         "manager manager";
 
+}
+
+.doneSwitcher {
+    grid-area: doneSwitcher;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.doneSwitcherContainer {
+
+}
+
+.titleDoneSwitcher {
+    text-transform: uppercase;
 }
 
 .date {

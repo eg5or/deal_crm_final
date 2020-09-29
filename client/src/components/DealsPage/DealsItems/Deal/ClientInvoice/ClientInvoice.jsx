@@ -14,11 +14,10 @@ const ClientInvoice = (props) => {
         setOpen(true);
 
     };
-
     const handleClose = () => {
         setOpen(false);
     };
-    console.log(open)
+
     return (
 
         <div onClick={handleClickOpen} onClose={handleClose} className={classes.clientInvoice}>

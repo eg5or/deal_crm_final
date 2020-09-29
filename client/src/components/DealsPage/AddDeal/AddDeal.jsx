@@ -12,6 +12,7 @@ const AddDeal = (props) => {
     // ** Клиент - выбор клиента
     // создаем ссылку на input для ввода клиента
     let newClientInputElement = React.createRef()
+    let newDataInputElement = React.createRef()
     // ф-я для flux - при изменении текста
     let onClientInputChange = () => {
         let text = newClientInputElement.current.value
@@ -28,6 +29,11 @@ const AddDeal = (props) => {
     let setFoundClientToInput = (text) => {
         props.newClientInputText(text)
         props.closeDropDownClients()
+    }
+
+    const onAddDeal = () => {
+        props.addDeal(new Date(newDataInputElement.current.value), props.clientInputText, props.currentEmployeeName)
+        props.handleClick()
     }
 
     return <div>
@@ -57,6 +63,7 @@ const AddDeal = (props) => {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
+                                inputRef={newDataInputElement}
                                 fullWidth={true}
                             />
                         </div>
@@ -122,8 +129,8 @@ const AddDeal = (props) => {
                         </ul>
                     </div>
                 </div>
-                <div className={`${classes.addButtonBlock} ${classes.most_dark_bg} ${classes.light_txt}`}>
-                    <span className={classes.addButtonText}>+ Добавить сделку</span>
+                <div className={`${classes.addButtonBlock} ${classes.most_dark_bg} ${classes.light_txt}`} onClick={onAddDeal}>
+                    <span className={classes.addButtonText} >+ Добавить сделку</span>
                 </div>
             </div>
         </div>

@@ -1,12 +1,21 @@
 import React from 'react';
 import classes from './DealsItems.module.css'
 import Deal from './Deal/Deal';
+import {saveFile} from "../../../redux/deals-reducer";
 
 const DealsItems = (props) => {
-    let dealsElements = props.deals.map(d => <Deal key={d.id}
+    let sortedDeals = props.deals.sort((prev, next) => {
+        if ( prev.date > next.date ) return -1;
+        if ( prev.date > next.date ) return 1;
+    })
+
+    console.log(props.deals)
+    console.log(sortedDeals)
+    let dealsElements = props.deals.map(d => <Deal key={d._id}
+                                                   id={d._id}
                                                    date={d.date}
                                                    client={d.client}
-                                                   manager={d.responsibility.managerName}
+                                                   manager={d.responsibility.name}
                                                    approved={d.dealStatus.approved}
                                                    providerPaid={d.dealStatus.providerPaid}
                                                    delivered={d.dealStatus.delivered}
@@ -24,6 +33,7 @@ const DealsItems = (props) => {
                                                    commentManager={d.commentManager}
                                                    commentHead={d.commentHead}
                                                    deliver={d.deliver}
+                                                   saveFile={props.saveFile}
 
     />)
 

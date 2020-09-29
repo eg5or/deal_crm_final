@@ -11,14 +11,14 @@ import appReducer from "./appReducer";
 import profileReducer from "./profileReducer";
 
 let reducers = combineReducers({
-    dealsPage: dealsReducer,
+    app: appReducer,
     authBlock: authReducer,
+    addDealBlock: addDealReducer,
+    dealsPage: dealsReducer,
+    employeesPage: employeesReducer,
     clientsPage: clientsReducer,
     driversPage: driversReducer,
     forwardersPage: forwardersReducer,
-    employeesPage: employeesReducer,
-    addDealBlock: addDealReducer,
-    app: appReducer,
     profilePage: profileReducer
 });
 

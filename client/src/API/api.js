@@ -5,10 +5,10 @@ const instance = axios.create({
 });
 
 export const uploadAPI = {
-    savePhoto(file) {
+    saveFile(file, id, company, sum) {
         const formData = new FormData()
         formData.append('filedata', file)
-        return instance.post(`deals/upload`, formData, {
+        return instance.post(`deals/upload?id=${id}&company=${company}&sum=${sum}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -50,7 +50,21 @@ export const clientsAPI = {
     deleteClient(id) {
         return instance.delete(`clients/${id}`)
     }
+}
 
+export const dealsAPI = {
+    getAllDeals() {
+        return instance.get(`deals`).then(response => response.data)
+    },
+    addNewDeal(date, client, name) {
+        return instance.post(`deals/add`, {date, client, responsibility: {name}})
+    },
+    updateDeal(id, type, name, manager) {
+        return instance.patch(`deals/${id}`, {type: type, name: name, manager: manager})
+    },
+    deleteDeal(id) {
+        return instance.delete(`deals/${id}`)
+    }
 }
 
 export const driversAPI = {

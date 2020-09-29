@@ -21,6 +21,7 @@ import AuthBlock from "./components/HeaderRight/AuthBlock/AuthBlock";
 import {clearEmailAndPassword, login, logout, newEmailTextAC, newPasswordTextAC, register} from "./redux/auth-reducer";
 import Alert from "@material-ui/lab/Alert";
 import ProfileContainer from "./components/Profile/ProfileContainer";
+import Preloader from "./common/Preloader/Preloader";
 
 const theme = createMuiTheme({
     palette: {
@@ -40,7 +41,8 @@ class App extends React.Component {
 
     render() {
         if (!this.props.initialized) {
-            return <div>Loading...</div>
+
+            return <div className='preloader'><Preloader /></div>
         }
 
         return (
