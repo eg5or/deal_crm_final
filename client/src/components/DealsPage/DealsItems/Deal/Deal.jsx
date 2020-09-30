@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import classes from './deal.module.css'
-import {NavLink} from 'react-router-dom';
 import Driver from './Driver/Driver';
 import Forwarder from './Forwarder/Forwarder';
 import ClientInvoice from './ClientInvoice/ClientInvoice';
@@ -12,95 +11,167 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import {saveFile} from "../../../../redux/deals-reducer";
 import {useFormik} from "formik";
-import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import BusinessIcon from '@material-ui/icons/Business';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Grid from "@material-ui/core/Grid";
 
 const Deal = (props) => {
 
-    let driversElements = props.deliver.drivers.map(d => <Driver key={d.id}
-                                                                 driverName={d.driverName}
-                                                                 sum={d.sum}
+    let driversElements = props.drivers.map(d => <Driver key={d.id}
+                                                         driverName={d.driverName}
+                                                         sum={d.sum}
     />)
 
-    let forwardersElements = props.deliver.forwarders.map(d => <Forwarder key={d.id}
-                                                                          forwarderName={d.forwarderName}
-                                                                          sum={d.sum}
+    let forwardersElements = props.forwarders.map(d => <Forwarder key={d.id}
+                                                                  forwarderName={d.forwarderName}
+                                                                  sum={d.sum}
     />)
 
     let clientInvoicesElements = props.clientInvoices.map(clientInvoice => <ClientInvoice
-                                                                                key={clientInvoice._id}
-                                                                                company={clientInvoice.company}
-                                                                                sum={clientInvoice.sum}
-                                                                                toggleDialog={clientInvoice.toggleDialog}
-                                                                                openDialog={clientInvoice.openDialog}
-                                                                                closeDialog={clientInvoice.closeDialog}
+        key={clientInvoice._id}
+        company={clientInvoice.company}
+        fileUrl={clientInvoice.fileUrl}
+        sum={clientInvoice.sum}
+        typeFile={clientInvoice.typeFile}
+        dealId={props.id}
+        deleteFile={props.deleteFile}
     />)
 
-    let providerInvoicesElements = props.providerInvoices.map(d => <ProviderInvoice key={d.id}
-                                                                                    company={d.company}
-                                                                                    fileUrl={d.fileUrl}
-                                                                                    sum={d.sum}
+    let providerInvoicesElements = props.providerInvoices.map(providerInvoice => <ProviderInvoice
+        key={providerInvoice.id}
+        company={providerInvoice.company}
+        fileUrl={providerInvoice.fileUrl}
+        sum={providerInvoice.sum}
+        typeFile={providerInvoice.typeFile}
+        dealId={props.id}
+        deleteFile={props.deleteFile}
     />)
 
-    let docsElements = props.allDocs.map(d => <Doc key={d.id}
-                                                   company={d.company}
-                                                   fileUrl={d.fileUrl}
-                                                   sum={d.sum}
+    let docsElements = props.allDocs.map(doc => <Doc key={doc.id}
+                                                     company={doc.company}
+                                                     fileUrl={doc.fileUrl}
+                                                     sum={doc.sum}
+                                                     typeFile={doc.typeFile}
+                                                     dealId={props.id}
+                                                     deleteFile={props.deleteFile}
     />)
-
-    let convertedDate = new Date(Date.parse(props.date))
-    let dateString = convertedDate.getDate() + '.' + (convertedDate.getMonth() + 1) + '.' + convertedDate.getFullYear()
-
-    const [open, setOpen] = React.useState(false);
-    const [typeFile, setTypeFile] = useState('')
-
-    const onAddFileOpenCI = () => {
-        setOpen(true)
-        setTypeFile('CI')
-    }
-
-    const onAddFileOpenPI = () => {
-        setOpen(true)
-        setTypeFile('PI')
-    }
-
-    const onAddFileOpenDOC = () => {
-        setOpen(true)
-        setTypeFile('DOC')
-    }
-
-    const onAddFileClose = () => {
-        setOpen(false)
-    }
-
+    // Formik для окна ADD FILE
     const formik = useFormik({
         initialValues: {
             company: '',
             sum: '',
+            driver: '',
+            sumDriver: '',
+            forwarder: '',
+            sumForwarder: ''
         },
         onSubmit: values => {
             alert(JSON.stringify(values, null, 2));
         },
     });
-    console.log(formik.values.company, Number(formik.values.sum))
-
+    // --------------------------------------------------------
+    // конвертируем ДАТУ для сделки в нормальный формат
+    let convertedDate = new Date(Date.parse(props.date))
+    let dateString = convertedDate.getDate() + '.' + (convertedDate.getMonth() + 1) + '.' + convertedDate.getFullYear()
+    // --------------------------------------------------------
+    // локальные стэйты
+    const [openAddFile, setOpenAddFile] = React.useState(false);
+    const [openAddDriver, setOpenAddDriver] = React.useState(false);
+    const [openAddForwarder, setOpenAddForwarder] = React.useState(false);
+    const [typeFile, setTypeFile] = useState('')
+    // --------------------------------------------------------
+    // окно DRIVERS
+    // открыть
+    const onAddDriverOpen = () => {
+        setOpenAddDriver(true)
+    }
+    // закрыть
+    const onAddDriverClose = () => {
+        setOpenAddDriver(false)
+    }
+    // --------------------------------------------------------
+    // Ф-я добавления водителя
+    const onAddDriver = () => {
+        props.addDriver(props.id, formik.values.driver, Number(formik.values.sumDriver))
+        onAddDriverClose()
+    }
+    // --------------------------------------------------------
+    // окно FORWARDERS
+    // открыть
+    const onAddForwarderOpen = () => {
+        setOpenAddForwarder(true)
+    }
+    // закрыть
+    const onAddForwarderClose = () => {
+        setOpenAddForwarder(false)
+    }
+    // --------------------------------------------------------
+    // Ф-я добавления экспедитора
+    const onAddForwarder = () => {
+        props.addForwarder(props.id, formik.values.forwarder, Number(formik.values.sumForwarder))
+        onAddForwarderClose()
+    }
+    // --------------------------------------------------------
+    // окно ADD FILE
+    // открыть для ClientInvoices
+    const onAddFileOpenCI = () => {
+        setOpenAddFile(true)
+        setTypeFile('CI')
+    }
+    // открыть для ProviderInvoices
+    const onAddFileOpenPI = () => {
+        setOpenAddFile(true)
+        setTypeFile('PI')
+    }
+    // открыть для AllDocs
+    const onAddFileOpenDOC = () => {
+        setOpenAddFile(true)
+        setTypeFile('DOC')
+    }
+    // закрыть
+    const onAddFileClose = () => {
+        setOpenAddFile(false)
+    }
+    // --------------------------------------------------------
+    // Ф-я загрузки файлов (срабатывает при добавлении файлов)
     const onUploadFile = (e) => {
         if (e.target.files.length) {
             props.saveFile(e.target.files[0], props.id, formik.values.company, Number(formik.values.sum), typeFile)
             onAddFileClose()
         }
     }
-    console.log(typeFile)
+    // console.log(formik.values.driver, Number(formik.values.sumDriver))
+    // --------------------------------------------------------
+    // вычисляем константы для Сделки:
+    // Сумма счетов клиента
+    const sumClientInvoices = props.clientInvoices.reduce((s, i) => s = s + Number(i.sum), 0)
+    // Сумма счетов поставщиков
+    const sumProviderInvoices = props.providerInvoices.reduce((s, i) => s = s + Number(i.sum), 0)
+    // Сумма документов
+    const sumAllDocs = props.allDocs.reduce((s, i) => s = s + Number(i.sum), 0)
+    // --------------------------------------------------------
+    // Сумма Доставки
+    const sumAllDrivers = props.drivers.reduce((s, i) => s = s + Number(i.sum), 0)
+    const sumAllForwarders = props.forwarders.reduce((s, i) => s = s + Number(i.sum), 0)
+    const sumDeliver = sumAllDrivers + sumAllForwarders
+    // Сумма дельты без доков
+    const sumDeltaOutDocs = sumClientInvoices - sumProviderInvoices - sumDeliver
+    // Сумма дельты с доками
+    let sumDeltaWithDocs = 0
+    if (sumAllDocs !== 0) {
+        sumDeltaWithDocs = sumClientInvoices - sumAllDocs - sumDeliver
+    }
+
+    // --------------------------------------------------------
+
     return (
         <div className={classes.deal}>
-            <Dialog onClose={onAddFileClose} aria-labelledby="customized-dialog-title" open={open}>
+            {/*----------------------начало-------------------ОКНО ADD FILE------------------------------------------*/}
+            <Dialog onClose={onAddFileClose} aria-labelledby="customized-dialog-title" open={openAddFile}>
                 <DialogTitle id="customized-dialog-title" onClose={onAddFileClose}>
                     Загрузить файл
                 </DialogTitle>
@@ -108,26 +179,26 @@ const Deal = (props) => {
                     <div>
                         <Grid container spacing={1} alignItems="flex-end">
                             <Grid item>
-                                <BusinessIcon />
+                                <BusinessIcon/>
                             </Grid>
                             <Grid item>
-                                { typeFile === 'CI'
-                                ? <Select
-                                    native
-                                    value={formik.values.company}
-                                    onChange={formik.handleChange}
-                                    inputProps={{
-                                        name: 'company',
-                                        id: 'company',
-                                    }}
-                                >
-                                    <option value="" disabled>
-                                        Выберите компанию
-                                    </option>
-                                    <option value={'Демир'}>Демир</option>
-                                    <option value={'АСТ'}>АСТ</option>
-                                    <option value={'ТП'}>ТП</option>
-                                </Select>
+                                {typeFile === 'CI'
+                                    ? <Select
+                                        native
+                                        value={formik.values.company}
+                                        onChange={formik.handleChange}
+                                        inputProps={{
+                                            name: 'company',
+                                            id: 'company',
+                                        }}
+                                    >
+                                        <option value="" disabled>
+                                            Выберите компанию
+                                        </option>
+                                        <option value={'Демир'}>Демир</option>
+                                        <option value={'АСТ'}>АСТ</option>
+                                        <option value={'ТП'}>ТП</option>
+                                    </Select>
                                     : <TextField
                                         id="company"
                                         label="Компания"
@@ -144,7 +215,7 @@ const Deal = (props) => {
                     <div>
                         <Grid container spacing={1} alignItems="flex-end">
                             <Grid item>
-                                <MonetizationOnIcon />
+                                <MonetizationOnIcon/>
                             </Grid>
                             <Grid item>
                                 <TextField
@@ -161,7 +232,8 @@ const Deal = (props) => {
                         </Grid>
                     </div>
                     <div>
-                        <input className={classes.inputUpload} type={'file'} id="contained-button-file" onChange={onUploadFile}/>
+                        <input className={classes.inputUpload} type={'file'} id="contained-button-file"
+                               onChange={onUploadFile}/>
                     </div>
                 </DialogContent>
                 <DialogActions>
@@ -175,6 +247,129 @@ const Deal = (props) => {
                     </Button>
                 </DialogActions>
             </Dialog>
+            {/*----------------------конец--------------------ОКНО ADD FILE------------------------------------------*/}
+            {/*----------------------начало-------------------ОКНО ADD DRIVER----------------------------------------*/}
+            <Dialog onClose={onAddDriverClose} aria-labelledby="customized-dialog-title" open={openAddDriver}>
+                <DialogTitle id="customized-dialog-title" onClose={onAddDriverClose}>
+                    Выбрать водителя
+                </DialogTitle>
+                <DialogContent dividers>
+                    <div>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <AccountCircleIcon/>
+                            </Grid>
+                            <Grid item>
+                                <Select
+                                    native
+                                    value={formik.values.driver}
+                                    onChange={formik.handleChange}
+                                    inputProps={{
+                                        name: 'driver',
+                                        id: 'driver',
+                                    }}
+                                >
+                                    <option value="" disabled>
+                                        Выберите водителя
+                                    </option>
+                                    <option value={'Рома Кононенко'}>Рома Кононенко</option>
+                                    <option value={'Юсуп Рабаданов'}>Юсуп Рабаданов</option>
+                                    <option value={'Сераж'}>Сераж</option>
+                                </Select>
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <MonetizationOnIcon/>
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    id="sumDriver"
+                                    label="Сумма"
+                                    type='text'
+                                    name='sumDriver'
+                                    onChange={formik.handleChange}
+                                    on
+                                    value={formik.values.sumDriver}
+                                    size="small"
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={onAddDriver} color="primary">
+                        Добавить
+                    </Button>
+                    <Button onClick={onAddDriverClose} color="primary">
+                        Закрыть
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            {/*----------------------конец--------------------ОКНО ADD DRIVER----------------------------------------*/}
+            {/*----------------------начало-------------------ОКНО ADD FORWARDER-------------------------------------*/}
+            <Dialog onClose={onAddForwarderClose} aria-labelledby="customized-dialog-title" open={openAddForwarder}>
+                <DialogTitle id="customized-dialog-title" onClose={onAddForwarderClose}>
+                    Выбрать водителя
+                </DialogTitle>
+                <DialogContent dividers>
+                    <div>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <AccountCircleIcon/>
+                            </Grid>
+                            <Grid item>
+                                <Select
+                                    native
+                                    value={formik.values.forwarder}
+                                    onChange={formik.handleChange}
+                                    inputProps={{
+                                        name: 'forwarder',
+                                        id: 'forwarder',
+                                    }}
+                                >
+                                    <option value="" disabled>
+                                        Выберите экспедитора
+                                    </option>
+                                    <option value={'Ярослав Бойченко'}>Ярослав Бойченко</option>
+                                    <option value={'Максим Радионов'}>Максим Радионов</option>
+                                    <option value={'Сераж'}>Сераж</option>
+                                </Select>
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <MonetizationOnIcon/>
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    id="sumForwarder"
+                                    label="Сумма"
+                                    type='text'
+                                    name='sumForwarder'
+                                    onChange={formik.handleChange}
+                                    on
+                                    value={formik.values.sumForwarder}
+                                    size="small"
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={onAddForwarder} color="primary">
+                        Добавить
+                    </Button>
+                    <Button onClick={onAddForwarderClose} color="primary">
+                        Закрыть
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            {/*----------------------конец--------------------ОКНО ADD FORWARDER-------------------------------------*/}
             <div className={classes.leftBlock}>
                 <div className={classes.title}>
                     <div className={classes.date}>{dateString}</div>
@@ -198,7 +393,7 @@ const Deal = (props) => {
                 <div className={classes.clientInvoices}>
                     <div className={classes.headerClientInvoices}>
                         <div className={classes.titleClientInvoices}>счета клиенту</div>
-                        <div className={classes.sumClientInvoices}>{props.sumClientInvoices} руб.</div>
+                        <div className={classes.sumClientInvoices}>{sumClientInvoices} руб.</div>
                     </div>
                     <div className={`${classes.clientInvoicesItems} ${classes.docsFilesItems}`}>
                         {clientInvoicesElements}
@@ -211,7 +406,7 @@ const Deal = (props) => {
                 <div className={classes.providerInvoices}>
                     <div className={classes.headerProviderInvoices}>
                         <div className={classes.titleProviderInvoices}>счета поставщиков</div>
-                        <div className={classes.sumProviderInvoices}>{props.sumProviderInvoices} руб.</div>
+                        <div className={classes.sumProviderInvoices}>{sumProviderInvoices} руб.</div>
                     </div>
                     <div className={`${classes.providerInvoicesItems} ${classes.docsFilesItems}`}>
                         {providerInvoicesElements}
@@ -224,7 +419,7 @@ const Deal = (props) => {
                 <div className={classes.allDocs}>
                     <div className={classes.headerAllDoc}>
                         <div className={classes.titleAllDoc}>документы</div>
-                        <div className={classes.delta}>{props.delta} руб.</div>
+                        <div className={classes.delta}>{sumAllDocs} руб.</div>
                     </div>
                     <div className={`${classes.docsItems} ${classes.docsFilesItems}`}>
                         {docsElements}
@@ -237,19 +432,29 @@ const Deal = (props) => {
             </div>
             <div className={classes.rightBlock}>
                 <div className={classes.titleDeliver}>Доставка</div>
-                <div className={classes.sumDeliver}>29 400 руб.</div>
+                <div className={classes.sumDeliver}>{sumDeliver} руб.</div>
                 <div className={classes.drivers}>
                     <div className={classes.titleDriversForwarders}>Водители:</div>
                     <div className={classes.driversItems}>
                         {driversElements}
-                        <div className={classes.addDriverForwarder}>+ добавить водителя</div>
+                        <div className={classes.addDriverForwarder} onClick={onAddDriverOpen}>+ добавить водителя</div>
                     </div>
                 </div>
                 <div className={classes.forwarders}>
                     <div className={classes.titleDriversForwarders}>Экспедиторы:</div>
                     <div className={classes.forwardersItems}>
                         {forwardersElements}
-                        <div className={classes.addDriverForwarder}>+ добавить экспедитора</div>
+                        <div className={classes.addDriverForwarder} onClick={onAddForwarderOpen}>+ добавить экспедитора</div>
+                    </div>
+                </div>
+                <div className={classes.allDelta}>
+                    <div className={classes.deltaOutDocs}>
+                        <div className={classes.deltaTitle}>Дельта без доков</div>
+                        <div className={classes.deltaSum}>{sumDeltaOutDocs} руб.</div>
+                    </div>
+                    <div className={classes.deltaWithDocs}>
+                        <div className={classes.deltaTitle}>Дельта с доками</div>
+                        <div className={classes.deltaSum}>{sumDeltaWithDocs} руб.</div>
                     </div>
                 </div>
                 <div className={classes.commentsBlock}>

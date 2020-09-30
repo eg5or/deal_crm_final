@@ -70,7 +70,7 @@ module.exports.update = async function (req, res) {
     const candidate = await Client.findOne({_id: req.params.id})
     if (candidate) {
         try {
-            Client.updateOne(
+            await Client.updateOne(
                 {_id: req.params.id},
                 {
                     $set: {

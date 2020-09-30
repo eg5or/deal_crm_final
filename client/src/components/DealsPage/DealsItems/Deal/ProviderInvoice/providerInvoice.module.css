@@ -6,6 +6,17 @@
     color: #263238;
 }
 
+.providerInvoice:hover {
+    background-color: #263238;
+    color: #b0bec5;
+    cursor: pointer;
+}
+
+.providerInvoice:active {
+    background-color: #607d8b;
+    color: #263238;
+}
+
 .nameCompany {
     display: flex;
     justify-content: center;

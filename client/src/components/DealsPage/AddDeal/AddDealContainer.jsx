@@ -19,10 +19,6 @@ class AddDealContainer extends React.Component {
         clientsAPI.getAllClientsNames().then(data => {
             this.props.setDataClientTable(data)
         })
-        // загружаем все счета клиентов для этой сделки (переместить в Deal.jsx)
-        clientInvoicesAPI.getAllClientInvoicesForDeal('103').then(data => {
-            this.props.setDataClientInvoices(data)
-        })
     }
 
     // ф-я для открывания блока добавления сделки

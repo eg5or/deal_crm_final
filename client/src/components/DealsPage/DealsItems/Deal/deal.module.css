@@ -43,10 +43,49 @@
     display: grid;
     background-color: #455a64;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 7fr 4fr;
+    grid-template-rows: 1fr 7fr 1fr 4fr;
     grid-template-areas: "titleDeliver . . sumDeliver"
                          "drivers drivers forwarders forwarders"
+                         "allDelta allDelta allDelta allDelta"
                          "commentsBlock commentsBlock commentsBlock commentsBlock";
+}
+
+.allDelta {
+    grid-area: allDelta;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "deltaOutDocs deltaWithDocs";
+    border-bottom: #455a64 4px solid;
+}
+
+.deltaOutDocs {
+    grid-area: deltaOutDocs;
+    display: flex;
+
+}
+
+.deltaWithDocs {
+    grid-area: deltaWithDocs;
+    display: flex;
+}
+
+.deltaTitle {
+    background-color: #b0bec5;
+    width: 50%;
+    font-size: 14px;
+    color: #263238;
+    padding: 4px;
+    text-align: center;
+}
+
+.deltaSum {
+    background-color: #607d8b;
+    width: 50%;
+    font-weight: bold;
+    color: #eceff1;
+    padding: 3px;
+    text-align: center;
 }
 
 .title {

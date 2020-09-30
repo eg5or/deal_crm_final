@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {loadingDealsTableData, saveFile} from "../../redux/deals-reducer";
+import {addDriver, addForwarder, deleteFile, loadingDealsTableData, saveFile} from "../../redux/deals-reducer";
 import classes from "./DealsPage.module.css";
 import AddDealContainer from "./AddDeal/AddDealContainer";
 import DealsItems from "./DealsItems/DealsItems";
@@ -18,6 +18,9 @@ class DealsPage extends React.Component {
                     <DealsItems
                         deals={this.props.dealsData}
                         saveFile={this.props.saveFile}
+                        deleteFile={this.props.deleteFile}
+                        addDriver={this.props.addDriver}
+                        addForwarder={this.props.addForwarder}
                     />
                 </div>
             </div>
@@ -33,6 +36,9 @@ const mapStateToProps = (state) => {
 
 export const DealsPageContainer = connect(mapStateToProps, {
     loadingDealsTableData,
-    saveFile
+    saveFile,
+    deleteFile,
+    addDriver,
+    addForwarder
 })(DealsPage);
 

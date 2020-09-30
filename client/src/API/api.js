@@ -14,6 +14,9 @@ export const uploadAPI = {
             }
         })
     },
+    deleteFile(id, file, type) {
+        return instance.patch(`deals/delete?id=${id}&file=${file}&type=${type}`)
+    },
 }
 
 export const authAPI = {
@@ -58,6 +61,12 @@ export const dealsAPI = {
     },
     addNewDeal(date, client, name) {
         return instance.post(`deals/add`, {date, client, responsibility: {name}})
+    },
+    addDriverToDeal(id, name, sum) {
+        return instance.post(`deals/add/driver`, {id, name, sum})
+    },
+    addForwarderToDeal(id, name, sum) {
+        return instance.post(`deals/add/forwarder`, {id, name, sum})
     },
     updateDeal(id, type, name, manager) {
         return instance.patch(`deals/${id}`, {type: type, name: name, manager: manager})

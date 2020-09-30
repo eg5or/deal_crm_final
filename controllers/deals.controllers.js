@@ -3,7 +3,6 @@ const multer = require('multer')
 const path = require('path')
 const pdf = require('pdf-poppler');
 const Deal = require('../models/Deal')
-const ClientInvoice = require('../models/ClientInvoice')
 const errorHandler = require('../utils/errorHandler')
 
 // Загрузка файлов MULTER
@@ -90,49 +89,246 @@ module.exports.upload = function (req, res) {
                 .catch(error => {
                     console.error(error);
                 })
-            const clientInvoice = new ClientInvoice({
-                deal: req.query.id,
-                company: req.query.company,
-                fileUrl: `/${path.dirname(file)}/${path.basename(file, '.pdf')}-1.jpg`,
-                sum: req.query.sum,
-                typeFile: req.query.type
-            })
-            try {
-                await clientInvoice.save()
-                // Передаем статус 201 Created - что-то создано в БД
-                res.status(201).json(clientInvoice)
-            } catch (e) {
-                // Обработать ошибку
-                errorHandler(res, e)
-            }
 
-        } else {
-            const clientInvoice = new ClientInvoice({
-                deal: req.query.id,
-                company: req.query.company,
-                fileUrl: req.file.path,
-                sum: req.query.sum,
-                typeFile: req.query.type
-            })
             try {
-                await clientInvoice.save()
-                // Передаем статус 201 Created - что-то создано в БД
-                res.status(201).json(clientInvoice)
+                console.log('Обновление сделки');
+                switch (req.query.type) {
+                    case 'CI':
+                        await Deal.updateOne(
+                            {_id: req.query.id},
+                            {
+                                $addToSet: {
+                                    "clientInvoices": {
+                                        company: req.query.company,
+                                        fileUrl: `/${path.dirname(file)}/${path.basename(file, '.pdf')}-1.jpg`,
+                                        sum: req.query.sum,
+                                        typeFile: req.query.type
+                                    }
+                                }
+                            },
+                            {new: true, upsert: true},
+                            function (err, result) {
+                                console.log('ошибка ----Обновление сделки------- ', err, result);
+                            }
+                        );
+                        break
+                    case 'PI':
+                        await Deal.updateOne(
+                            {_id: req.query.id},
+                            {
+                                $addToSet: {
+                                    "providerInvoices": {
+                                        company: req.query.company,
+                                        fileUrl: `/${path.dirname(file)}/${path.basename(file, '.pdf')}-1.jpg`,
+                                        sum: req.query.sum,
+                                        typeFile: req.query.type
+                                    }
+                                }
+                            },
+                            {new: true, upsert: true},
+                            function (err, result) {
+                                console.log('ошибка ----Обновление сделки------- ', err, result);
+                            }
+                        );
+                        break
+                    case 'DOC':
+                        await Deal.updateOne(
+                            {_id: req.query.id},
+                            {
+                                $addToSet: {
+                                    "allDocs": {
+                                        company: req.query.company,
+                                        fileUrl: `/${path.dirname(file)}/${path.basename(file, '.pdf')}-1.jpg`,
+                                        sum: req.query.sum,
+                                        typeFile: req.query.type
+                                    }
+                                }
+                            },
+                            {new: true, upsert: true},
+                            function (err, result) {
+                                console.log('ошибка ----Обновление сделки------- ', err, result);
+                            }
+                        );
+                        break
+                }
             } catch (e) {
                 // Обработать ошибку
                 errorHandler(res, e)
+                console.log('Ошибка ', e);
+            }
+        } else {
+            try {
+                console.log('Обновление сделки');
+                switch (req.query.type) {
+                    case 'CI':
+                        await Deal.updateOne(
+                            {_id: req.query.id},
+                            {
+                                $addToSet: {
+                                    "clientInvoices": {
+                                        company: req.query.company,
+                                        fileUrl: req.file.path,
+                                        sum: req.query.sum,
+                                        typeFile: req.query.type
+                                    }
+                                }
+                            },
+                            {new: true, upsert: true},
+                            function (err, result) {
+                                console.log('ошибка ----Обновление сделки------- ', err, result);
+                            }
+                        );
+                        break
+                    case 'PI':
+                        await Deal.updateOne(
+                            {_id: req.query.id},
+                            {
+                                $addToSet: {
+                                    "providerInvoices": {
+                                        company: req.query.company,
+                                        fileUrl: req.file.path,
+                                        sum: req.query.sum,
+                                        typeFile: req.query.type
+                                    }
+                                }
+                            },
+                            {new: true, upsert: true},
+                            function (err, result) {
+                                console.log('ошибка ----Обновление сделки------- ', err, result);
+                            }
+                        );
+                        break
+                    case 'DOC':
+                        await Deal.updateOne(
+                            {_id: req.query.id},
+                            {
+                                $addToSet: {
+                                    "allDocs": {
+                                        company: req.query.company,
+                                        fileUrl: req.file.path,
+                                        sum: req.query.sum,
+                                        typeFile: req.query.type
+                                    }
+                                }
+                            },
+                            {new: true, upsert: true},
+                            function (err, result) {
+                                console.log('ошибка ----Обновление сделки------- ', err, result);
+                            }
+                        );
+                        break
+                }
+            } catch (e) {
+                // Обработать ошибку
+                errorHandler(res, e)
+                console.log('Ошибка ', e);
             }
         }
-
     })
 }
 
-module.exports.getAll = async function (req, res) {
+module.exports.deleteFile = async function (req, res) {
     try {
-        await Deal.find({}, function (error, result) {
-            res.status(200).json(result)
-            console.log(typeof result[0].date)
-        })
+        console.log('Удаление записи из таблицы сделок');
+        switch (req.query.type) {
+            case 'CI':
+                await Deal.updateOne(
+                    {_id: req.query.id},
+                    {
+                        $pull: {
+                            "clientInvoices": {
+                                fileUrl: req.query.file
+                            }
+                        }
+                    },
+                    { multi: true },
+                    function (err, result) {
+                        console.log('ошибка ----Обновление сделки------- ', err, result);
+                    }
+                );
+                /*fs.unlink(req.query.file, err => {
+                    if (err) throw err
+                    console.log(`Old file: ${req.query.file} Deleted`)
+                })*/
+                break
+            case 'PI':
+                await Deal.updateOne(
+                    {_id: req.query.id},
+                    {
+                        $pull: {
+                            "providerInvoices": {
+                                fileUrl: req.query.file
+                            }
+                        }
+                    },
+                    { multi: true },
+                    function (err, result) {
+                        console.log('ошибка ----Обновление сделки------- ', err, result);
+                    }
+                );
+                break
+            case 'DOC':
+                await Deal.updateOne(
+                    {_id: req.query.id},
+                    {
+                        $pull: {
+                            "allDocs": {
+                                fileUrl: req.query.file
+                            }
+                        }
+                    },
+                    { multi: true },
+                    function (err, result) {
+                        console.log('ошибка ----Обновление сделки------- ', err, result);
+                    }
+                );
+                break
+        }
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+        console.log('Ошибка ', e);
+    }
+}
+
+module.exports.addDriverToDeal = async function (req, res) {
+    try {
+        await Deal.updateOne(
+            {_id: req.body.id},
+            {
+                $addToSet: {
+                    "drivers": {
+                        driverName: req.body.name,
+                        sum: req.body.sum
+                    }
+                }
+            },
+            {new: true, upsert: true},
+            function (error, result) {
+                res.status(200).json(result)
+            })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+}
+
+module.exports.addForwarderToDeal = async function (req, res) {
+    try {
+        await Deal.updateOne(
+            {_id: req.body.id},
+            {
+                $addToSet: {
+                    "forwarders": {
+                        forwarderName: req.body.name,
+                        sum: req.body.sum
+                    }
+                }
+            },
+            {new: true, upsert: true},
+            function (error, result) {
+                res.status(200).json(result)
+            })
     } catch (e) {
         // Обработать ошибку
         errorHandler(res, e)
@@ -157,10 +353,26 @@ module.exports.create = async function (req, res) {
     }
 }
 
-module.exports.getById = function (req, res) {
-    res.status(200).json({
-        message: 'getById deals OK'
-    })
+module.exports.getAll = async function (req, res) {
+    try {
+        await Deal.find({}, function (error, result) {
+            res.status(200).json(result)
+        })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+}
+
+module.exports.getById = async function (req, res) {
+    try {
+        await Deal.find({_id: req.params.id}, function (error, result) {
+            res.status(200).json(result)
+        })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
 }
 
 module.exports.remove = function (req, res) {

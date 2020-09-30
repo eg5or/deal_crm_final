@@ -16,7 +16,13 @@ const ClientInvoice = (props) => {
     };
     const handleClose = () => {
         setOpen(false);
+        console.log(open)
     };
+
+    const onDeleteFile = () => {
+        props.deleteFile(props.dealId, props.fileUrl, props.typeFile)
+        setOpen(false);
+    }
 
     return (
 
@@ -28,12 +34,13 @@ const ClientInvoice = (props) => {
                     Счет {props.company} на сумму {props.sum} ₽
                 </DialogTitle>
                 <DialogContent dividers>
-                    Фото счета
+                    <img alt='' src={'C:/Users/eg5or/Documents/Projects/deal_crm_final' + `${props.fileUrl}`} />
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={() => {
-                        handleClose()
-                    }} color="primary">
+                    <Button onClick={onDeleteFile} color="primary">
+                        Удалить
+                    </Button>
+                    <Button onClick={handleClose} color="primary">
                         Закрыть
                     </Button>
                 </DialogActions>

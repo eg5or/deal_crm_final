@@ -19,18 +19,18 @@ const DealsItems = (props) => {
                                                    clientPaid={d.dealStatus.clientPaid}
                                                    docSigned={d.dealStatus.docSigned}
                                                    docCollected={d.dealStatus.docCollected}
-                                                   clientInvoices={d.docsFiles.clientInvoices}
-                                                   sumClientInvoices={d.docsFiles.sumClientInvoices}
-                                                   providerInvoices={d.docsFiles.providerInvoices}
-                                                   sumProviderInvoices={d.docsFiles.sumProviderInvoices}
-                                                   allDocs={d.docsFiles.allDocs}
-                                                   delta={d.docsFiles.delta}
-                                                   drivers={d.deliver.drivers}
-                                                   forwarders={d.deliver.forwarders}
+                                                   clientInvoices={d.clientInvoices}
+                                                   providerInvoices={d.providerInvoices}
+                                                   allDocs={d.allDocs}
+                                                   delta={d.delta}
+                                                   drivers={d.drivers}
+                                                   forwarders={d.forwarders}
                                                    commentManager={d.commentManager}
                                                    commentHead={d.commentHead}
-                                                   deliver={d.deliver}
                                                    saveFile={props.saveFile}
+                                                   deleteFile={props.deleteFile}
+                                                   addDriver={props.addDriver}
+                                                   addForwarder={props.addForwarder}
 
     />)
 

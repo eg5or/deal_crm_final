@@ -1,4 +1,4 @@
-const {Schema, model} = require('mongoose')
+const {Schema, Types, model} = require('mongoose')
 
 const dealSchema = new Schema({
     date: {type: Date, required: true},
@@ -14,41 +14,12 @@ const dealSchema = new Schema({
         docSigned: {type: Boolean, default: false},
         docCollected: {type: Boolean, default: false}
     },
-    docsFiles: {
-        clientInvoices: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'ClientInvoice'
-            }
-        ],
-        providerInvoices: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'ProviderInvoice'
-            }
-        ],
-        allDocs: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'AllDocs'
-            }
-        ],
-        delta: {type: Number, default: ''}
-    },
-    deliver: {
-        drivers: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Driver'
-            }
-        ],
-        forwarders: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Forwarder'
-            }
-        ]
-    },
+    clientInvoices: [],
+    providerInvoices: [],
+    allDocs: [],
+    delta: {type: Number, default: ''},
+    drivers: [],
+    forwarders: [],
     commentManager: {type: String, default: ''},
     commentHead: {type: String, default: ''}
 

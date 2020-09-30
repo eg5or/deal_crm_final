@@ -1,7 +1,7 @@
-const {Schema, model} = require('mongoose')
+const {Schema, Types, model} = require('mongoose')
 
 const clientInvoiceSchema = new Schema({
-    deal: {type: String, required: true},
+    deal: { type: Types.ObjectId, ref: 'Deal' },
     company: {type: String, required: true},
     fileUrl: {type: String},
     sum: {type: Number, required: true},
