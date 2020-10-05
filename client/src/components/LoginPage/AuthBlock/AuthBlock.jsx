@@ -3,7 +3,6 @@ import classes from './AuthBlock.module.css'
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Alert from '@material-ui/lab/Alert';
 
 const AuthBlock = (props) => {
 

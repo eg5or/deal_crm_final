@@ -13,11 +13,9 @@ import DealsItems from "./DealsItems/DealsItems";
 
 class DealsPage extends React.Component {
     componentDidMount() {
-        console.log(this.props.filter)
         if (this.props.filter === '') {
             this.props.loadingDealsPage()
         } else {
-            debugger
             this.props.loadingDealsPage(this.props.filter)
         }
     }
