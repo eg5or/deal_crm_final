@@ -9,6 +9,8 @@ import MultilineChartIcon from '@material-ui/icons/MultilineChart';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes';
+import SpeakerNotesOffIcon from '@material-ui/icons/SpeakerNotesOff';
 import Tooltip from "@material-ui/core/Tooltip";
 import {NavLink} from "react-router-dom";
 
@@ -97,6 +99,13 @@ const ProfileBlock = ({authBlock: {name, userId, email, position}, countNoDelive
                         to='/profile'
                     >
                         <div className={classes.btnAction}><MultilineChartIcon/></div>
+                    </NavLink>
+                </Tooltip>
+                <Tooltip title="Уведомления" placement="bottom-start">
+                    <NavLink
+                        to='/profile'
+                    >
+                        <div className={classes.btnAction}><SpeakerNotesIcon/></div>
                     </NavLink>
                 </Tooltip>
             </div>

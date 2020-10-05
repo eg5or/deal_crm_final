@@ -81,7 +81,6 @@
 }
 
 .position {
-
     background-color: #607d8b;
     grid-area: position;
     text-transform: uppercase;
@@ -99,8 +98,8 @@
 
 .clockBlock {
     grid-area: clockBlock;
-    font-size: 10px;
-    text-align: right;
+    font-size: 11px;
+    text-align: center;
     line-height: 11px;
     margin-bottom: 0px;
 }
@@ -117,10 +116,14 @@
 .btnActionsBlock a{
     color: #607d8b;
     font-size: 12px;
+    width: 100%;
 }
 
 .btnAction {
-    padding-right: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .btnAction:hover {
