@@ -245,7 +245,8 @@ module.exports.deleteFile = async function (req, res) {
                     },
                     {multi: true},
                     function (err, result) {
-                        console.log('ошибка ----Обновление сделки------- ', err, result);
+                        res.status(200).json(result)
+                        console.log(result)
                     }
                 );
                 /*fs.unlink(req.query.file, err => {
@@ -265,7 +266,8 @@ module.exports.deleteFile = async function (req, res) {
                     },
                     {multi: true},
                     function (err, result) {
-                        console.log('ошибка ----Обновление сделки------- ', err, result);
+                        res.status(200).json(result)
+                        console.log(result)
                     }
                 );
                 break
@@ -281,7 +283,8 @@ module.exports.deleteFile = async function (req, res) {
                     },
                     {multi: true},
                     function (err, result) {
-                        console.log('ошибка ----Обновление сделки------- ', err, result);
+                        res.status(200).json(result)
+                        console.log(result)
                     }
                 );
                 break

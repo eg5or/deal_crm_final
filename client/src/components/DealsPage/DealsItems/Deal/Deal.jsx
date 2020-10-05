@@ -2,9 +2,7 @@ import React, {useState} from 'react';
 import classes from './deal.module.css'
 import Driver from './Driver/Driver';
 import Forwarder from './Forwarder/Forwarder';
-import ClientInvoice from './ClientInvoice/ClientInvoice';
-import ProviderInvoice from './ProviderInvoice/ProviderInvoice';
-import Doc from './Doc/Doc';
+import CenterBlockItems from './CenterBlock/CenterBlockItems';
 import Switch from "@material-ui/core/Switch";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -42,7 +40,7 @@ const Deal = (props) => {
                                                                   deleteForwarderFromDeal={props.deleteForwarderFromDeal}
     />)
 
-    let clientInvoicesElements = props.clientInvoices.map(clientInvoice => <ClientInvoice
+    let clientInvoicesElements = props.clientInvoices.map(clientInvoice => <CenterBlockItems
         key={clientInvoice._id}
         company={clientInvoice.company}
         fileUrl={clientInvoice.fileUrl}
@@ -52,7 +50,7 @@ const Deal = (props) => {
         deleteFile={props.deleteFile}
     />)
 
-    let providerInvoicesElements = props.providerInvoices.map(providerInvoice => <ProviderInvoice
+    let providerInvoicesElements = props.providerInvoices.map(providerInvoice => <CenterBlockItems
         key={providerInvoice.id}
         company={providerInvoice.company}
         fileUrl={providerInvoice.fileUrl}
@@ -62,7 +60,7 @@ const Deal = (props) => {
         deleteFile={props.deleteFile}
     />)
 
-    let docsElements = props.allDocs.map(doc => <Doc key={doc.id}
+    let docsElements = props.allDocs.map(doc => <CenterBlockItems key={doc.id}
                                                      company={doc.company}
                                                      fileUrl={doc.fileUrl}
                                                      sum={doc.sum}

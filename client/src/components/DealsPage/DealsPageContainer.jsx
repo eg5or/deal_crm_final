@@ -13,11 +13,13 @@ import DealsItems from "./DealsItems/DealsItems";
 
 class DealsPage extends React.Component {
     componentDidMount() {
-        if (this.props.filter === '') {
-            this.props.loadingDealsPage()
-        } else {
-            this.props.loadingDealsPage(this.props.filter)
-        }
+        this.props.loadingDealsPage()
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('prevProps ', prevProps.dealsData[0])
+        // console.log('prevState ', prevState)
+        console.log('this.props ', this.props.dealsData[0])
     }
 
     render() {

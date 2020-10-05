@@ -131,50 +131,59 @@ export const addDeal = (date, client, name) => async (dispatch) => {
 }
 
 export const saveFile = (file, id, company, sum, type) => async (dispatch) => {
-    let response = await uploadAPI.saveFile(file, id, company, sum, type)
-    console.log(response.data)
-    dispatch(loadingDealsPage())
+    try {
+        let response = await uploadAPI.saveFile(file, id, company, sum, type)
+        dispatch(loadingDealsPage())
+    } catch (e) {/* alert(e.response.data.message)*/}
 }
 
 export const deleteFile = (id, file, type) => async (dispatch) => {
-    let response = await uploadAPI.deleteFile(id, file, type)
-    console.log(response.data)
-    dispatch(loadingDealsPage())
+    try {
+        await uploadAPI.deleteFile(id, file, type)
+        dispatch(loadingDealsPage())
+    } catch (e) {/* alert(e.response.data.message)*/}
 }
 
 export const addDriver = (id, driverId, sum) => async (dispatch) => {
-    let response = await dealsAPI.addDriverToDeal(id, driverId, sum)
-    console.log(response.data)
-    dispatch(loadingDealsPage())
+    try {
+        let response = await dealsAPI.addDriverToDeal(id, driverId, sum)
+        dispatch(loadingDealsPage())
+    } catch (e) {/* alert(e.response.data.message)*/}
 }
 
 export const addForwarder = (id, name, sum) => async (dispatch) => {
-    let response = await dealsAPI.addForwarderToDeal(id, name, sum)
-    console.log(response.data)
-    dispatch(loadingDealsPage())
+    try {
+        let response = await dealsAPI.addForwarderToDeal(id, name, sum)
+        dispatch(loadingDealsPage())
+    } catch (e) {/* alert(e.response.data.message)*/}
 }
 
 export const deleteDriverFromDeal = (id, name, sum) => async (dispatch) => {
-    let response = await dealsAPI.deleteDriverFromDeal(id, name, sum)
-    console.log(response.data)
-    dispatch(loadingDealsPage())
+    try {
+        let response = await dealsAPI.deleteDriverFromDeal(id, name, sum)
+        dispatch(loadingDealsPage())
+    } catch (e) {/* alert(e.response.data.message)*/}
 }
 
 export const deleteForwarderFromDeal = (id, name, sum) => async (dispatch) => {
-    let response = await dealsAPI.deleteForwarderFromDeal(id, name, sum)
-    console.log(response.data)
-    dispatch(loadingDealsPage())
+    try {
+        let response = await dealsAPI.deleteForwarderFromDeal(id, name, sum)
+        dispatch(loadingDealsPage())
+    } catch (e) {/* alert(e.response.data.message)*/}
 }
 
 export const editComment = (id, type, text) => async (dispatch) => {
-    let response = await dealsAPI.editComment(id, type, text)
-    console.log(response.data)
-    dispatch(loadingDealsPage())
+    try {
+        let response = await dealsAPI.editComment(id, type, text)
+        dispatch(loadingDealsPage())
+    } catch (e) {/* alert(e.response.data.message)*/}
 }
 
 export const toggleStatus = (id, status) => async (dispatch) => {
-    await dealsAPI.toggleStatus(id, status)
-    dispatch(loadingDealsPage())
+    try {
+        await dealsAPI.toggleStatus(id, status)
+        dispatch(loadingDealsPage())
+    } catch (e) {/* alert(e.response.data.message)*/}
 }
 
 export default dealsReducer;

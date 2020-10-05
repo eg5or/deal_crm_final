@@ -1,7 +1,6 @@
 import React from 'react';
 import classes from './DealsItems.module.css'
 import Deal from './Deal/Deal';
-import {editComment, toggleStatus} from "../../../redux/deals-reducer";
 
 const DealsItems = (props) => {
     let sortedDeals = props.deals
