@@ -29,6 +29,7 @@ const Deal = (props) => {
                                                          dealId={props.id}
                                                          position={props.authBlock.position}
                                                          deleteDriverFromDeal={props.deleteDriverFromDeal}
+                                                         dealDone={props.dealStatus.dealDone}
     />)
 
     let forwardersElements = props.forwarders.map(d => <Forwarder key={d.id}
@@ -38,6 +39,7 @@ const Deal = (props) => {
                                                                   dealId={props.id}
                                                                   position={props.authBlock.position}
                                                                   deleteForwarderFromDeal={props.deleteForwarderFromDeal}
+                                                                  dealDone={props.dealStatus.dealDone}
     />)
 
     let clientInvoicesElements = props.clientInvoices.map(clientInvoice => <CenterBlockItems
@@ -48,6 +50,8 @@ const Deal = (props) => {
         typeFile={clientInvoice.typeFile}
         dealId={props.id}
         deleteFile={props.deleteFile}
+        position={props.authBlock.position}
+        dealDone={props.dealStatus.dealDone}
     />)
 
     let providerInvoicesElements = props.providerInvoices.map(providerInvoice => <CenterBlockItems
@@ -58,6 +62,8 @@ const Deal = (props) => {
         typeFile={providerInvoice.typeFile}
         dealId={props.id}
         deleteFile={props.deleteFile}
+        position={props.authBlock.position}
+        dealDone={props.dealStatus.dealDone}
     />)
 
     let docsElements = props.allDocs.map(doc => <CenterBlockItems key={doc.id}
@@ -67,6 +73,8 @@ const Deal = (props) => {
                                                      typeFile={doc.typeFile}
                                                      dealId={props.id}
                                                      deleteFile={props.deleteFile}
+                                                     position={props.authBlock.position}
+                                                     dealDone={props.dealStatus.dealDone}
     />)
     // Formik для окна ADD FILE
     const formik = useFormik({
@@ -247,6 +255,7 @@ const Deal = (props) => {
     // --------------------------------------------------------
     // Доступ
     const position = props.authBlock.position
+    const dealDone = props.dealStatus.dealDone
 
     // --------------------------------------------------------
     return (
@@ -491,7 +500,7 @@ const Deal = (props) => {
                     </div>
                     <div className={`${classes.clientInvoicesItems} ${classes.docsFilesItems}`}>
                         {clientInvoicesElements}
-                        {(position === 'manager' || position === 'chief') && <div className={classes.addFile} onClick={onAddFileOpenCI}>
+                        {(position === 'manager' || position === 'chief') && !dealDone && <div className={classes.addFile} onClick={onAddFileOpenCI}>
                             <div className={classes.plus}>+</div>
                             <div className={classes.addFileText}>Добавить<br/>файл</div>
                         </div>}
@@ -504,7 +513,7 @@ const Deal = (props) => {
                     </div>
                     <div className={`${classes.providerInvoicesItems} ${classes.docsFilesItems}`}>
                         {providerInvoicesElements}
-                        {(position === 'manager' || position === 'chief') && <div className={classes.addFile} onClick={onAddFileOpenPI}>
+                        {(position === 'manager' || position === 'chief') && !dealDone && <div className={classes.addFile} onClick={onAddFileOpenPI}>
                             <div className={classes.plus}>+</div>
                             <div className={classes.addFileText}>Добавить<br/>файл</div>
                         </div>}

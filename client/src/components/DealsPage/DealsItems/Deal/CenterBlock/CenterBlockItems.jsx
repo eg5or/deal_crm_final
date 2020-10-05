@@ -44,16 +44,20 @@ const CenterBlockItems = (props) => {
         props.deleteFile(props.dealId, props.fileUrl, props.typeFile)
     }
     // -----------------------------------------------------------------------------------
+    // Access
+    const position = props.position
+    const dealDone = props.dealDone
+    // -----------------------------------------------------------------------------------
     return (
         <div>
             <div onClose={handleClose} className={classes.centerBlockItemsContainer} onMouseEnter={onDeleteShow} onMouseLeave={onDeleteHide}> {/*onClick={handleClickOpen}*/}
-                <div className={`${classes.deleteBtnArea} ${!deleteShow && classes.hideDeleteArea}`}>
+                {(position === 'manager' || position === 'chief') && !dealDone && <div className={`${classes.deleteBtnArea} ${!deleteShow && classes.hideDeleteArea}`}>
                     {askDelete && <div className={classes.askDelete}>
                         <div className={classes.confirm} onClick={onDeleteFile}><CheckIcon fontSize={"small"} /></div>
                         <div className={classes.cancel} onClick={onAskDeleteClose}><CloseIcon fontSize={"small"} /></div>
                     </div>}
                     {!askDelete && <div className={classes.delete} onClick={onAskDeleteOpen}><DeleteIcon fontSize={"small"} /></div>}
-                </div>
+                </div>}
                 <div className={classes.nameCompany}>{props.company}</div>
                 <div className={classes.sum}>{Number(props.sum).toLocaleString()} ₽</div>
             </div>

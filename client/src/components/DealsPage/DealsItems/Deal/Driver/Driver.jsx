@@ -35,11 +35,12 @@ const Driver = (props) => {
     // -----------------------------------------------------------------------------------------------
     // Access
     const position = props.position
+    const dealDone = props.dealDone
     // -----------------------------------------------------------------------------------------------
     return (
         <div className={classes.deliverItem} onMouseEnter={onShowActions} onMouseLeave={onHideActions}>
             <div className={classes.name}>{props.driverName}</div>
-            {(position === 'manager' || position === 'chief') ? <div
+            {(position === 'manager' || position === 'chief') && !dealDone ? <div
                 className={`${classes.icon} ${!showActions && classes.noActive}`}
                 onClick={onDelete}
             >
