@@ -1,4 +1,4 @@
-import {uploadAPI} from "../API/api";
+
 
 
 const SET_CURRENT_EMPLOYEE_DATA = 'social-net/app/SET_CURRENT_EMPLOYEE_DATA';
@@ -23,8 +23,7 @@ const profileReducer = (state = initialState, action) => {
 export const setCurrentEmployeeData = (data) => ({type: SET_CURRENT_EMPLOYEE_DATA, data})
 
 export const savePhoto = (file) => async (dispatch) => {
-    let response = await uploadAPI.savePhoto(file)
-    console.log(response.data)
+
 }
 
 export default profileReducer;

@@ -1,0 +1,106 @@
+.profilePage {
+    background-color: #eceff1;
+    padding: 30px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 4fr 2fr;
+    grid-template-areas: "title title"
+                         "table avatarBlock"
+                         "table changePassword";
+}
+.title {
+    grid-area: title;
+}
+.table {
+    grid-area: table;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+
+}
+.icon,
+.label,
+.value {
+    color: #eceff1;
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    justify-content: center;
+    padding: 10px 10px;
+    width: 30px;
+    background-color: #455a64;
+    border-radius: 10px 0 0 10px;
+}
+
+.label {
+    padding: 10px 10px;
+    width: 200px;
+    background-color: #455a64;
+}
+
+.value {
+    padding: 10px 20px;
+    width: 300px;
+    background-color: #607d8b;
+    border-radius: 0 10px 10px 0;
+}
+
+.avatarBlock {
+    grid-area: avatarBlock;
+    display: flex;
+}
+
+.avatar {
+
+}
+.avatar img{
+    border-radius: 10px;
+}
+
+.changeAvatar {
+
+}
+
+.changePassword {
+    background-color: #b0bec5;
+    border-radius: 10px;
+    grid-area: changePassword;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: "titlePassword titlePassword"
+                         "labelPassword inputPassword";
+}
+
+.titlePassword,
+.labelPassword,
+.inputPassword {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.titlePassword {
+    grid-area: titlePassword;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.labelPassword {
+    grid-area: labelPassword;
+
+}
+
+.inputPassword {
+    grid-area: inputPassword;
+
+}

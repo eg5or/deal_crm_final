@@ -1,8 +1,7 @@
 import React from 'react';
-import classes from './Profile.module.css'
 import {connect} from "react-redux";
 import Profile from "./Profile";
-import {savePhoto} from "../../redux/profileReducer";
+
 
 
 class ProfileContainer extends React.Component {
@@ -13,16 +12,16 @@ class ProfileContainer extends React.Component {
 
         return (
             <div>
-                <Profile savePhoto={this.props.savePhoto} />
+                <Profile profileData={this.props.profileData}/>
             </div>
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-
+    profileData: state.authBlock
 })
 
 export default connect(mapStateToProps, {
-    savePhoto
+
 })(ProfileContainer);
