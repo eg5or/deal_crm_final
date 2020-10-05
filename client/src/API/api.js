@@ -1,14 +1,10 @@
 import * as axios from 'axios';
-let token = null
-if (JSON.parse(localStorage.getItem('token')) !== null) {
-    token = JSON.parse(localStorage.getItem('token')).token
-}
 
 const instance = axios.create({
     baseURL: 'http://localhost:5000/api/',
-    headers: {
+    /*headers: {
         'Authorization': token || ''
-    }
+    }*/
 });
 
 export const uploadAPI = {
@@ -71,18 +67,42 @@ export const clientsAPI = {
 }
 
 export const dealsAPI = {
-    getAllDeals() {
-        return instance.get(`deals`).then(response => response.data)
+    getAllDeals(token) {
+        return instance.get(`deals`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
     },
-    getAllDealsDone() {
-        return instance.get(`deals/done`).then(response => response.data)
+    getAllDealsDone(token) {
+        return instance.get(`deals/done`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
     },
-    getAllManagerDeals(name) {
-        return instance.get(`deals/manager?name=${name}`).then(response => response.data)
+    getAllManagerDeals(name, token) {
+        return instance.get(`deals/manager?name=${name}`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
     },
-    filterDealsByStatusManagers(name, filter) {
+    filterDealsByStatusManagers(name, filter, token) {
         const {status, bool} = filter
-        return instance.get(`deals/filter?name=${name}&status=${status}&bool=${bool}`).then(response => response.data)
+        return instance.get(`deals/filter?name=${name}&status=${status}&bool=${bool}`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
+    },
+    filterDealsByStatusAllManagers(filter, token) {
+        const {status, bool} = filter
+        return instance.get(`deals/filterall?status=${status}&bool=${bool}`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
     },
     addNewDeal(date, client, name) {
         return instance.post(`deals/add`, {date, client, responsibility: {name}})

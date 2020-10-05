@@ -568,6 +568,68 @@ module.exports.filterDealsByStatusManagers = async function (req, res) {
     }
 } // готово
 
+module.exports.filterDealsByStatusAllManagers = async function (req, res) {
+    const {status, bool} = req.query
+    try {
+        switch (status) {
+            case 'approved':
+                await Deal.find({
+                    "dealStatus.approved" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'providerPaid':
+                await Deal.find({
+                    "dealStatus.providerPaid" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'delivered':
+                await Deal.find({
+                    "dealStatus.delivered" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'clientPaid':
+                await Deal.find({
+                    "dealStatus.clientPaid" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'docSigned':
+                await Deal.find({
+                    "dealStatus.docSigned" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'docCollected':
+                await Deal.find({
+                    "dealStatus.docCollected" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'dealDone':
+                await Deal.find({
+                    "dealStatus.dealDone" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            default:
+                break
+        }
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
+
 module.exports.getById = async function (req, res) {
     try {
         await Deal.find({_id: req.params.id}, function (error, result) {

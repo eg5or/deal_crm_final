@@ -8,6 +8,7 @@ router.get('/', passport.authenticate('jwt', {session: false}), controller.getAl
 router.get('/done', passport.authenticate('jwt', {session: false}), controller.getAllDealsDone) // готово // router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll)
 router.get('/manager', passport.authenticate('jwt', {session: false}), controller.getAllManagerDeals) // готово // router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll)
 router.get('/filter', controller.filterDealsByStatusManagers) // готово
+router.get('/filterall', controller.filterDealsByStatusAllManagers) // готово
 router.post('/add', controller.create) // готово
 router.post('/upload', controller.upload) // готово
 router.delete('/delete', controller.deleteFile) // готово

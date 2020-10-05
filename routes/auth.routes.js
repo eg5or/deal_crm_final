@@ -8,6 +8,5 @@ router.post('/login', controller.login)
 router.post('/register', controller.register)
 router.post('/me', passport.authenticate('jwt', {session: false}), controller.me)
 router.delete('/logout/:id', controller.logout)
-router.get('/authorized/:id', controller.authorized)
 
 module.exports = router

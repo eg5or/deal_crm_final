@@ -6,16 +6,14 @@ const UPDATE_NEW_PASSWORD_TEXT = 'UPDATE_NEW_PASSWORD_TEXT';
 const DELETE_USER_DATA = 'DELETE_USER_DATA';
 const CLEAR_EMAIL_AND_PASSWORD = 'CLEAR_EMAIL_AND_PASSWORD';
 const SET_RESPONSE_MESSAGE = 'SET_RESPONSE_MESSAGE';
+const SET_TOKEN_DATA = 'SET_TOKEN_DATA';
 
 let initialState = {
-    userId: null,
-    email: null,
-    name: null,
     isAuth: false,
     newEmailText: '',
     newPasswordText: '',
-    token: window.localStorage.token || null,
-    responseMessage: ''
+    responseMessage: '',
+    token: ''
 }
 
 const authReducer = (state = initialState, action) => {
@@ -41,10 +39,8 @@ const authReducer = (state = initialState, action) => {
         case DELETE_USER_DATA:
             return {
                 ...state,
-                userId: null,
                 email: null,
                 isAuth: false,
-                token: null,
 
             };
         case CLEAR_EMAIL_AND_PASSWORD:
@@ -57,6 +53,11 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 responseMessage: action.message
+            };
+        case SET_TOKEN_DATA:
+            return {
+                ...state,
+                token: action.token
             };
         default:
             return state;
@@ -75,12 +76,14 @@ export const newPasswordTextAC = (text) => ({type: UPDATE_NEW_PASSWORD_TEXT, tex
 export const exitAuth = () => ({type: DELETE_USER_DATA});
 export const clearEmailAndPassword = () => ({type: CLEAR_EMAIL_AND_PASSWORD});
 export const setResponseMessage = (message) => ({type: SET_RESPONSE_MESSAGE, message});
+export const setTokenData = (token) => ({type: SET_TOKEN_DATA, token});
 
 // Thunks
 
 export const getAuthUserData = () => async (dispatch) => {
     if (localStorage.getItem('token')) {
         const userDataLocalStorage = JSON.parse(localStorage.getItem('token'))
+        dispatch(setTokenData(userDataLocalStorage.token))
         try {
             const me = await authAPI.me(userDataLocalStorage.id, userDataLocalStorage.token)
             if (me.statusText === 'OK') {
@@ -95,6 +98,7 @@ export const getAuthUserData = () => async (dispatch) => {
 export const login = (email, password) => async (dispatch) => {
     const response = await authAPI.loginToCRM(email, password).catch(err => err.response.data)
     if (response.statusText === 'OK') {
+        dispatch(setTokenData(response.data.token))
         localStorage.setItem('token', JSON.stringify({
             token: response.data.token,
             id: response.data.id

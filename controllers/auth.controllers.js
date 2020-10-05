@@ -24,31 +24,6 @@ module.exports.login = async function (req, res) {
                 token: `Bearer ${token}`,
                 id: candidate._id
             })
-            // проверяем пользователя нет ли его в списке залогиненых
-            const candidate2 = await UserLogin.findOne({id: candidate._id})
-            if (candidate2) {
-                // если пользователь найден
-                try {
-                    await UserLogin.findOneAndDelete({id: candidate2._id})
-                } catch (e) {
-                    // Обработать ошибку
-                    errorHandler(res, e)
-                }
-            }
-            // записываем пользователя в таблицу UserLogin, где находятся все залогиненые пользователи
-            const userLogin = new UserLogin({
-                id: candidate._id,
-                email: candidate.email,
-                token: `Bearer ${token}`
-            })
-            try {
-                await userLogin.save()
-                // Передаем статус 201 Created - что-то создано в БД
-                res.status(201).json(userLogin)
-            } catch (e) {
-                // Обработать ошибку
-                errorHandler(res, e)
-            }
         } else {
             // Пароль не совпал, ошибка
             res.status(401).json({
@@ -79,31 +54,6 @@ module.exports.me = async function (req, res) {
     } else {
         res.status(409).json({
             message: `Пользователя с id ${id} нет в списке!`
-        })
-    }
-}
-
-module.exports.authorized = async function (req, res) {
-    // в req к нам приходит id ользователя, которого надо проверить на залогиненость
-    // ищем совпадения в БД
-    const candidate = await UserLogin.findOne({id: req.params.id})
-    if (candidate) {
-        // если пользователь найден
-        try {
-            // Передаем статус 200
-            res.status(200).json({
-                id: candidate.id,
-                email: candidate.email,
-                token: candidate.token,
-                name: candidate.name
-            })
-        } catch (e) {
-            // Обработать ошибку
-            errorHandler(res, e)
-        }
-    } else {
-        res.status(409).json({
-            message: `Пользователя с id ${req.params.id} нет в списке!`
         })
     }
 }

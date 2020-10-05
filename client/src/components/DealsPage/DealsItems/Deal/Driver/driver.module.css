@@ -1,4 +1,4 @@
-.driver {
+.deliverItem {
     display: grid;
     grid-template-columns: 7fr 1fr 1fr 4fr;
     grid-template-rows: 30px;
@@ -6,12 +6,12 @@
     font-size: 13px;
 }
 
-.driver:hover {
+.deliverItem:hover {
 
 }
 
 .icon,
-.driverName {
+.name {
     background-color: #607d8b;
     display: flex;
     justify-content: left;
@@ -19,7 +19,7 @@
     padding: 3px 5px;
 }
 
-.driverName {
+.name {
     color: white;
 }
 

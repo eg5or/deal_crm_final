@@ -50,23 +50,29 @@ export const setFilter = (filter) => ({type: SET_FILTER, filter});
 
 // Thunks
 export const loadingDealsPage = (filter) => async (dispatch, getState) => {
-    if (getState().authBlock.isAuth) {
+    if (getState().app.initialized) {
+        let token = getState().authBlock.token
+        console.log(token)
         switch (getState().authBlock.position) {
             case 'manager':
                 if (filter) {
-                    dispatch(loadingDealsTableData('manager', getState().authBlock.name, filter))
+                    dispatch(loadingDealsTableData('manager', getState().authBlock.name, getState().authBlock.token, filter))
                 } else {
-                    dispatch(loadingDealsTableData('manager', getState().authBlock.name))
+                    dispatch(loadingDealsTableData('manager', getState().authBlock.name, getState().authBlock.token))
                 }
                 break
             case 'secretary':
-                dispatch(loadingDealsTableData('secretary'))
+                dispatch(loadingDealsTableData('secretary', getState().authBlock.name, getState().authBlock.token))
                 break
             case 'chief':
-                dispatch(loadingDealsTableData('chief'))
+                dispatch(loadingDealsTableData('chief', getState().authBlock.name, getState().authBlock.token))
                 break
             case 'director':
-                dispatch(loadingDealsTableData('director', getState().authBlock.name))
+                if (filter) {
+                    dispatch(loadingDealsTableData('director', getState().authBlock.name, getState().authBlock.token, filter))
+                } else {
+                    dispatch(loadingDealsTableData('director', getState().authBlock.name, getState().authBlock.token))
+                }
                 break
             default:
                 break
@@ -77,56 +83,64 @@ export const loadingDealsPage = (filter) => async (dispatch, getState) => {
 }
 
 
-export const loadingDealsTableData = (position, name, filter) => async (dispatch) => {
+export const loadingDealsTableData = (position, name, token, filter) => async (dispatch) => {
     try {
         switch (position) {
             case 'manager':
                 if (filter) {
-                    let filteredManagersDeals = await dealsAPI.filterDealsByStatusManagers(name, filter)
+                    let filteredManagersDeals = await dealsAPI.filterDealsByStatusManagers(name, filter, token)
                     dispatch(setDealsData(filteredManagersDeals))
                 } else {
-                    let managerDeals = await dealsAPI.getAllManagerDeals(name)
+                    let managerDeals = await dealsAPI.getAllManagerDeals(name, token)
                     dispatch(setDealsData(managerDeals))
                 }
-
                 break
             case 'secretary':
-                let dealsDone = await dealsAPI.getAllDealsDone()
+                let dealsDone = await dealsAPI.getAllDealsDone(token)
                 dispatch(setDealsData(dealsDone))
                 break
             case 'chief':
-                let allDealsForChief = await dealsAPI.getAllDeals()
+                let allDealsForChief = await dealsAPI.getAllDeals(token)
                 dispatch(setDealsData(allDealsForChief))
                 break
             case 'director':
-                let allDealsForDirector = await dealsAPI.getAllDeals()
-                dispatch(setDealsData(allDealsForDirector))
+                if (filter) {
+                    let filteredDealsForDirector = await dealsAPI.filterDealsByStatusAllManagers(filter, token)
+                    dispatch(setDealsData(filteredDealsForDirector))
+                } else {
+                    let allDealsForDirector = await dealsAPI.getAllDeals(token)
+                    dispatch(setDealsData(allDealsForDirector))
+                }
                 break
             default:
-                let allDeals = await dealsAPI.getAllDeals()
-                dispatch(setDealsData(allDeals))
+                break
         }
-    } catch (e) {/* alert(e.response.data.message)*/}
+    } catch (e) {/* alert(e.response.data.message)*/
+    }
 }
 
 export const loadingDriversTableData = () => async (dispatch) => {
     try {
         const tableData = await driversAPI.getAllDrivers()
         dispatch(setDriversData(tableData))
-    } catch (e) {/* alert(e.response.data.message)*/}
+    } catch (e) {/* alert(e.response.data.message)*/
+    }
 }
 
 export const loadingForwardersTableData = () => async (dispatch) => {
     try {
         const tableData = await forwardersAPI.getAllForwarders()
         dispatch(setForwardersData(tableData))
-    } catch (e) {/* alert(e.response.data.message)*/}
+    } catch (e) {/* alert(e.response.data.message)*/
+    }
 }
 
 export const addDeal = (date, client, name) => async (dispatch) => {
     try {
         await dealsAPI.addNewDeal(date, client, name)
-    } catch (e) { alert(e.response.data.message)}
+    } catch (e) {
+        alert(e.response.data.message)
+    }
     dispatch(loadingDealsPage())
 }
 
@@ -134,56 +148,64 @@ export const saveFile = (file, id, company, sum, type) => async (dispatch) => {
     try {
         let response = await uploadAPI.saveFile(file, id, company, sum, type)
         dispatch(loadingDealsPage())
-    } catch (e) {/* alert(e.response.data.message)*/}
+    } catch (e) {/* alert(e.response.data.message)*/
+    }
 }
 
 export const deleteFile = (id, file, type) => async (dispatch) => {
     try {
         await uploadAPI.deleteFile(id, file, type)
         dispatch(loadingDealsPage())
-    } catch (e) {/* alert(e.response.data.message)*/}
+    } catch (e) {/* alert(e.response.data.message)*/
+    }
 }
 
 export const addDriver = (id, driverId, sum) => async (dispatch) => {
     try {
         let response = await dealsAPI.addDriverToDeal(id, driverId, sum)
         dispatch(loadingDealsPage())
-    } catch (e) {/* alert(e.response.data.message)*/}
+    } catch (e) {/* alert(e.response.data.message)*/
+    }
 }
 
 export const addForwarder = (id, name, sum) => async (dispatch) => {
     try {
         let response = await dealsAPI.addForwarderToDeal(id, name, sum)
         dispatch(loadingDealsPage())
-    } catch (e) {/* alert(e.response.data.message)*/}
+    } catch (e) {/* alert(e.response.data.message)*/
+    }
 }
 
 export const deleteDriverFromDeal = (id, name, sum) => async (dispatch) => {
     try {
         let response = await dealsAPI.deleteDriverFromDeal(id, name, sum)
         dispatch(loadingDealsPage())
-    } catch (e) {/* alert(e.response.data.message)*/}
+    } catch (e) {/* alert(e.response.data.message)*/
+    }
 }
 
 export const deleteForwarderFromDeal = (id, name, sum) => async (dispatch) => {
     try {
         let response = await dealsAPI.deleteForwarderFromDeal(id, name, sum)
         dispatch(loadingDealsPage())
-    } catch (e) {/* alert(e.response.data.message)*/}
+    } catch (e) {/* alert(e.response.data.message)*/
+    }
 }
 
 export const editComment = (id, type, text) => async (dispatch) => {
     try {
         let response = await dealsAPI.editComment(id, type, text)
         dispatch(loadingDealsPage())
-    } catch (e) {/* alert(e.response.data.message)*/}
+    } catch (e) {/* alert(e.response.data.message)*/
+    }
 }
 
 export const toggleStatus = (id, status) => async (dispatch) => {
     try {
         await dealsAPI.toggleStatus(id, status)
         dispatch(loadingDealsPage())
-    } catch (e) {/* alert(e.response.data.message)*/}
+    } catch (e) {/* alert(e.response.data.message)*/
+    }
 }
 
 export default dealsReducer;

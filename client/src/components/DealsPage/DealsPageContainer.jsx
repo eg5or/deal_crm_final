@@ -17,9 +17,7 @@ class DealsPage extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log('prevProps ', prevProps.dealsData[0])
-        // console.log('prevState ', prevState)
-        console.log('this.props ', this.props.dealsData[0])
+
     }
 
     render() {
@@ -53,7 +51,8 @@ const mapStateToProps = (state) => {
         driversData: state.dealsPage.driversData,
         forwardersData: state.dealsPage.forwardersData,
         authBlock: state.authBlock,
-        filter: state.dealsPage.filter
+        filter: state.dealsPage.filter,
+        initialized: state.app.initialized,
     }
 }
 
