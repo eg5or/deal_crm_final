@@ -25,16 +25,17 @@ const ClientInvoice = (props) => {
     }
 
     return (
-
-        <div onClick={handleClickOpen} onClose={handleClose} className={classes.clientInvoice}>
-            <div className={classes.nameCompany}>{props.company}</div>
-            <div className={classes.sum}>{Number(props.sum).toLocaleString()} ₽</div>
+        <div>
+            <div onClick={handleClickOpen} onClose={handleClose} className={classes.clientInvoice}>
+                <div className={classes.nameCompany}>{props.company}</div>
+                <div className={classes.sum}>{Number(props.sum).toLocaleString()} ₽</div>
+            </div>
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                     Счет {props.company} на сумму {props.sum} ₽
                 </DialogTitle>
                 <DialogContent dividers>
-                    <img alt='' src={'C:/Users/eg5or/Documents/Projects/deal_crm_final' + `${props.fileUrl}`} />
+                    <img alt='' src={'C:/Users/eg5or/Documents/Projects/deal_crm_final' + `${props.fileUrl}`}/>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onDeleteFile} color="primary">
@@ -46,6 +47,7 @@ const ClientInvoice = (props) => {
                 </DialogActions>
             </Dialog>
         </div>
+
     )
 
 }
