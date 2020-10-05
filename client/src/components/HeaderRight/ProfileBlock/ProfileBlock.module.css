@@ -6,10 +6,56 @@
     grid-template-areas: "position avatar"
                          "name avatar"
                          "email avatar"
-                         ". btnExit"
+                         "alertStatuses btnExit"
                          "btnActionsBlock clockBlock";
     padding: 5px;
     height: 100%;
+}
+.alertStatuses {
+    grid-area: alertStatuses;
+    display: flex;
+    margin: 3px 0;
+}
+
+.noDone,
+.noDelivered,
+.icon,
+.count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.noDone {
+    width: 50%;
+    display: flex;
+    background-color: #607d8b;
+    border-radius: 5px;
+    margin-left: 3px
+}
+
+.noDoneOn {
+    background-color: #d32f2f;
+}
+
+.noDelivered {
+    width: 50%;
+    display: flex;
+    background-color: #607d8b;
+    border-radius: 5px;
+    margin-left: 3px
+}
+
+.noDeliveredOn {
+    background-color: #f57c00;
+}
+
+.icon {
+    width: 50%;
+}
+
+.count {
+    width: 50%;
 }
 
 .name,

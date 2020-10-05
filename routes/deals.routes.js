@@ -6,6 +6,8 @@ const controller = require('../controllers/deals.controllers')
 // /api/deals
 router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll) // готово // router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll)
 router.get('/done', passport.authenticate('jwt', {session: false}), controller.getAllDealsDone) // готово // router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll)
+router.get('/nodonecount', passport.authenticate('jwt', {session: false}), controller.getCountManagersDealsNoDone) // готово // router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll)
+router.get('/nodeliveredcount', passport.authenticate('jwt', {session: false}), controller.getCountManagersDealsNoDelivered) // готово // router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll)
 router.get('/manager', passport.authenticate('jwt', {session: false}), controller.getAllManagerDeals) // готово // router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll)
 router.get('/filter', controller.filterDealsByStatusManagers) // готово
 router.get('/filterall', controller.filterDealsByStatusAllManagers) // готово

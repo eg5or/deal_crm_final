@@ -6,11 +6,13 @@ import AvatarDefault from '../../../assets/images/avatar_default.jpg'
 import SettingsIcon from '@material-ui/icons/Settings';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MultilineChartIcon from '@material-ui/icons/MultilineChart';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import Tooltip from "@material-ui/core/Tooltip";
 import {NavLink} from "react-router-dom";
 
-const ProfileBlock = (props) => {
-    const {name, userId, email, position} = props.authBlock
+const ProfileBlock = ({authBlock: {name, userId, email, position}, countNoDeliveredDeals, countNoDoneDeals, logout}) => {
     let positionRU = ''
     switch (position) {
         case 'manager':
@@ -29,7 +31,7 @@ const ProfileBlock = (props) => {
             break
     }
     let onLogout = () => {
-        props.logout(userId)
+        logout(userId)
     }
 
     return (
@@ -38,6 +40,34 @@ const ProfileBlock = (props) => {
             <div className={classes.name}>{name}</div>
             <div className={classes.email}>{email}</div>
             <img className={classes.avatar} src={AvatarDefault}/>
+            <div className={classes.alertStatuses}>
+                {countNoDoneDeals === 0
+                    ? <Tooltip title="Все сделки отправлены!" placement="bottom-end">
+                        <div className={classes.noDone}>
+                            <div className={classes.icon}><CheckCircleOutlineIcon fontSize={"small"}/></div>
+                        </div>
+                    </Tooltip>
+                    : <Tooltip title="Не готовые сделки" placement="bottom-end">
+                        <div className={`${classes.noDone} ${classes.noDoneOn}`}>
+                            <div className={classes.icon}><NotInterestedIcon fontSize={"small"}/></div>
+                            <div className={classes.count}>{countNoDoneDeals}</div>
+                        </div>
+                    </Tooltip>}
+                {countNoDeliveredDeals === 0
+                    ? <Tooltip title="Всё вывезено!" placement="bottom-start">
+                        <div className={classes.noDelivered}>
+                            <div className={classes.icon}><CheckCircleOutlineIcon fontSize={"small"}/></div>
+                        </div>
+                    </Tooltip>
+                    : <Tooltip title="Не вывезено" placement="bottom-start">
+                        <div className={`${classes.noDelivered} ${classes.noDeliveredOn}`}>
+                            <div className={classes.icon}><LocalShippingIcon fontSize={"small"}/></div>
+                            <div className={classes.count}>{countNoDeliveredDeals}</div>
+                        </div>
+                    </Tooltip>}
+
+
+            </div>
             <div className={classes.btnExit}>
                 <Button
                     fullWidth={true}
@@ -52,7 +82,7 @@ const ProfileBlock = (props) => {
                     <NavLink
                         to='/profile'
                     >
-                    <div className={classes.btnAction}><SettingsIcon/></div>
+                        <div className={classes.btnAction}><SettingsIcon/></div>
                     </NavLink>
                 </Tooltip>
                 <Tooltip title="Профиль" placement="bottom">
@@ -66,7 +96,7 @@ const ProfileBlock = (props) => {
                     <NavLink
                         to='/profile'
                     >
-                    <div className={classes.btnAction}><MultilineChartIcon/></div>
+                        <div className={classes.btnAction}><MultilineChartIcon/></div>
                     </NavLink>
                 </Tooltip>
             </div>

@@ -1,10 +1,15 @@
 import React from 'react';
 import {connect} from "react-redux";
 import Profile from "./Profile";
+import {loadingCountNoDeliveredDeals, loadingCountNoDoneDeals} from "../../redux/profileReducer";
 
 
 
 class ProfileContainer extends React.Component {
+    componentDidMount() {
+
+    }
+
 
 
     render() {
@@ -12,14 +17,18 @@ class ProfileContainer extends React.Component {
 
         return (
             <div>
-                <Profile profileData={this.props.profileData}/>
+                <Profile
+                    profileData={this.props.profileData}
+
+                />
             </div>
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-    profileData: state.authBlock
+    profileData: state.authBlock,
+
 })
 
 export default connect(mapStateToProps, {

@@ -104,6 +104,20 @@ export const dealsAPI = {
             }
         }).then(response => response.data)
     },
+    getCountManagersDealsNoDone(name, token) {
+        return instance.get(`deals/nodonecount?name=${name}`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
+    },
+    getCountManagersDealsNoDelivered(name, token) {
+        return instance.get(`deals/nodeliveredcount?name=${name}`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
+    },
     addNewDeal(date, client, name) {
         return instance.post(`deals/add`, {date, client, responsibility: {name}})
     },

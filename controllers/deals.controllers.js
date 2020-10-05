@@ -630,6 +630,38 @@ module.exports.filterDealsByStatusAllManagers = async function (req, res) {
     }
 } // готово
 
+module.exports.getCountManagersDealsNoDone = async function (req, res) {
+    try {
+        await Deal.countDocuments({
+            "responsibility.name": req.query.name,
+            "dealStatus.dealDone" : false
+        }, function (error, result) {
+            res.status(200).json({
+                count: result
+            })
+        })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
+
+module.exports.getCountManagersDealsNoDelivered = async function (req, res) {
+    try {
+        await Deal.countDocuments({
+            "responsibility.name": req.query.name,
+            "dealStatus.delivered" : false
+        }, function (error, result) {
+            res.status(200).json({
+                count: result
+            })
+        })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
+
 module.exports.getById = async function (req, res) {
     try {
         await Deal.find({_id: req.params.id}, function (error, result) {

@@ -11,7 +11,6 @@ import {
 } from '../../../redux/add-deal-reducer';
 import {addDeal, loadingDealsPage, setFilter} from '../../../redux/deals-reducer';
 import {clientsAPI} from '../../../API/api';
-import {setCurrentEmployeeData} from "../../../redux/profileReducer";
 
 class AddDealContainer extends React.Component {
     componentDidMount() {
@@ -81,7 +80,6 @@ export default connect(mapStateToProps, {
     setDataClientInvoices,
     openDialog,
     closeDialog,
-    setCurrentEmployeeData,
     addDeal,
     setFilter,
     loadingDealsPage
