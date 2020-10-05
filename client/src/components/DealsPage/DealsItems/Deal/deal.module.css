@@ -1,5 +1,4 @@
 
-
 .deal {
     display: grid;
     grid-gap: 10px;
@@ -17,15 +16,14 @@
     grid-area: leftBlock;
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 2fr 1fr 1fr 1fr 1fr;
-    grid-template-areas: "title title"
-                         "approved providerPaid"
-                         "delivered clientPaid"
-                         "docSigned docSigned"
-                         "docCollected docCollected";
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 4fr;
+    grid-template-areas: "title"
+                         "statusBlock";
 
 }
+
+
 
 .centerBlock {
     grid-area: centerBlock;
@@ -91,12 +89,21 @@
 .title {
     grid-area: title;
     display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "date"
+                         "client"
+                         "manager";
+}
+
+.titleManager {
+    grid-area: title;
+    display: grid;
     grid-template-columns: 3fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-areas: "date doneSwitcher"
                          "client doneSwitcher"
                          "manager manager";
-
 }
 
 .doneSwitcher {
@@ -108,6 +115,11 @@
 
 .doneSwitcherContainer {
 
+}
+
+.light_txt {
+    color: #b0bec5;
+    text-decoration: line-through;
 }
 
 .inputUpload {
@@ -147,55 +159,6 @@
 
 }
 
-.buttonLeft {
-    background-color: #607d8b;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 14px;
-    color: white;
-
-
-}
-
-.buttonLeft:hover {
-    background-color: #263238;
-    color: white;
-    cursor: pointer;
-}
-
-.approved {
-    grid-area: approved;
-
-}
-
-.providerPaid {
-    grid-area: providerPaid;
-
-}
-
-.delivered {
-    grid-area: delivered;
-
-}
-
-.clientPaid {
-    grid-area: clientPaid;
-
-}
-
-.docSigned {
-    grid-area: docSigned;
-
-}
-
-.docCollected {
-    grid-area: docCollected;
-
-}
 
 .docsFilesItems {
     padding-left: 10px;
@@ -242,7 +205,7 @@
     background-color: #455a64;
 }
 
-.clientInvoicesItems{
+.clientInvoicesItems {
 
 }
 
@@ -273,7 +236,7 @@
     background-color: #455a64;
 }
 
-.providerInvoicesItems{
+.providerInvoicesItems {
 
 }
 
@@ -304,7 +267,7 @@
     background-color: #455a64;
 }
 
-.docsItems{
+.docsItems {
 
 }
 
@@ -343,6 +306,7 @@
     color: white;
 
 }
+
 .sumDeliver {
     grid-area: sumDeliver;
     background-color: #607d8b;
@@ -354,6 +318,7 @@
     font-size: 15px;
     font-weight: bold;
 }
+
 .drivers {
     grid-area: drivers;
 }
@@ -384,6 +349,7 @@
     color: white;
     cursor: pointer;
 }
+
 .addDriverForwarder:active {
     background-color: #b0bec5;
     color: #263238;
@@ -399,14 +365,78 @@
 
 .commentsBlock {
     background-color: #607d8b;
-    grid-area:commentsBlock;
+    grid-area: commentsBlock;
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 5fr 6fr 1fr 3fr;
     grid-template-rows: 1fr 3fr 1fr 3fr;
-    grid-template-areas: "commentTitleManager editCommentManager"
-                         "commentManager commentManager"
-                         "commentTitleHead editCommentHead"
-                         "commentHead commentHead"       ;
+    grid-template-areas: "commentTitleManager lengthTextManager cancelEditManager editCommentManager"
+                         "commentManager commentManager commentManager commentManager"
+                         "commentTitleHead lengthTextHead cancelEditHead editCommentHead"
+                         "commentHead commentHead commentHead commentHead";
+}
+
+.cancelEditManager {
+    grid-area: cancelEditManager;
+}
+.cancelEditHead {
+    grid-area: cancelEditHead;
+}
+.cancelEditManager,
+.cancelEditHead {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #b0bec5;
+    font-size: 10px;
+}
+
+.cancelEditManager:hover,
+.cancelEditHead:hover {
+    background-color: #263238;
+    cursor: pointer;
+    color: #b0bec5;
+}
+
+.cancelEditManager:active,
+.cancelEditHead:active {
+    background-color: #b0bec5;
+    color: #263238;
+}
+
+.lengthTextManager {
+    grid-area: lengthTextManager;
+    font-size: 10px;
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.lengthTextHead {
+    grid-area: lengthTextHead;
+    font-size: 10px;
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.currentLengthText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #263238;
+    color: #b0bec5;
+}
+
+.displayNone {
+    display: none;
+}
+
+.errorText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: right;
+    color: red;
 }
 
 .commentTitleManager {
@@ -429,6 +459,10 @@
 
 .commentHead {
     grid-area: commentHead;
+}
+
+.commentHead input{
+    font-size: 10px;
 }
 
 .comment {

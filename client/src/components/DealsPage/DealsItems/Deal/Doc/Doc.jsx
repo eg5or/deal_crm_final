@@ -27,7 +27,7 @@ const Doc = (props) => {
 
         <div onClick={handleClickOpen} onClose={handleClose} className={classes.doc}>
             <div className={classes.nameCompany}>{props.company}</div>
-            <div className={classes.sum}>{props.sum} ₽</div>
+            <div className={classes.sum}>{Number(props.sum).toLocaleString()} ₽</div>
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                     Документ {props.company} на сумму {props.sum} ₽

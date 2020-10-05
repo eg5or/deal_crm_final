@@ -5,7 +5,7 @@ import ProfileBlock from "./ProfileBlock/ProfileBlock";
 const HeaderRight = (props) => {
     return <div className={classes.headerRight}>
         <div className={classes.headerRightContainer}>
-            <ProfileBlock userId={props.userId} email={props.email} logout={props.logout}/>
+            <ProfileBlock authBlock={props.authBlock} logout={props.logout}/>
         </div>
     </div>
 }

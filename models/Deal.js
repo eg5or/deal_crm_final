@@ -12,7 +12,8 @@ const dealSchema = new Schema({
         delivered: {type: Boolean, default: false},
         clientPaid: {type: Boolean, default: false},
         docSigned: {type: Boolean, default: false},
-        docCollected: {type: Boolean, default: false}
+        docCollected: {type: Boolean, default: false},
+        dealDone: {type: Boolean, default: false}
     },
     clientInvoices: [],
     providerInvoices: [],

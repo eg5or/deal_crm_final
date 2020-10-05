@@ -16,16 +16,25 @@ module.exports.login = async function (req, res) {
             // Генерация токена, пароли совпали
             const token = jwt.sign({  // первый параметр объект со свойствами которые будут нужны
                 email: candidate.email,
-                userId: candidate._id
-            }, config.get('jwt'), {expiresIn: 60 * 60}) // 2ой параметр секретный ключ 3ий параметр время жизни токена
+                userId: candidate._id,
+                access: candidate.position
+            }, config.get('jwt'), {expiresIn: 3600 }) // 2ой параметр секретный ключ 3ий параметр время жизни токена
 
             res.status(200).json({
                 token: `Bearer ${token}`,
-                email: candidate.email,
-                userId: candidate._id,
-                name: candidate.name
+                id: candidate._id
             })
-
+            // проверяем пользователя нет ли его в списке залогиненых
+            const candidate2 = await UserLogin.findOne({id: candidate._id})
+            if (candidate2) {
+                // если пользователь найден
+                try {
+                    await UserLogin.findOneAndDelete({id: candidate2._id})
+                } catch (e) {
+                    // Обработать ошибку
+                    errorHandler(res, e)
+                }
+            }
             // записываем пользователя в таблицу UserLogin, где находятся все залогиненые пользователи
             const userLogin = new UserLogin({
                 id: candidate._id,
@@ -40,7 +49,6 @@ module.exports.login = async function (req, res) {
                 // Обработать ошибку
                 errorHandler(res, e)
             }
-
         } else {
             // Пароль не совпал, ошибка
             res.status(401).json({
@@ -51,6 +59,26 @@ module.exports.login = async function (req, res) {
         // ПОльзователя нет, ошибка
         res.status(404).json({
             message: 'Пользователь с таким email не найден'
+        })
+    }
+}
+
+module.exports.me = async function (req, res) {
+    // в req.body приходит id
+    const id = req.body.id
+    const result = await Employee.findById(id, '-password -__v')
+    if (result) {
+        // если пользователь найден
+        try {
+            // Передаем статус 200
+            res.status(200).json(result)
+        } catch (e) {
+            // Обработать ошибку
+            errorHandler(res, e)
+        }
+    } else {
+        res.status(409).json({
+            message: `Пользователя с id ${id} нет в списке!`
         })
     }
 }

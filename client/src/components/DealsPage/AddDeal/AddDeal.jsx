@@ -2,8 +2,11 @@ import React from 'react';
 import classes from './AddDeal.module.css'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import ClientInvoice from "../DealsItems/Deal/ClientInvoice/ClientInvoice";
-import {closeDialog} from "../../../redux/add-deal-reducer";
+import Grid from "@material-ui/core/Grid";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ArchiveIcon from '@material-ui/icons/Archive';
+import {setFilter} from "../../../redux/deals-reducer";
 
 const AddDeal = (props) => {
 
@@ -18,34 +21,96 @@ const AddDeal = (props) => {
         let text = newClientInputElement.current.value
         props.newClientInputText(text) // обновляем переменную в state
         props.searchClients(text) // ф-я из Контейнера для поиска/фильтрации клиентов
-
         // убираем панель найденных клиентов, если input пустой
         if (text === '') {
             props.closeDropDownClients()
         }
     }
-
     // вставляем выбранное значение из найденных в поле ввода
     let setFoundClientToInput = (text) => {
         props.newClientInputText(text)
         props.closeDropDownClients()
     }
-
     const onAddDeal = () => {
         props.addDeal(new Date(newDataInputElement.current.value), props.clientInputText, props.currentEmployeeName)
         props.handleClick()
     }
-
+    //
+    const [filter, setFilter] = React.useState();
+    switch (filter) {
+        case 'noDelivered':
+            const filter = {
+                status: 'delivered',
+                bool: false
+            }
+            props.loadingDealsPage(filter)
+            break
+        case 'delivered':
+            const filter1 = {
+                status: 'delivered',
+                bool: true
+            }
+            props.loadingDealsPage(filter1)
+            break
+        case 'noPaid':
+            const filter2 = {
+                status: 'clientPaid',
+                bool: false
+            }
+            props.loadingDealsPage(filter2)
+            break
+        case 'noDocs':
+            const filter3 = {
+                status: 'docCollected',
+                bool: false
+            }
+            props.loadingDealsPage(filter3)
+            break
+        case 'withDocs':
+            const filter4 = {
+                status: 'docCollected',
+                bool: true
+            }
+            props.loadingDealsPage(filter4)
+            break
+    }
+    const filterChange = (event, newFilter) => {
+        setFilter(newFilter);
+    };
+    //
     return <div>
-        <div className={`${classes.filters} ${classes.most_light_bg}`}>
-            <Button
-                onClick={props.handleClick}
-                variant="contained"
-                color="primary"
-                size="large"
-            >
-                {props.buttonToggle ? 'Отмена' : 'Добавить сделку'}
-            </Button>
+        <div className={`${classes.buttonArea} ${classes.most_light_bg}`}>
+            <div>
+                <Button
+                    onClick={props.handleClick}
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                >
+                    {props.buttonToggle ? 'Отмена' : 'Добавить сделку'}
+                </Button>
+            </div>
+            {!props.buttonToggle && <div className={classes.filters}>
+                <Grid item>
+                    <ToggleButtonGroup size="small" value={filter} exclusive onChange={filterChange}>
+                        <ToggleButton value="noDelivered">
+                            <ArchiveIcon fontSize="small" /> Не вывезли
+                        </ToggleButton>
+                        <ToggleButton value="delivered">
+                            <ArchiveIcon fontSize="small" /> Уже вывезли
+                        </ToggleButton>
+                        <ToggleButton value="noPaid">
+                            <ArchiveIcon fontSize="small" /> Не оплачены
+                        </ToggleButton>
+                        <ToggleButton value="noDocs">
+                            <ArchiveIcon fontSize="small" /> Нет документов
+                        </ToggleButton>
+                        <ToggleButton value="withDocs">
+                            <ArchiveIcon fontSize="small" /> С документами
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </Grid>
+            </div>}
         </div>
         <div className={classes.addDeal} style={
             {

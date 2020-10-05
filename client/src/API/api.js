@@ -1,7 +1,14 @@
 import * as axios from 'axios';
+let token = null
+if (JSON.parse(localStorage.getItem('token')) !== null) {
+    token = JSON.parse(localStorage.getItem('token')).token
+}
 
 const instance = axios.create({
-    baseURL: 'http://localhost:5000/api/'
+    baseURL: 'http://localhost:5000/api/',
+    headers: {
+        'Authorization': token || ''
+    }
 });
 
 export const uploadAPI = {
@@ -15,7 +22,7 @@ export const uploadAPI = {
         })
     },
     deleteFile(id, file, type) {
-        return instance.patch(`deals/delete?id=${id}&file=${file}&type=${type}`)
+        return instance.delete(`deals/delete?id=${id}&file=${file}&type=${type}`)
     },
 }
 
@@ -26,6 +33,14 @@ export const authAPI = {
 
     loginToCRM(email, password) {
         return instance.post(`auth/login`, {email: email, password: password})
+    },
+
+    me(id, token) {
+        return instance.post(`auth/me`, {id}, {
+            headers: {
+                'Authorization': token
+            }
+        })
     },
 
     logoutFromCRM(id) {
@@ -59,20 +74,42 @@ export const dealsAPI = {
     getAllDeals() {
         return instance.get(`deals`).then(response => response.data)
     },
+    getAllDealsDone() {
+        return instance.get(`deals/done`).then(response => response.data)
+    },
+    getAllManagerDeals(name) {
+        return instance.get(`deals/manager?name=${name}`).then(response => response.data)
+    },
+    filterDealsByStatusManagers(name, filter) {
+        const {status, bool} = filter
+        return instance.get(`deals/filter?name=${name}&status=${status}&bool=${bool}`).then(response => response.data)
+    },
     addNewDeal(date, client, name) {
         return instance.post(`deals/add`, {date, client, responsibility: {name}})
     },
-    addDriverToDeal(id, name, sum) {
-        return instance.post(`deals/add/driver`, {id, name, sum})
+    addDriverToDeal(id, driverId, sum) {
+        return instance.post(`deals/driver`, {id, driverId, sum})
     },
-    addForwarderToDeal(id, name, sum) {
-        return instance.post(`deals/add/forwarder`, {id, name, sum})
+    addForwarderToDeal(id, forwarderId, sum) {
+        return instance.post(`deals/forwarder`, {id, forwarderId, sum})
+    },
+    deleteDriverFromDeal(id, name, sum) {
+        return instance.delete(`deals/driver?id=${id}&name=${name}&sum=${sum}`)
+    },
+    deleteForwarderFromDeal(id, name, sum) {
+        return instance.delete(`deals/forwarder?id=${id}&name=${name}&sum=${sum}`)
+    },
+    editComment(id, type, text) {
+        return instance.post(`deals/comment`, {id, type, text})
     },
     updateDeal(id, type, name, manager) {
         return instance.patch(`deals/${id}`, {type: type, name: name, manager: manager})
     },
     deleteDeal(id) {
         return instance.delete(`deals/${id}`)
+    },
+    toggleStatus(id, status) {
+        return instance.post(`deals/status?id=${id}&status=${status}`)
     }
 }
 

@@ -1,12 +1,83 @@
 .profileBlock {
+    display: grid;
+    grid-gap: 4px;
+    grid-template-columns: auto 80px;
+    grid-template-rows: 24px 24px 24px 1fr 1fr;
+    grid-template-areas: "position avatar"
+                         "name avatar"
+                         "email avatar"
+                         ". btnExit"
+                         "btnActionsBlock clockBlock";
     padding: 5px;
     height: 100%;
 }
 
-.yourLogin {
+.name,
+.email,
+.position {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.name,
+.email {
+    font-size: 12px;
+}
+
+.name {
+    grid-area: name;
+    border-bottom: #607d8b 1px solid;
+}
+
+.email {
+    grid-area: email;
+}
+
+.position {
+
+    background-color: #607d8b;
+    grid-area: position;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: white;
+    border-radius: 4px;
+}
+
+.avatar {
+    grid-area: avatar;
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+}
+
+.clockBlock {
+    grid-area: clockBlock;
+    font-size: 10px;
+    text-align: right;
+    line-height: 11px;
+    margin-bottom: 0px;
 }
 
 .btnExit {
-    padding-top: 10px;
+    grid-area: btnExit;
+    width: 80px;
+}
+.btnActionsBlock {
+    grid-area: btnActionsBlock;
+    display: flex;
+}
+
+.btnActionsBlock a{
+    color: #607d8b;
+    font-size: 12px;
+}
+
+.btnAction {
+    padding-right: 5px;
+}
+
+.btnAction:hover {
+    color: #455a64;
+    cursor: pointer;
 }

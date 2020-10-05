@@ -3,6 +3,8 @@ const multer = require('multer')
 const path = require('path')
 const pdf = require('pdf-poppler');
 const Deal = require('../models/Deal')
+const Driver = require('../models/Driver')
+const Forwarder = require('../models/Forwarder')
 const errorHandler = require('../utils/errorHandler')
 
 // Загрузка файлов MULTER
@@ -225,7 +227,7 @@ module.exports.upload = function (req, res) {
             }
         }
     })
-}
+} // готово
 
 module.exports.deleteFile = async function (req, res) {
     try {
@@ -241,7 +243,7 @@ module.exports.deleteFile = async function (req, res) {
                             }
                         }
                     },
-                    { multi: true },
+                    {multi: true},
                     function (err, result) {
                         console.log('ошибка ----Обновление сделки------- ', err, result);
                     }
@@ -261,7 +263,7 @@ module.exports.deleteFile = async function (req, res) {
                             }
                         }
                     },
-                    { multi: true },
+                    {multi: true},
                     function (err, result) {
                         console.log('ошибка ----Обновление сделки------- ', err, result);
                     }
@@ -277,7 +279,7 @@ module.exports.deleteFile = async function (req, res) {
                             }
                         }
                     },
-                    { multi: true },
+                    {multi: true},
                     function (err, result) {
                         console.log('ошибка ----Обновление сделки------- ', err, result);
                     }
@@ -289,16 +291,19 @@ module.exports.deleteFile = async function (req, res) {
         errorHandler(res, e)
         console.log('Ошибка ', e);
     }
-}
+} // готово
 
 module.exports.addDriverToDeal = async function (req, res) {
     try {
+        const driver = await Driver.findOne({_id: req.body.driverId})
         await Deal.updateOne(
             {_id: req.body.id},
             {
                 $addToSet: {
                     "drivers": {
-                        driverName: req.body.name,
+                        driverName: driver.name,
+                        tel: driver.tel,
+                        auto: driver.auto,
                         sum: req.body.sum
                     }
                 }
@@ -311,16 +316,41 @@ module.exports.addDriverToDeal = async function (req, res) {
         // Обработать ошибку
         errorHandler(res, e)
     }
-}
+} // готово
+
+module.exports.deleteDriverFromDeal = async function (req, res) {
+    try {
+        await Deal.updateOne(
+            {_id: req.query.id},
+            {
+                $pull: {
+                    "drivers": {
+                        driverName: req.query.name,
+                        sum: +req.query.sum
+                    }
+                }
+            },
+            {multi: true},
+            function (error, result) {
+                res.status(200).json(result)
+                console.log(result)
+            })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
 
 module.exports.addForwarderToDeal = async function (req, res) {
     try {
+        const forwarder = await Forwarder.findOne({_id: req.body.forwarderId})
         await Deal.updateOne(
             {_id: req.body.id},
             {
                 $addToSet: {
                     "forwarders": {
-                        forwarderName: req.body.name,
+                        forwarderName: forwarder.name,
+                        tel: forwarder.tel,
                         sum: req.body.sum
                     }
                 }
@@ -333,7 +363,87 @@ module.exports.addForwarderToDeal = async function (req, res) {
         // Обработать ошибку
         errorHandler(res, e)
     }
-}
+} // готово
+
+module.exports.deleteForwarderFromDeal = async function (req, res) {
+    try {
+        await Deal.updateOne(
+            {_id: req.query.id},
+            {
+                $pull: {
+                    "forwarders": {
+                        forwarderName: req.query.name,
+                        sum: +req.query.sum
+                    }
+                }
+            },
+            {multi: true},
+            function (error, result) {
+                res.status(200).json(result)
+            })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
+
+module.exports.editCommentManager = async function (req, res) {
+    try {
+        await Deal.updateOne(
+            {_id: req.body.id},
+            {
+                $set: {
+                    "commentManager": req.body.text
+                }
+            },
+            {new: true, upsert: true},
+            function (error, result) {
+                res.status(200).json(result)
+            })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
+
+module.exports.editComment = async function (req, res) {
+    if (req.body.text.length <= 165) {
+        try {
+            switch (req.body.type) {
+                case 'CM':
+                    await Deal.updateOne(
+                        {_id: req.body.id},
+                        {
+                            $set: {
+                                "commentManager": req.body.text
+                            }
+                        },
+                        {new: true, upsert: true},
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                    break
+                case 'CH':
+                    await Deal.updateOne(
+                        {_id: req.body.id},
+                        {
+                            $set: {
+                                "commentHead": req.body.text
+                            }
+                        },
+                        {new: true, upsert: true},
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                    break
+            }
+        } catch (e) {
+            // Обработать ошибку
+            errorHandler(res, e)
+        }
+    }
+
+} // готово
 
 module.exports.create = async function (req, res) {
     const deal = new Deal({
@@ -351,7 +461,7 @@ module.exports.create = async function (req, res) {
         // Обработать ошибку
         errorHandler(res, e)
     }
-}
+} // готово
 
 module.exports.getAll = async function (req, res) {
     try {
@@ -362,7 +472,98 @@ module.exports.getAll = async function (req, res) {
         // Обработать ошибку
         errorHandler(res, e)
     }
-}
+} // готово
+
+module.exports.getAllDealsDone = async function (req, res) {
+    try {
+        await Deal.find({"dealStatus.dealDone": true}, function (error, result) {
+            res.status(200).json(result)
+        })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
+
+module.exports.getAllManagerDeals = async function (req, res) {
+    try {
+        await Deal.find({"responsibility.name": req.query.name}, function (error, result) {
+            res.status(200).json(result)
+        })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
+
+module.exports.filterDealsByStatusManagers = async function (req, res) {
+    const {name, status, bool} = req.query
+    try {
+        switch (status) {
+            case 'approved':
+                await Deal.find({
+                    "responsibility.name": name,
+                    "dealStatus.approved" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'providerPaid':
+                await Deal.find({
+                    "responsibility.name": name,
+                    "dealStatus.providerPaid" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'delivered':
+                await Deal.find({
+                    "responsibility.name": name,
+                    "dealStatus.delivered" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'clientPaid':
+                await Deal.find({
+                    "responsibility.name": name,
+                    "dealStatus.clientPaid" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'docSigned':
+                await Deal.find({
+                    "responsibility.name": name,
+                    "dealStatus.docSigned" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'docCollected':
+                await Deal.find({
+                    "responsibility.name": name,
+                    "dealStatus.docCollected" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            case 'dealDone':
+                await Deal.find({
+                    "responsibility.name": name,
+                    "dealStatus.dealDone" : bool
+                }, function (error, result) {
+                    res.status(200).json(result)
+                })
+                break
+            default:
+                break
+        }
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
 
 module.exports.getById = async function (req, res) {
     try {
@@ -373,7 +574,7 @@ module.exports.getById = async function (req, res) {
         // Обработать ошибку
         errorHandler(res, e)
     }
-}
+} // готово но не нужно пока
 
 module.exports.remove = function (req, res) {
     res.status(200).json({
@@ -386,4 +587,192 @@ module.exports.update = function (req, res) {
         message: 'update deals OK'
     })
 }
+
+module.exports.toggleStatus = async function (req, res) {
+    try {
+        const candidate = await Deal.findOne({_id: req.query.id})
+        switch (req.query.status) {
+            case 'approved':
+                if (candidate.dealStatus.approved === true) {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.approved": false
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                } else {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.approved": true
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                }
+                break
+            case 'providerPaid':
+                if (candidate.dealStatus.providerPaid === true) {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.providerPaid": false
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                } else {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.providerPaid": true
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                }
+                break
+            case 'delivered':
+                if (candidate.dealStatus.delivered === true) {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.delivered": false
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                } else {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.delivered": true
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                }
+                break
+            case 'clientPaid':
+                if (candidate.dealStatus.clientPaid === true) {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.clientPaid": false
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                } else {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.clientPaid": true
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                }
+                break
+            case 'docSigned':
+                if (candidate.dealStatus.docSigned === true) {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.docSigned": false
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                } else {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.docSigned": true
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                }
+                break
+            case 'docCollected':
+                if (candidate.dealStatus.docCollected === true) {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.docCollected": false
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                } else {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.docCollected": true
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                }
+                break
+            case 'dealDone':
+                if (candidate.dealStatus.dealDone === true) {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.dealDone": false
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                } else {
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $set: {
+                                "dealStatus.dealDone": true
+                            }
+                        },
+                        function (error, result) {
+                            res.status(200).json(result)
+                        })
+                }
+                break
+            default:
+                break
+        }
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
 

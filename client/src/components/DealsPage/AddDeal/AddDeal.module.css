@@ -47,9 +47,14 @@ white - белый - white
 
 /* == Шапка (кнопки, фильтры) ==  */
 
-.filters {
+.buttonArea {
     border-bottom: 6px solid #263238;
     padding: 10px;
+    display: flex;
+}
+
+.filters {
+    padding-left: 20px;
 }
 
 /* == Всплывающие и скрытые блоки == */

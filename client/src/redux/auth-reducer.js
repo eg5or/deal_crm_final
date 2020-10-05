@@ -14,7 +14,7 @@ let initialState = {
     isAuth: false,
     newEmailText: '',
     newPasswordText: '',
-    token: '',
+    token: window.localStorage.token || null,
     responseMessage: ''
 }
 
@@ -24,6 +24,7 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.payload,
+                isAuth: action.isAuth,
                 newEmailText: '',
                 newPasswordText: ''
             };
@@ -64,9 +65,10 @@ const authReducer = (state = initialState, action) => {
 
 // ActionCreators
 
-export const setAuthUserData = (userId, email, token, name, isAuth) => ({
+export const setAuthUserData = (userData, isAuth) => ({
     type: SET_USER_DATA,
-    payload: {userId, email, token, name, isAuth}
+    payload: userData,
+    isAuth
 });
 export const newEmailTextAC = (text) => ({type: UPDATE_NEW_EMAIL_TEXT, text});
 export const newPasswordTextAC = (text) => ({type: UPDATE_NEW_PASSWORD_TEXT, text});
@@ -77,37 +79,37 @@ export const setResponseMessage = (message) => ({type: SET_RESPONSE_MESSAGE, mes
 // Thunks
 
 export const getAuthUserData = () => async (dispatch) => {
-    const userDataLocalStorage = JSON.parse(localStorage.getItem('userData'))
-    if (userDataLocalStorage) {
-        let data = await authAPI.authorized(userDataLocalStorage.id)
-        if (userDataLocalStorage.token === data.token) {
-            let {id, email, token, name} = userDataLocalStorage
-            dispatch(setAuthUserData(id, email, token, name, true))
-        } else {
-            logout(userDataLocalStorage.id)
+    if (localStorage.getItem('token')) {
+        const userDataLocalStorage = JSON.parse(localStorage.getItem('token'))
+        try {
+            const me = await authAPI.me(userDataLocalStorage.id, userDataLocalStorage.token)
+            if (me.statusText === 'OK') {
+                dispatch(setAuthUserData(me.data, true))
+            }
+        } catch (e) {
+            return Promise
         }
-    } else return Promise
+    }
 };
 
 export const login = (email, password) => async (dispatch) => {
     const response = await authAPI.loginToCRM(email, password).catch(err => err.response.data)
     if (response.statusText === 'OK') {
-        dispatch(setAuthUserData(response.data.userId, response.data.email, response.data.token, response.data.name, true))
-        localStorage.setItem('userData', JSON.stringify({
-            id: response.data.userId,
-            email: response.data.email,
+        localStorage.setItem('token', JSON.stringify({
             token: response.data.token,
-            name: response.data.name
+            id: response.data.id
         }))
+        const me = await authAPI.me(response.data.id, response.data.token)
+        dispatch(setAuthUserData(me.data, true))
     } else {
         dispatch(setResponseMessage(response.message))
     }
 }
 
 export const logout = (id) => async (dispatch) => {
-    const response = await authAPI.logoutFromCRM(id)
-    dispatch(setAuthUserData(null, null, null, false))
-    localStorage.removeItem('userData')
+    // const response = await authAPI.logoutFromCRM(id)
+    dispatch(setAuthUserData(null, false))
+    localStorage.removeItem('token')
 }
 
 export const register = (email, password) => async (dispatch) => {

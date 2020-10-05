@@ -1,24 +1,23 @@
 import React from 'react';
 import classes from './DealsItems.module.css'
 import Deal from './Deal/Deal';
+import {editComment, toggleStatus} from "../../../redux/deals-reducer";
 
 const DealsItems = (props) => {
-    let sortedDeals = props.deals.sort((prev, next) => {
+    let sortedDeals = props.deals
+    sortedDeals.sort((prev, next) => {
         if ( prev.date > next.date ) return -1;
         if ( prev.date > next.date ) return 1;
     })
 
-    let dealsElements = props.deals.map(d => <Deal key={d._id}
+    let dealsElements = sortedDeals.map(d => <Deal key={d._id}
+                                                   allDrivers={props.allDrivers}
+                                                   allForwarders={props.allForwarders}
                                                    id={d._id}
                                                    date={d.date}
                                                    client={d.client}
                                                    manager={d.responsibility.name}
-                                                   approved={d.dealStatus.approved}
-                                                   providerPaid={d.dealStatus.providerPaid}
-                                                   delivered={d.dealStatus.delivered}
-                                                   clientPaid={d.dealStatus.clientPaid}
-                                                   docSigned={d.dealStatus.docSigned}
-                                                   docCollected={d.dealStatus.docCollected}
+                                                   dealStatus={d.dealStatus}
                                                    clientInvoices={d.clientInvoices}
                                                    providerInvoices={d.providerInvoices}
                                                    allDocs={d.allDocs}
@@ -27,10 +26,16 @@ const DealsItems = (props) => {
                                                    forwarders={d.forwarders}
                                                    commentManager={d.commentManager}
                                                    commentHead={d.commentHead}
+                                                   authBlock={props.authBlock}
+                                                   // functions
                                                    saveFile={props.saveFile}
                                                    deleteFile={props.deleteFile}
                                                    addDriver={props.addDriver}
                                                    addForwarder={props.addForwarder}
+                                                   toggleStatus={props.toggleStatus}
+                                                   deleteDriverFromDeal={props.deleteDriverFromDeal}
+                                                   deleteForwarderFromDeal={props.deleteForwarderFromDeal}
+                                                   editComment={props.editComment}
 
     />)
 

@@ -20,7 +20,7 @@ class Clock extends Component {
         });
     }
     render() {
-        return <p className={classes.clockText}>{this.state.time}</p>;
+        return <div className={classes.clockText}>{this.state.time}</div>;
     }
 }
 

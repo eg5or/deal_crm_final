@@ -9,11 +9,11 @@ const NavBar = () => {
             <div className={classes.items}>
                 <div className={classes.item}>
                     <NavLink
-                        to='/calculator'
+                        to='/dealspage'
                         className={classes.link}
                         activeClassName={classes.active}
                     >
-                        Калькулятор
+                        Сделки
                     </NavLink>
                 </div>
                 <div className={classes.item}>
@@ -27,11 +27,20 @@ const NavBar = () => {
                 </div>
                 <div className={classes.item}>
                     <NavLink
-                        to='/dealspage'
+                        to='/vars/drivers'
                         className={classes.link}
                         activeClassName={classes.active}
                     >
-                        Сделки
+                        Переменные
+                    </NavLink>
+                </div>
+                <div className={classes.item}>
+                    <NavLink
+                        to='/calculator'
+                        className={classes.link}
+                        activeClassName={classes.active}
+                    >
+                        Калькулятор
                     </NavLink>
                 </div>
                 <div className={classes.item}>
@@ -41,24 +50,6 @@ const NavBar = () => {
                         activeClassName={classes.active}
                     >
                         Прайс-лист
-                    </NavLink>
-                </div>
-                <div className={classes.item}>
-                    <NavLink
-                        to='/profile'
-                        className={classes.link}
-                        activeClassName={classes.active}
-                    >
-                        Профиль
-                    </NavLink>
-                </div>
-                <div className={classes.item}>
-                    <NavLink
-                        to='/vars/drivers'
-                        className={classes.link}
-                        activeClassName={classes.active}
-                    >
-                        Переменные
                     </NavLink>
                 </div>
             </div>

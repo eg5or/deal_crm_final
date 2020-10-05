@@ -1,0 +1,83 @@
+.statusBlock {
+    grid-area: statusBlock;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-areas: "approved providerPaid"
+                         "delivered clientPaid"
+                         "docSigned docSigned"
+                         "docCollected docCollected";
+}
+
+
+.buttonLeftNoAccess,
+.buttonLeft {
+    background-color: #607d8b;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
+    display: flex;
+    position: relative;
+    padding: 5px;
+}
+
+.btnText {
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.pointDone {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    background-color: greenyellow;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+}
+
+.buttonLeft:hover {
+    background-color: #455a64;
+    color: white;
+    cursor: pointer;
+}
+
+.buttonLeft:active {
+    background-color: #b0bec5;
+    color: #263238;
+    cursor: pointer;
+}
+
+.active {
+    background-color: #263238;
+    color: white;
+}
+
+
+.approved {
+    grid-area: approved;
+}
+
+.providerPaid {
+    grid-area: providerPaid;
+}
+
+.delivered {
+    grid-area: delivered;
+}
+
+.clientPaid {
+    grid-area: clientPaid;
+}
+
+.docSigned {
+    grid-area: docSigned;
+}
+
+.docCollected {
+    grid-area: docCollected;
+}

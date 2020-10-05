@@ -1,17 +1,25 @@
 .driver {
     display: grid;
-    grid-template-columns: 4fr 2fr;
+    grid-template-columns: 7fr 1fr 1fr 4fr;
     grid-template-rows: 30px;
     margin-bottom: 7px;
     font-size: 13px;
 }
 
+.driver:hover {
+
+}
+
+.icon,
 .driverName {
     background-color: #607d8b;
     display: flex;
     justify-content: left;
     align-items: center;
     padding: 3px 5px;
+}
+
+.driverName {
     color: white;
 }
 
@@ -23,4 +31,35 @@
     padding: 3px 5px;
     font-weight: bolder;
     color: #263238;
+}
+
+.emptyIcon {
+    background-color: #607d8b;
+}
+
+.icon {
+    font-size: 10px;
+    color: #b0bec5;
+}
+
+.icon:hover {
+    color: #263238;
+    cursor: pointer;
+}
+
+.icon:active {
+    color: white;
+}
+
+.noActive {
+    color: #607d8b;
+}
+
+.popup {
+    margin: 10px;
+    font-size: 12px;
+}
+
+.popupItems {
+    padding-bottom: 3px;
 }

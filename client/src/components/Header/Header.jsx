@@ -7,7 +7,6 @@ const Header = () => {
         <header className={classes.header}>
             <div className={classes.headerContainer}>
                 <div className={classes.dealCRM}>Deal CRM</div>
-                <div className={classes.clockBlock}><Clock /></div>
             </div>
 
         </header>
