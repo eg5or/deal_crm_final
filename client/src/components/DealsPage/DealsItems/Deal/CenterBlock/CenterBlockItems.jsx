@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import Tooltip from "@material-ui/core/Tooltip";
 
 const CenterBlockItems = (props) => {
     // -----------------------------------------------------------------------------------
@@ -50,13 +51,26 @@ const CenterBlockItems = (props) => {
     // -----------------------------------------------------------------------------------
     return (
         <div>
-            <div onClose={handleClose} className={classes.centerBlockItemsContainer} onMouseEnter={onDeleteShow} onMouseLeave={onDeleteHide}> {/*onClick={handleClickOpen}*/}
-                {(position === 'manager' || position === 'chief') && !dealDone && <div className={`${classes.deleteBtnArea} ${!deleteShow && classes.hideDeleteArea}`}>
+            <div onClose={handleClose} className={classes.centerBlockItemsContainer} onMouseEnter={onDeleteShow}
+                 onMouseLeave={onDeleteHide}> {/*onClick={handleClickOpen}*/}
+                {(position === 'manager' || position === 'chief') && !dealDone &&
+                <div className={`${classes.deleteBtnArea} ${!deleteShow && classes.hideDeleteArea}`}>
                     {askDelete && <div className={classes.askDelete}>
-                        <div className={classes.confirm} onClick={onDeleteFile}><CheckIcon fontSize={"small"} /></div>
-                        <div className={classes.cancel} onClick={onAskDeleteClose}><CloseIcon fontSize={"small"} /></div>
+                        <Tooltip title="Точно удалить" placement="bottom-end">
+                            <div className={classes.confirm} onClick={onDeleteFile}>
+                                <CheckIcon fontSize={"small"}/>
+                            </div>
+                        </Tooltip>
+                        <Tooltip title="Отмена" placement="bottom-start">
+                            <div className={classes.cancel} onClick={onAskDeleteClose}>
+                                <CloseIcon fontSize={"small"}/>
+                            </div>
+                        </Tooltip>
                     </div>}
-                    {!askDelete && <div className={classes.delete} onClick={onAskDeleteOpen}><DeleteIcon fontSize={"small"} /></div>}
+                    {!askDelete &&
+                    <Tooltip title="Удалить" placement="bottom-end">
+                        <div className={classes.delete} onClick={onAskDeleteOpen}><DeleteIcon fontSize={"small"}/></div>
+                    </Tooltip>}
                 </div>}
                 <div className={classes.nameCompany}>{props.company}</div>
                 <div className={classes.sum}>{Number(props.sum).toLocaleString()} ₽</div>

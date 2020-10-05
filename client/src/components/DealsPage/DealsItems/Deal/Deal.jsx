@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import classes from './deal.module.css'
-import Driver from './Driver/Driver';
-import Forwarder from './Forwarder/Forwarder';
 import CenterBlockItems from './CenterBlock/CenterBlockItems';
 import Switch from "@material-ui/core/Switch";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -18,27 +16,28 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Grid from "@material-ui/core/Grid";
 import StatusBlock from "./StatusBlock";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import DeliverItem from "./DeliverBlock/DeliverItems";
 
 const Deal = (props) => {
 
-    let driversElements = props.drivers.map(d => <Driver key={d.id}
-                                                         driverName={d.driverName}
+    let driversElements = props.drivers.map(d => <DeliverItem key={d.id}
+                                                         name={d.driverName}
                                                          tel={d.tel}
                                                          auto={d.auto}
                                                          sum={d.sum}
                                                          dealId={props.id}
                                                          position={props.authBlock.position}
-                                                         deleteDriverFromDeal={props.deleteDriverFromDeal}
+                                                         deleteItemFunction={props.deleteDriverFromDeal}
                                                          dealDone={props.dealStatus.dealDone}
     />)
 
-    let forwardersElements = props.forwarders.map(d => <Forwarder key={d.id}
-                                                                  forwarderName={d.forwarderName}
+    let forwardersElements = props.forwarders.map(d => <DeliverItem key={d.id}
+                                                                  name={d.forwarderName}
                                                                   tel={d.tel}
                                                                   sum={d.sum}
                                                                   dealId={props.id}
                                                                   position={props.authBlock.position}
-                                                                  deleteForwarderFromDeal={props.deleteForwarderFromDeal}
+                                                                  deleteItemFunction={props.deleteForwarderFromDeal}
                                                                   dealDone={props.dealStatus.dealDone}
     />)
 
