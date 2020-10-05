@@ -53,6 +53,7 @@ class AddDealContainer extends React.Component {
             currentEmployeeName={this.props.currentEmployeeName}
             addDeal={this.props.addDeal}
             loadingDealsPage={this.props.loadingDealsPage}
+            position={this.props.position}
         />
     }
 
@@ -67,6 +68,7 @@ const mapStateToProps = (state) => ({
     clientInvoicesData: state.addDealBlock.clientInvoicesData, // счета клиента
     toggleDialog: state.addDealBlock.toggleDialog, // состояние диалога
     currentEmployeeName: state.authBlock.name, // имя текущего сотрудника
+    position: state.authBlock.position, // должность текущего сотрудника
 })
 
 export default connect(mapStateToProps, {

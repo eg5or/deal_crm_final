@@ -459,10 +459,10 @@ const Deal = (props) => {
             </Dialog>
             {/*----------------------конец--------------------ОКНО ADD FORWARDER-------------------------------------*/}
             <div className={classes.leftBlock}>
-                <div className={(position === 'manager' || position === 'chief') ? classes.titleManager : classes.title}>
+                <div className={(position === 'manager' || position === 'chief' || position === 'director') ? classes.titleManager : classes.title}>
                     <div className={classes.date}>{dateString}</div>
                     <div className={classes.client}>{props.client}</div>
-                    {(position === 'manager' || position === 'chief') && <div className={classes.doneSwitcher}>
+                    {(position === 'manager' || position === 'chief' || position === 'director') && <div className={classes.doneSwitcher}>
                         <div className={classes.doneSwitcherContainer}>
                             <div className={`${classes.titleDoneSwitcher} ${!props.dealStatus.dealDone && classes.light_txt}`}>Готово</div>
                             {(position === 'manager') && <Switch

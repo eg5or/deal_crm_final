@@ -38,6 +38,13 @@ const AddDeal = (props) => {
     //
     const [filter, setFilter] = React.useState();
     switch (filter) {
+        case 'noDealDone':
+            const filter5 = {
+                status: 'dealDone',
+                bool: false
+            }
+            props.loadingDealsPage(filter5)
+            break
         case 'noDelivered':
             const filter = {
                 status: 'delivered',
@@ -93,6 +100,9 @@ const AddDeal = (props) => {
             {!props.buttonToggle && <div className={classes.filters}>
                 <Grid item>
                     <ToggleButtonGroup size="small" value={filter} exclusive onChange={filterChange}>
+                        {(props.position !== 'secretary') && <ToggleButton value="noDealDone">
+                            <ArchiveIcon fontSize="small" /> Не готовые
+                        </ToggleButton>}
                         <ToggleButton value="noDelivered">
                             <ArchiveIcon fontSize="small" /> Не вывезли
                         </ToggleButton>
