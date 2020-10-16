@@ -165,7 +165,7 @@ export const login = (email: string, password: string) => async (dispatch: any) 
     }
 }
 
-export const logout = (id: string) => async (dispatch: any) => {
+export const logout = () => async (dispatch: any) => {
     dispatch(setAuthUserData(null, false))
     localStorage.removeItem('token')
 }

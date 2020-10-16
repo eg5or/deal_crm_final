@@ -1,6 +1,10 @@
 import React from 'react';
-import './App.css';
 import {Redirect, Route, withRouter} from 'react-router-dom';
+import {compose} from "redux";
+import {connect} from 'react-redux';
+// styles
+import './App.css';
+// components
 import Vars from './components/Vars/Vars';
 import PriceListCreator from './components/PriceListCreator/PriceListCreator';
 import {DealsPageContainer} from './components/DealsPage/DealsPageContainer';
@@ -11,26 +15,24 @@ import HeaderRightContainer from "./components/HeaderRight/HeaderRightContainer"
 import CompaniesContainer from "./components/Clients/ClientsContainer";
 import SideBarVars from "./components/SideBar/SideBarVars/SideBarVars";
 import SideBarCompanies from "./components/SideBar/SideBarCompanies/SideBarCompanies";
-import {initializeApp} from "./redux/appReducer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import Preloader from "./common/Preloader/Preloader";
 import NotificationsContainer from "./components/Profile/Notifications/NotificationsContainer";
-import {StickyContainer, Sticky} from 'react-sticky';
-import {compose} from "redux";
-import {connect} from 'react-redux';
-
+// reducers
+import {initializeApp} from "./redux/appReducer";
 
 class App extends React.Component {
     componentDidMount() {
+        // инициализируем приложение
         this.props.initializeApp()
     }
 
     render() {
+        // если инициализация еще не прошла отображаем Прелоадер
         if (!this.props.initialized) {
-
             return <div className='preloader'><Preloader/></div>
         }
-
+        // если пользователь не авторизован то редиректим его на страницу Логин
         if (!this.props.isAuth) return <Redirect to='/login'/>
 
         return (
@@ -68,6 +70,7 @@ class App extends React.Component {
     }
 }
 
+// Local State
 const mapStateToProps = (state) => ({
     initialized: state.app.initialized,
     isAuth: state.authBlock.isAuth,

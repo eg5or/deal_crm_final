@@ -5,8 +5,8 @@ import Deal from './Deal/Deal';
 const DealsItems = (props) => {
     let sortedDeals = props.deals
     sortedDeals.sort((prev, next) => {
-        if ( prev.date > next.date ) return -1;
-        if ( prev.date > next.date ) return 1;
+        if (prev.date > next.date) return -1;
+        if (prev.date > next.date) return 1;
     })
 
     let dealsElements = sortedDeals.map(d => <Deal key={d._id}
@@ -30,7 +30,7 @@ const DealsItems = (props) => {
                                                    commentHead={d.commentHead}
                                                    authBlock={props.authBlock}
                                                    loading={props.loading}
-                                                   // functions
+                                                    // functions
                                                    saveFile={props.saveFile}
                                                    deleteFile={props.deleteFile}
                                                    addDriver={props.addDriver}
@@ -43,10 +43,8 @@ const DealsItems = (props) => {
     />)
 
     return (
-        <div>
-            <div className={`${classes.dealsPageItems}`}>
-                {dealsElements}
-            </div>
+        <div className={`${classes.dealsPageItems}`}>
+            {dealsElements}
         </div>
     )
 };
