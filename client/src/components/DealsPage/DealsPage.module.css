@@ -2,14 +2,12 @@
 
 }
 
-
-
 .paginationBar {
     display: flex;
     flex-direction: row;
     background-color: white;
     position: sticky;
-    top: 224px;
+    top: 222px;
     z-index: 997;
     padding: 5px 0 5px 0;
 }
