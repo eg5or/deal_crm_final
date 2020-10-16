@@ -8,6 +8,9 @@ scripts/flow/*/.flowconfig
 _SpecRunner.html
 __benchmarks__
 build/
+client/build
+client/build_old
+config
 uploads/
 remote-repo/
 coverage/
