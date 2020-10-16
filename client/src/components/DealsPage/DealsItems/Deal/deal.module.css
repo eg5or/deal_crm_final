@@ -1,4 +1,4 @@
-
+/* основной контейнер */
 .deal {
     display: grid;
     grid-gap: 10px;
@@ -12,6 +12,7 @@
 
 }
 
+/* левый блок */
 .leftBlock {
     grid-area: leftBlock;
     display: grid;
@@ -20,11 +21,9 @@
     grid-template-rows: 2fr 4fr;
     grid-template-areas: "title"
                          "statusBlock";
-
 }
 
-
-
+/* центральный блок */
 .centerBlock {
     grid-area: centerBlock;
     display: grid;
@@ -36,18 +35,20 @@
                          "allDocs";
 }
 
+/* правый блок */
 .rightBlock {
     grid-area: rightBlock;
     display: grid;
     background-color: #455a64;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 7fr 1fr 4fr;
-    grid-template-areas: "titleDeliver . . sumDeliver"
+    grid-template-areas: "titleDeliver . loading sumDeliver"
                          "drivers drivers forwarders forwarders"
                          "allDelta allDelta allDelta allDelta"
                          "commentsBlock commentsBlock commentsBlock commentsBlock";
 }
 
+/* дельта */
 .allDelta {
     grid-area: allDelta;
     display: grid;
@@ -60,7 +61,6 @@
 .deltaOutDocs {
     grid-area: deltaOutDocs;
     display: flex;
-
 }
 
 .deltaWithDocs {
@@ -86,26 +86,45 @@
     text-align: center;
 }
 
+/* левый блок */
+/* заглавный блок - для всех кроме менеджера */
 .title {
     grid-area: title;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-areas: "date"
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-areas: "dealNumber"
+                         "date"
                          "client"
                          "manager";
 }
 
+/* заглавный блок - для менеджера */
 .titleManager {
     grid-area: title;
     display: grid;
     grid-template-columns: 3fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-areas: "date doneSwitcher"
+    grid-template-rows: 1fr 1fr 1fr 2fr;
+    grid-template-areas: "dealNumber doneSwitcher"
+                         "date doneSwitcher"
                          "client doneSwitcher"
                          "manager manager";
 }
 
+.dealNumber a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #263238;
+    cursor: pointer;
+}
+
+.dealNumber a:hover{
+    color: #455a64;
+}
+
+/* переключатель готовности сделки */
 .doneSwitcher {
     grid-area: doneSwitcher;
     display: flex;
@@ -114,32 +133,38 @@
 }
 
 .doneSwitcherContainer {
-
-}
-
-.light_txt {
-    color: #b0bec5;
-    text-decoration: line-through;
-}
-
-.inputUpload {
-    display: none;
+    position: relative;
 }
 
 .titleDoneSwitcher {
     text-transform: uppercase;
 }
 
+.light_txt {
+    color: #b0bec5;
+    text-decoration: line-through;
+}
+/* номер сделки */
+.dealNumber {
+    grid-area: dealNumber;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+/* дата */
 .date {
     grid-area: date;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 20px;
     color: #263238;
 }
 
+/* клиент */
 .client {
     grid-area: client;
     display: flex;
@@ -149,6 +174,7 @@
     color: #263238;
 }
 
+/* менеджер */
 .manager {
     grid-area: manager;
     background-color: #455a64;
@@ -156,10 +182,14 @@
     justify-content: center;
     align-items: center;
     color: white;
-
 }
 
+/* диалоковое окно загрузки файлов */
+.inputUpload {
+    display: none;
+}
 
+/* блок для элементов центрального блока */
 .docsFilesItems {
     padding-left: 10px;
     padding-top: 10px;
@@ -168,6 +198,7 @@
     grid-template-columns: repeat(5, 75px);
 }
 
+/* кнопка добавления файлов */
 .addFile {
     background-color: #607d8b;
     height: 100px;
@@ -185,9 +216,7 @@
 .addFile:active {
     background-color: #b0bec5;
     color: #263238;
-
 }
-
 
 .plus {
     font-size: 60px;
@@ -200,123 +229,133 @@
     text-transform: uppercase;
 }
 
+/* общие для центрального блока */
+.headerClientInvoices,
+.headerProviderInvoices,
+.headerAllDoc {
+    display: grid;
+    grid-template-columns: 3fr 0.5fr 1fr;
+}
+
+.titleClientInvoices,
+.titleProviderInvoices,
+.titleAllDoc {
+    padding-left: 10px;
+    color: #b0bec5;
+}
+
+.sumClientInvoices,
+.sumProviderInvoices,
+.sumAllDocs {
+    padding: 5px 10px;
+    text-align: right;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* Счета клиентов */
 .clientInvoices {
     grid-area: clientInvoices;
     background-color: #455a64;
 }
 
-.clientInvoicesItems {
-
-}
-
 .headerClientInvoices {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    grid-template-areas: "titleClientInvoices sumClientInvoices";
+    grid-template-areas: "titleClientInvoices loading sumClientInvoices";
 }
 
 .titleClientInvoices {
     grid-area: titleClientInvoices;
-    padding-left: 10px;
-    color: #b0bec5;
 }
 
 .sumClientInvoices {
     grid-area: sumClientInvoices;
     background-color: #607d8b;
-    padding: 5px 10px;
-    text-align: right;
     color: white;
-    font-size: 15px;
-    font-weight: bold;
 }
 
+/* счета поставщиков */
 .providerInvoices {
     grid-area: providerInvoices;
     background-color: #455a64;
 }
 
-.providerInvoicesItems {
-
-}
-
 .headerProviderInvoices {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    grid-template-areas: "titleProviderInvoices sumProviderInvoices";
+    grid-template-areas: "titleProviderInvoices loading sumProviderInvoices";
 }
 
 .titleProviderInvoices {
     grid-area: titleProviderInvoices;
-    padding-left: 10px;
-    color: #b0bec5;
 }
 
 .sumProviderInvoices {
     grid-area: sumProviderInvoices;
     background-color: #607d8b;
-    padding: 5px 10px;
-    text-align: right;
     color: white;
-    font-size: 15px;
-    font-weight: bold;
 }
 
+/* все документы */
 .allDocs {
     grid-area: allDocs;
     background-color: #455a64;
 }
 
-.docsItems {
-
-}
-
 .headerAllDoc {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    grid-template-areas: "titleAllDoc delta";
+    grid-template-areas: "titleAllDoc loading delta";
 }
 
 .titleAllDoc {
     grid-area: titleAllDoc;
-    padding-left: 10px;
-    color: #b0bec5;
 }
 
-.delta {
+.loading {
+    grid-area: loading;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+}
+.loadingComment {
+    grid-area: loadingComment;
+    position: absolute;
+    top: 5px;
+    right: -15px;
+}
+.loadingDealDone {
+    position: absolute;
+    top: 0;
+    right: 20px;
+}
+.loadingDealDoneText {
+    color: #eceff1;
+}
+
+.sumAllDocs {
     grid-area: delta;
     background-color: #b0bec5;
-    padding: 5px 10px;
-    text-align: right;
     color: #263238;
+}
+
+/* доставка */
+.titleDeliver,
+.sumDeliver {
+    background-color: #607d8b;
+    color: white;
     font-size: 15px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 
 .titleDeliver {
     grid-area: titleDeliver;
-    background-color: #607d8b;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
     text-transform: uppercase;
-    font-size: 15px;
-    font-weight: bold;
-    color: white;
-
+    justify-content: center;
 }
 
 .sumDeliver {
     grid-area: sumDeliver;
-    background-color: #607d8b;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
+    justify-content: flex-end;
+    padding-right: 10px;
 }
 
 .drivers {
@@ -363,6 +402,7 @@
     padding: 0 10px;
 }
 
+/* комментарии */
 .commentsBlock {
     background-color: #607d8b;
     grid-area: commentsBlock;
@@ -451,6 +491,7 @@
     padding: 3px 0 0 10px;
     font-size: 13px;
     color: #263238;
+    position: relative;
 }
 
 .commentManager {

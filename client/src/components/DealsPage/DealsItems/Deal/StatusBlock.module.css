@@ -40,6 +40,15 @@
     border-radius: 50%;
 }
 
+.loading {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+}
+
 .buttonLeft:hover {
     background-color: #455a64;
     color: white;

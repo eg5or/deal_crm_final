@@ -10,6 +10,13 @@ const HeaderRight = (props) => {
                 logout={props.logout}
                 countNoDoneDeals={props.countNoDoneDeals}
                 countNoDeliveredDeals={props.countNoDeliveredDeals}
+                countNotificationsNoRead={props.countNotificationsNoRead}
+                toggleRefresh={props.toggleRefresh}
+                onRefresh={props.onRefresh}
+                offRefresh={props.offRefresh}
+                loadingNotificationsNoReadCount={props.loadingNotificationsNoReadCount}
+                newNotification={props.newNotification}
+                loadingDealsPage={props.loadingDealsPage}
             />
         </div>
     </div>

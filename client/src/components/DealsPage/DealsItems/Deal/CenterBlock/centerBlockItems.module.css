@@ -62,7 +62,7 @@
     width: 100%;
     padding-right: 5px;
 }
-.hideDeleteArea {
+.hide {
     display: none;
 }
 
@@ -70,4 +70,33 @@
 .cancel:hover,
 .delete:hover {
     color: #607d8b;
+}
+
+.viewBtnArea {
+    position: absolute;
+    top: 25px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 5px;
+    z-index: 999;
+}
+
+.smallFont {
+    font-size: 10px;
+}
+
+.image img{
+    height:650px;
+}
+
+.noZoom img:hover{
+    cursor: zoom-in;
+}
+
+.zoom img{
+    height:100%;
+}
+.zoom img:hover{
+    cursor: zoom-out;
 }

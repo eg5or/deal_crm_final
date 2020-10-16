@@ -12,10 +12,12 @@ import CompaniesContainer from "./components/Clients/ClientsContainer";
 import SideBarVars from "./components/SideBar/SideBarVars/SideBarVars";
 import SideBarCompanies from "./components/SideBar/SideBarCompanies/SideBarCompanies";
 import {initializeApp} from "./redux/appReducer";
-import {compose} from "redux";
-import {connect} from "react-redux";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import Preloader from "./common/Preloader/Preloader";
+import NotificationsContainer from "./components/Profile/Notifications/NotificationsContainer";
+import {StickyContainer, Sticky} from 'react-sticky';
+import {compose} from "redux";
+import {connect} from 'react-redux';
 
 
 class App extends React.Component {
@@ -33,9 +35,11 @@ class App extends React.Component {
 
         return (
             <div className='app-wrapper'>
-                <Header/>
-                <NavBar/>
-                <HeaderRightContainer/>
+                <div className='allHeader'>
+                    <Header/>
+                    <NavBar/>
+                    <HeaderRightContainer/>
+                </div>
                 <div className='app-wrapper-content'>
                     <Route path='/calculator' render={() => <Calculator/>}/>
                     <Route path='/clients' render={() => {
@@ -44,9 +48,10 @@ class App extends React.Component {
                             <div className='sidebar'><SideBarCompanies/></div>
                         </div>
                     }}/>
-                    <Route path='/dealspage' render={() => <DealsPageContainer/>}/>
+                    <Route path='/dealspage/:id?' render={() => <DealsPageContainer/>}/>
                     <Route path='/pricelistcreator' render={() => <PriceListCreator/>}/>
                     <Route path='/profile' render={() => <ProfileContainer/>}/>
+                    <Route path='/notifications/:page?' render={() => <NotificationsContainer/>}/>
                     <Route path='/vars' render={() => {
                         return <div className='app-wrapper-content-with-sidebar'>
                             <div className='content'>

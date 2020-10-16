@@ -111,6 +111,7 @@
 .btnActionsBlock {
     grid-area: btnActionsBlock;
     display: flex;
+    position: relative;
 }
 
 .btnActionsBlock a{
@@ -123,10 +124,44 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .btnAction:hover {
     color: #455a64;
     cursor: pointer;
 }
+
+.refreshNotifications {
+    background-color: #b0bec5;
+    width:24px;
+    height: 24px;
+    border-radius: 12px;
+}
+
+
+.numberInCircle {
+    font-size: 9px;
+    font-weight: bolder;
+    color: #263238;
+}
+
+.popupNotifications {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 600px;
+    height: auto;
+    background-color: #b0bec5;
+    border-radius: 10px;
+    z-index: 999;
+    padding: 10px;
+}
+
+.notificationsActive {
+    color: #d32f2f;
+}
+
+.displayNone {
+    display: none;
+}
+

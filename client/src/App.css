@@ -1,14 +1,21 @@
 .app-wrapper {
   margin: auto;
-  display: grid;
   width: 1400px;
-  grid-template-rows: 110px 40px 1fr;
-  grid-template-columns: 2fr 8fr 2fr;
+}
+
+.allHeader {
+  background-color: white;
+  position: sticky;
+  top: 0px;
+  z-index: 999;
+  display: grid;
+  padding-bottom: 10px;
+  grid-template-rows: 110px 40px;
+  grid-template-columns: 2fr 7.5fr 2.5fr;
   grid-gap: 10px;
   grid-template-areas:
   "h h hr"
-  "nb nb hr"
-  "p p p";
+  "nb nb hr";
 }
 
 .app-wrapper-content {
@@ -17,7 +24,6 @@
 }
 
 .app-wrapper-content-with-sidebar {
-
   display: grid;
   grid-template-columns: 2fr 10fr;
   grid-gap: 10px;

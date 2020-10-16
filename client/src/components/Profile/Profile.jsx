@@ -18,7 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
 
-const Profile = ({profileData: {name, position, head, intel, tel, location, birthday, email}}) => {
+const Profile = ({profileData: {name, position, head, intel, tel, location, birthday, email, avatar}}) => {
     let positionRU = ''
     switch (position) {
         case 'manager':
@@ -99,7 +99,7 @@ const Profile = ({profileData: {name, position, head, intel, tel, location, birt
                 <div className={classes.row}>
                     <div className={classes.icon}><EventSeatIcon /></div>
                     <div className={classes.label}>Руководитель</div>
-                    <div className={classes.value}>{head}</div>
+                    <div className={classes.value}>{head.name}</div>
                 </div>
                 <div className={classes.row}>
                     <div className={classes.icon}><PhoneLockedIcon /></div>
@@ -113,7 +113,7 @@ const Profile = ({profileData: {name, position, head, intel, tel, location, birt
                 </div>
             </div>
             <div className={classes.avatarBlock}>
-                <div className={classes.avatar}><img src={AvatarDefault} /></div>
+                <div className={classes.avatar}><img src={avatar === '' ? 'images/avatars/default.png' : avatar} /></div>
                 <div className={classes.changeAvatar}>
                     <div className={classes.uploadAvatar}>
                         <Button

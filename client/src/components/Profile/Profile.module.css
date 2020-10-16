@@ -9,9 +9,11 @@
                          "table avatarBlock"
                          "table changePassword";
 }
+
 .title {
     grid-area: title;
 }
+
 .table {
     grid-area: table;
     display: grid;
@@ -43,13 +45,13 @@
 
 .label {
     padding: 10px 10px;
-    width: 200px;
+    width: 100%;
     background-color: #455a64;
 }
 
 .value {
     padding: 10px 20px;
-    width: 300px;
+    width: 100%;
     background-color: #607d8b;
     border-radius: 0 10px 10px 0;
 }

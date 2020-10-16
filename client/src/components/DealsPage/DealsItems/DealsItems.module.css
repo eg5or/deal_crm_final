@@ -1,3 +1,22 @@
 .dealsPageItems {
 
 }
+
+.displayNone {
+    display: none;
+}
+
+.preloader {
+    display: flex;
+    justify-content: center;
+    height: 700px;
+}
+
+.hide {
+    position: relative;
+    top: 0;
+    -moz-transition: top .5s cubic-bezier(.15, .86, .15, .86);
+    -o-transition: top .5s cubic-bezier(.15, .86, .15, .86);
+    -webkit-transition: top .5s cubic-bezier(.15, .86, .15, .86);
+    transition: top .5s cubic-bezier(.15, .86, .15, .86);
+}

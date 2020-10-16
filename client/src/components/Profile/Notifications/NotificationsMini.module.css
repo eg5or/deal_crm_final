@@ -1,0 +1,141 @@
+.notificationsPage {
+    background-color: #eceff1;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.notification {
+    border-radius: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.noRead {
+    background-color: #607d8b;
+    color: #eceff1;
+}
+
+.read {
+    background-color: #b0bec5;
+    color: #263238;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding-left: 10px;
+    font-weight: bold;
+    width: 20%;
+}
+
+.readAll {
+    display: flex;
+    align-items: center;
+    color: #607d8b;
+    width: 10%;
+}
+
+.readAll:hover {
+    color: #263238;
+    cursor: pointer;
+}
+
+.readAll:active {
+    color: #eceff1;
+}
+
+.viewMore {
+    display: flex;
+    align-items: center;
+    text-align: right;
+    width: 80%;
+    padding-right: 20px;
+}
+
+.viewMore a{
+    text-decoration: none;
+    color: #455a64;
+}
+
+.viewMore a:hover{
+    color: #263238;
+    text-decoration: underline;
+}
+
+.table {
+    font-size: 12px;
+}
+
+
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.firstBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex: 23%;
+}
+
+.dt {
+    font-size: 10px;
+    padding: 2px 5px;
+}
+
+.creator {
+    background-color: #455a64;
+    color: #eceff1;
+    border-radius: 8px;
+    padding: 3px 8px;
+    font-size: 11px;
+    width: auto;
+    justify-self: center;
+}
+
+.message {
+    padding: 5px 10px;
+    flex: 47%;
+    align-self: center;
+}
+
+.text {
+    padding: 5px 0;
+    flex: 10%;
+}
+
+.dealLink {
+    padding: 5px;
+    flex: 20%;
+    display: flex;
+    align-items: center;
+}
+
+.dealLinkNoRead a{
+    text-decoration: none;
+    color: #eceff1;
+}
+
+.dealLinkNoRead a:hover{
+    color: #263238;
+}
+
+.dealLinkRead a{
+    text-decoration: none;
+    color: #263238;
+}
+
+.dealLinkRead a:hover{
+    color: #eceff1;
+}

@@ -1,11 +1,22 @@
 .dealsPage {
-    display: grid;
-    grid-template-rows: auto;
-    grid-gap: 20px;
+
 }
 
 
 
-.dealsPageItems {
+.paginationBar {
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    position: sticky;
+    top: 224px;
+    z-index: 997;
+    padding: 5px 0 5px 0;
+}
 
+.progress,
+.pagination {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }

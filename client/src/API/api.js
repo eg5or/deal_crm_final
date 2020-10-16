@@ -1,7 +1,7 @@
 import * as axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://localhost:5000/api/',
+    baseURL: 'http://92.63.100.121:5000/api/',
     /*headers: {
         'Authorization': token || ''
     }*/
@@ -67,59 +67,66 @@ export const clientsAPI = {
 }
 
 export const dealsAPI = {
-    getAllDeals(token) {
-        return instance.get(`deals`, {
+    getAllDeals(token, page) {
+        return instance.get(`deals?page=${page}`, {
             headers: {
                 'Authorization': token
             }
         }).then(response => response.data)
     },
-    getAllDealsDone(token) {
-        return instance.get(`deals/done`, {
+    getAllDealsDone(token, page) {
+        return instance.get(`deals/done?page=${page}`, {
             headers: {
                 'Authorization': token
             }
         }).then(response => response.data)
     },
-    getAllManagerDeals(name, token) {
-        return instance.get(`deals/manager?name=${name}`, {
+    getOneDeal(id, token) {
+        return instance.get(`deals/${id}`, {
             headers: {
                 'Authorization': token
             }
         }).then(response => response.data)
     },
-    filterDealsByStatusManagers(name, filter, token) {
+    getAllManagerDeals(id, token, page) {
+        return instance.get(`deals/manager?id=${id}&page=${page}`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
+    },
+    filterDealsByStatusManagers(id, filter, token, page) {
         const {status, bool} = filter
-        return instance.get(`deals/filter?name=${name}&status=${status}&bool=${bool}`, {
+        return instance.get(`deals/filter?id=${id}&status=${status}&bool=${bool}&page=${page}`, {
             headers: {
                 'Authorization': token
             }
         }).then(response => response.data)
     },
-    filterDealsByStatusAllManagers(filter, token) {
+    filterDealsByStatusAllManagers(filter, token, page) {
         const {status, bool} = filter
-        return instance.get(`deals/filterall?status=${status}&bool=${bool}`, {
+        return instance.get(`deals/filterall?status=${status}&bool=${bool}&page=${page}`, {
             headers: {
                 'Authorization': token
             }
         }).then(response => response.data)
     },
-    getCountManagersDealsNoDone(name, token) {
-        return instance.get(`deals/nodonecount?name=${name}`, {
+    getCountManagersDealsNoDone(id, token) {
+        return instance.get(`deals/nodonecount?id=${id}`, {
             headers: {
                 'Authorization': token
             }
         }).then(response => response.data)
     },
-    getCountManagersDealsNoDelivered(name, token) {
-        return instance.get(`deals/nodeliveredcount?name=${name}`, {
+    getCountManagersDealsNoDelivered(id, token) {
+        return instance.get(`deals/nodeliveredcount?id=${id}`, {
             headers: {
                 'Authorization': token
             }
         }).then(response => response.data)
     },
-    addNewDeal(date, client, name) {
-        return instance.post(`deals/add`, {date, client, responsibility: {name}})
+    addNewDeal(date, client, id) {
+        return instance.post(`deals/add`, {date, client, id}).then(response => response.data)
     },
     addDriverToDeal(id, driverId, sum) {
         return instance.post(`deals/driver`, {id, driverId, sum})
@@ -143,7 +150,7 @@ export const dealsAPI = {
         return instance.delete(`deals/${id}`)
     },
     toggleStatus(id, status) {
-        return instance.post(`deals/status?id=${id}&status=${status}`)
+        return instance.post(`deals/status?id=${id}&status=${status}`).then(response => response.data)
     }
 }
 
@@ -227,5 +234,46 @@ export const clientInvoicesAPI = {
     },
     deleteClientInvoice(id) {
         return instance.delete(`clientinvoices/${id}`)
+    }
+}
+
+export const notificationsAPI = {
+    getAllNotifications(id, page, token) {
+        return instance.get(`notifications/all?id=${id}&page=${page}`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
+    },
+    getCountNoReadNotifications(id, token) {
+        return instance.get(`notifications/countnoread?id=${id}`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
+    },
+    readAllNotifications(id, token) {
+        return instance.patch(`notifications/allread?id=${id}`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
+    },
+    getNotificationsForPopup(id, token) {
+        return instance.get(`notifications/popup?id=${id}`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
+    },
+    getNewNotifications(id, token) {
+        return instance.get(`forwarders/new?id=${id}`, {
+            headers: {
+                'Authorization': token
+            }
+        }).then(response => response.data)
+    },
+    create(creator, recipients, deal, message, read, token) {
+        return instance.post(`notifications`, {creator, recipients, deal, message, read})
     }
 }

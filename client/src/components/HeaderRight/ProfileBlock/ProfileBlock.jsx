@@ -9,12 +9,28 @@ import MultilineChartIcon from '@material-ui/icons/MultilineChart';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes';
-import SpeakerNotesOffIcon from '@material-ui/icons/SpeakerNotesOff';
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
+import TimerIcon from '@material-ui/icons/Timer';
 import Tooltip from "@material-ui/core/Tooltip";
 import {NavLink} from "react-router-dom";
+import NotificationsMiniContainer from "../../Profile/Notifications/NotificationsMiniContainer";
+import Badge from "@material-ui/core/Badge";
+import withStyles from "@material-ui/core/styles/withStyles";
+import RefreshTimer from "./RefreshTimer";
 
-const ProfileBlock = ({authBlock: {name, userId, email, position}, countNoDeliveredDeals, countNoDoneDeals, logout}) => {
+const ProfileBlock = ({
+                          authBlock: {name, userId, email, position, avatar},
+                          countNoDeliveredDeals,
+                          countNoDoneDeals,
+                          logout,
+                          countNotificationsNoRead,
+                          loadingNotificationsNoReadCount,
+                          toggleRefresh,
+                          onRefresh,
+                          offRefresh,
+                          loadingDealsPage
+                      }, {...props}) => {
     let positionRU = ''
     switch (position) {
         case 'manager':
@@ -36,12 +52,32 @@ const ProfileBlock = ({authBlock: {name, userId, email, position}, countNoDelive
         logout(userId)
     }
 
+    const [open, setOpen] = React.useState(false);
+
+    const onOpenPopupNotifications = () => {
+        setOpen(true);
+    };
+
+    const onClosePopupNotifications = () => {
+        setOpen(false);
+    };
+
+    const StyledBadge = withStyles((theme) => ({
+        badge: {
+            right: 3,
+            top: 7,
+            border: `2px solid ${theme.palette.background.paper}`,
+            padding: '0 4px',
+            fontSize: '9px'
+        },
+    }))(Badge);
+
     return (
         <div className={classes.profileBlock}>
             <div className={classes.position}>{positionRU}</div>
             <div className={classes.name}>{name}</div>
             <div className={classes.email}>{email}</div>
-            <img className={classes.avatar} src={AvatarDefault}/>
+            <img className={classes.avatar} src={avatar === '' ? 'images/avatars/default.png' : avatar}/>
             <div className={classes.alertStatuses}>
                 {countNoDoneDeals === 0
                     ? <Tooltip title="Все сделки отправлены!" placement="bottom-end">
@@ -102,12 +138,38 @@ const ProfileBlock = ({authBlock: {name, userId, email, position}, countNoDelive
                     </NavLink>
                 </Tooltip>
                 <Tooltip title="Уведомления" placement="bottom-start">
-                    <NavLink
-                        to='/profile'
-                    >
-                        <div className={classes.btnAction}><SpeakerNotesIcon/></div>
-                    </NavLink>
+                    <a>
+                        <div
+                            className={`${classes.btnAction} ${countNotificationsNoRead !== 0 && classes.notificationsActive}`}
+                            onClick={onOpenPopupNotifications}
+                        >
+                            {countNotificationsNoRead === 0
+                                ? <NotificationsNoneIcon/>
+                                : <StyledBadge
+                                    badgeContent={countNotificationsNoRead}
+                                    max={9}
+                                    color="primary"><NotificationsActiveIcon/></StyledBadge>}
+                        </div>
+                    </a>
                 </Tooltip>
+                <a>
+                    <div className={`${classes.btnAction}`}>
+                        {toggleRefresh
+                            ? <div className={classes.refreshNotifications} onClick={offRefresh}>
+                            <RefreshTimer
+                                loadingNotificationsNoReadCount={loadingNotificationsNoReadCount}
+                                loadingDealsPage={loadingDealsPage}
+                            />
+                        </div>
+                            : <TimerIcon onClick={onRefresh}/>}
+                    </div>
+                </a>
+                <div
+                    onMouseLeave={onClosePopupNotifications}
+                    className={`${classes.popupNotifications} ${!open && classes.displayNone}`}
+                >
+                    <NotificationsMiniContainer/>
+                </div>
             </div>
             <div className={classes.clockBlock}><Clock/></div>
         </div>
@@ -115,3 +177,4 @@ const ProfileBlock = ({authBlock: {name, userId, email, position}, countNoDelive
 }
 
 export default ProfileBlock;
+

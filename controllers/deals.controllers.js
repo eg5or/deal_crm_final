@@ -1,8 +1,8 @@
 const fs = require('fs')
 const multer = require('multer')
 const path = require('path')
-const pdf = require('pdf-poppler');
 const Deal = require('../models/Deal')
+const Counter = require('../models/Counter')
 const Driver = require('../models/Driver')
 const Forwarder = require('../models/Forwarder')
 const errorHandler = require('../utils/errorHandler')
@@ -11,7 +11,7 @@ const errorHandler = require('../utils/errorHandler')
 // настройка:
 const storageConfig = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads'); // путь для загружаемых файлов
+        cb(null, 'client/public/uploads'); // путь для загружаемых файлов
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname)); // устанавливаем новое имя файлу
@@ -70,8 +70,32 @@ module.exports.upload = function (req, res) {
 
         // проверяем тип загруженного файла
         // если PDF то отправляем в конвертер
-        if (path.extname(file) === '.pdf') {
-            // ОПЦИИ конвертирования
+        /*if (path.extname(file) === '.pdf') {
+            const options = {
+
+            };
+            const specimen1 = "./files/specimen1.pdf";
+
+            const outputDirectory = "./output/from-file-to-image";
+
+            rimraf.sync(outputDirectory);
+
+            mkdirsSync(outputDirectory);
+
+            const baseOptions = {
+                density: 100,
+                saveFilename: `${path.basename(file, path.extname(file))}`,
+                format: "png",
+                width: 600,
+                height: 600,
+                savePath: outputDirectory
+            };
+
+            const convert = fromPath(specimen1, baseOptions);
+
+            return convert(1);
+
+            /!*!// ОПЦИИ конвертирования
             let opts = {
                 format: 'jpeg',
                 out_dir: path.dirname(file),
@@ -91,7 +115,7 @@ module.exports.upload = function (req, res) {
                 .catch(error => {
                     console.error(error);
                 })
-
+*!/
             try {
                 console.log('Обновление сделки');
                 switch (req.query.type) {
@@ -102,7 +126,7 @@ module.exports.upload = function (req, res) {
                                 $addToSet: {
                                     "clientInvoices": {
                                         company: req.query.company,
-                                        fileUrl: `/${path.dirname(file)}/${path.basename(file, '.pdf')}-1.jpg`,
+                                        fileUrl: `${path.basename(file, '.pdf')}-1.jpg`,
                                         sum: req.query.sum,
                                         typeFile: req.query.type
                                     }
@@ -121,7 +145,7 @@ module.exports.upload = function (req, res) {
                                 $addToSet: {
                                     "providerInvoices": {
                                         company: req.query.company,
-                                        fileUrl: `/${path.dirname(file)}/${path.basename(file, '.pdf')}-1.jpg`,
+                                        fileUrl: `${path.basename(file, '.pdf')}-1.jpg`,
                                         sum: req.query.sum,
                                         typeFile: req.query.type
                                     }
@@ -140,7 +164,7 @@ module.exports.upload = function (req, res) {
                                 $addToSet: {
                                     "allDocs": {
                                         company: req.query.company,
-                                        fileUrl: `/${path.dirname(file)}/${path.basename(file, '.pdf')}-1.jpg`,
+                                        fileUrl: `${path.basename(file, '.pdf')}-1.jpg`,
                                         sum: req.query.sum,
                                         typeFile: req.query.type
                                     }
@@ -158,7 +182,7 @@ module.exports.upload = function (req, res) {
                 errorHandler(res, e)
                 console.log('Ошибка ', e);
             }
-        } else {
+        } else {*/
             try {
                 console.log('Обновление сделки');
                 switch (req.query.type) {
@@ -169,7 +193,7 @@ module.exports.upload = function (req, res) {
                                 $addToSet: {
                                     "clientInvoices": {
                                         company: req.query.company,
-                                        fileUrl: req.file.path,
+                                        fileUrl: `${path.basename(file)}`,
                                         sum: req.query.sum,
                                         typeFile: req.query.type
                                     }
@@ -188,7 +212,7 @@ module.exports.upload = function (req, res) {
                                 $addToSet: {
                                     "providerInvoices": {
                                         company: req.query.company,
-                                        fileUrl: req.file.path,
+                                        fileUrl: `${path.basename(file)}`,
                                         sum: req.query.sum,
                                         typeFile: req.query.type
                                     }
@@ -207,7 +231,7 @@ module.exports.upload = function (req, res) {
                                 $addToSet: {
                                     "allDocs": {
                                         company: req.query.company,
-                                        fileUrl: req.file.path,
+                                        fileUrl: `${path.basename(file)}`,
                                         sum: req.query.sum,
                                         typeFile: req.query.type
                                     }
@@ -225,7 +249,6 @@ module.exports.upload = function (req, res) {
                 errorHandler(res, e)
                 console.log('Ошибка ', e);
             }
-        }
     })
 } // готово
 
@@ -449,28 +472,49 @@ module.exports.editComment = async function (req, res) {
 } // готово
 
 module.exports.create = async function (req, res) {
-    const deal = new Deal({
-        date: req.body.date,
-        client: req.body.client,
-        responsibility: {
-            name: req.body.responsibility.name
-        }
-    })
-    try {
-        await deal.save()
-        // Передаем статус 201 Created - что-то создано в БД
-        res.status(201).json(deal)
-    } catch (e) {
-        // Обработать ошибку
-        errorHandler(res, e)
-    }
+
+    await Counter.findOneAndUpdate(
+        {dealNumber: 'dealnumber'},
+        {$inc: {seq: 1}},
+        {new: true})
+    await Counter.findOne({dealNumber: 'dealnumber'},
+        async function (error, ret) {
+            const deal = new Deal({
+                date: req.body.date,
+                client: req.body.client,
+                responsibility: req.body.id,
+                dealNumber: ret.seq
+            })
+            try {
+                await deal.save()
+                // Передаем статус 201 Created - что-то создано в БД
+                res.status(201).json(deal)
+            } catch (e) {
+                // Обработать ошибку
+                errorHandler(res, e)
+            }
+        })
 } // готово
+
 
 module.exports.getAll = async function (req, res) {
     try {
-        await Deal.find({}, function (error, result) {
-            res.status(200).json(result)
-        })
+        const perPage = 5
+        const page = Math.max(0, req.query.page)
+        await Deal.find({})
+            .sort({date: -1})
+            .limit(perPage)
+            .skip(perPage * page - perPage)
+            .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+            .exec(function (err, result) {
+                Deal.find({}).count().exec(function (err, count) {
+                    res.status(200).json({
+                        result: result,
+                        page: page,
+                        pages: Math.ceil(count / perPage)
+                    })
+                })
+            })
     } catch (e) {
         // Обработать ошибку
         errorHandler(res, e)
@@ -479,9 +523,22 @@ module.exports.getAll = async function (req, res) {
 
 module.exports.getAllDealsDone = async function (req, res) {
     try {
-        await Deal.find({"dealStatus.dealDone": true}, function (error, result) {
-            res.status(200).json(result)
-        })
+        const perPage = 5
+        const page = Math.max(0, req.query.page)
+        await Deal.find({"dealStatus.dealDone": true})
+            .sort({date: -1})
+            .limit(perPage)
+            .skip(perPage * page - perPage)
+            .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+            .exec(function (err, result) {
+                Deal.find({"dealStatus.dealDone": true}).count().exec(function (err, count) {
+                    res.status(200).json({
+                        result: result,
+                        page: page,
+                        pages: Math.ceil(count / perPage)
+                    })
+                })
+            })
     } catch (e) {
         // Обработать ошибку
         errorHandler(res, e)
@@ -490,9 +547,22 @@ module.exports.getAllDealsDone = async function (req, res) {
 
 module.exports.getAllManagerDeals = async function (req, res) {
     try {
-        await Deal.find({"responsibility.name": req.query.name}, function (error, result) {
-            res.status(200).json(result)
-        })
+        const perPage = 5
+        const page = Math.max(0, req.query.page)
+        await Deal.find({"responsibility": req.query.id})
+            .sort({date: -1})
+            .limit(perPage)
+            .skip(perPage * page - perPage)
+            .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+            .exec(function (err, result) {
+                Deal.find({"responsibility": req.query.id}).count().exec(function (err, count) {
+                    res.status(200).json({
+                        result: result,
+                        page: page,
+                        pages: Math.ceil(count / perPage)
+                    })
+                })
+            })
     } catch (e) {
         // Обработать ошибку
         errorHandler(res, e)
@@ -500,64 +570,164 @@ module.exports.getAllManagerDeals = async function (req, res) {
 } // готово
 
 module.exports.filterDealsByStatusManagers = async function (req, res) {
-    const {name, status, bool} = req.query
+    const {id, status, bool} = req.query
     try {
+        const perPage = 5
+        const page = Math.max(0, req.query.page)
         switch (status) {
             case 'approved':
                 await Deal.find({
-                    "responsibility.name": name,
-                    "dealStatus.approved" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "responsibility": id,
+                    "dealStatus.approved": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "responsibility": id,
+                            "dealStatus.approved": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'providerPaid':
                 await Deal.find({
-                    "responsibility.name": name,
-                    "dealStatus.providerPaid" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "responsibility": id,
+                    "dealStatus.providerPaid": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "responsibility": id,
+                            "dealStatus.providerPaid": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'delivered':
                 await Deal.find({
-                    "responsibility.name": name,
-                    "dealStatus.delivered" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "responsibility": id,
+                    "dealStatus.delivered": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "responsibility": id,
+                            "dealStatus.delivered": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'clientPaid':
                 await Deal.find({
-                    "responsibility.name": name,
-                    "dealStatus.clientPaid" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "responsibility": id,
+                    "dealStatus.clientPaid": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "responsibility": id,
+                            "dealStatus.clientPaid": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'docSigned':
                 await Deal.find({
-                    "responsibility.name": name,
-                    "dealStatus.docSigned" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "responsibility": id,
+                    "dealStatus.docSigned": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "responsibility": id,
+                            "dealStatus.docSigned": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'docCollected':
                 await Deal.find({
-                    "responsibility.name": name,
-                    "dealStatus.docCollected" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "responsibility": id,
+                    "dealStatus.docCollected": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "responsibility": id,
+                            "dealStatus.docCollected": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'dealDone':
                 await Deal.find({
-                    "responsibility.name": name,
-                    "dealStatus.dealDone" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "responsibility": id,
+                    "dealStatus.dealDone": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "responsibility": id,
+                            "dealStatus.dealDone": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             default:
                 break
@@ -571,55 +741,148 @@ module.exports.filterDealsByStatusManagers = async function (req, res) {
 module.exports.filterDealsByStatusAllManagers = async function (req, res) {
     const {status, bool} = req.query
     try {
+        const perPage = 5
+        const page = Math.max(0, req.query.page)
         switch (status) {
             case 'approved':
                 await Deal.find({
-                    "dealStatus.approved" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "dealStatus.approved": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "dealStatus.approved": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'providerPaid':
                 await Deal.find({
-                    "dealStatus.providerPaid" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "dealStatus.providerPaid": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "dealStatus.providerPaid": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'delivered':
                 await Deal.find({
-                    "dealStatus.delivered" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "dealStatus.delivered": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "dealStatus.delivered": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'clientPaid':
                 await Deal.find({
-                    "dealStatus.clientPaid" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "dealStatus.clientPaid": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "dealStatus.clientPaid": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'docSigned':
                 await Deal.find({
-                    "dealStatus.docSigned" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "dealStatus.docSigned": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "dealStatus.docSigned": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'docCollected':
                 await Deal.find({
-                    "dealStatus.docCollected" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "dealStatus.docCollected": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "dealStatus.docCollected": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             case 'dealDone':
                 await Deal.find({
-                    "dealStatus.dealDone" : bool
-                }, function (error, result) {
-                    res.status(200).json(result)
+                    "dealStatus.dealDone": bool
                 })
+                    .sort({date: -1})
+                    .limit(perPage)
+                    .skip(perPage * page - perPage)
+                    .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+                    .exec(function (err, result) {
+                        Deal.find({
+                            "dealStatus.dealDone": bool
+                        }).count().exec(function (err, count) {
+                            res.status(200).json({
+                                result: result,
+                                page: page,
+                                pages: Math.ceil(count / perPage)
+                            })
+                        })
+                    })
                 break
             default:
                 break
@@ -633,8 +896,8 @@ module.exports.filterDealsByStatusAllManagers = async function (req, res) {
 module.exports.getCountManagersDealsNoDone = async function (req, res) {
     try {
         await Deal.countDocuments({
-            "responsibility.name": req.query.name,
-            "dealStatus.dealDone" : false
+            "responsibility": req.query.id,
+            "dealStatus.dealDone": false
         }, function (error, result) {
             res.status(200).json({
                 count: result
@@ -649,8 +912,8 @@ module.exports.getCountManagersDealsNoDone = async function (req, res) {
 module.exports.getCountManagersDealsNoDelivered = async function (req, res) {
     try {
         await Deal.countDocuments({
-            "responsibility.name": req.query.name,
-            "dealStatus.delivered" : false
+            "responsibility": req.query.id,
+            "dealStatus.delivered": false
         }, function (error, result) {
             res.status(200).json({
                 count: result
@@ -664,9 +927,11 @@ module.exports.getCountManagersDealsNoDelivered = async function (req, res) {
 
 module.exports.getById = async function (req, res) {
     try {
-        await Deal.find({_id: req.params.id}, function (error, result) {
-            res.status(200).json(result)
-        })
+        await Deal.find({_id: req.params.id})
+            .populate('responsibility', ('-password -__v -birthday -head -intel -position -tel -email'))
+            .exec(function (err, result) {
+                res.status(200).json(result)
+            })
     } catch (e) {
         // Обработать ошибку
         errorHandler(res, e)
@@ -687,180 +952,166 @@ module.exports.update = function (req, res) {
 
 module.exports.toggleStatus = async function (req, res) {
     try {
-        const candidate = await Deal.findOne({_id: req.query.id})
+
         switch (req.query.status) {
             case 'approved':
-                if (candidate.dealStatus.approved === true) {
-                    await Deal.updateOne(
+                const candidate1 = await Deal.findOne({_id: req.query.id},
+                    function (error, result) {
+                        res.status(200).json(result)
+                    })
+                if (candidate1.dealStatus.approved === true) {
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.approved": false
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 } else {
-                    await Deal.updateOne(
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.approved": true
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 }
                 break
             case 'providerPaid':
-                if (candidate.dealStatus.providerPaid === true) {
-                    await Deal.updateOne(
+                const candidate2 = await Deal.findOne({_id: req.query.id},
+                    function (error, result) {
+                        res.status(200).json(result)
+                    })
+                if (candidate2.dealStatus.providerPaid === true) {
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.providerPaid": false
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 } else {
-                    await Deal.updateOne(
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.providerPaid": true
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 }
                 break
             case 'delivered':
-                if (candidate.dealStatus.delivered === true) {
-                    await Deal.updateOne(
+                const candidate3 = await Deal.findOne({_id: req.query.id},
+                    function (error, result) {
+                        res.status(200).json(result)
+                    })
+                if (candidate3.dealStatus.delivered === true) {
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.delivered": false
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 } else {
-                    await Deal.updateOne(
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.delivered": true
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 }
                 break
             case 'clientPaid':
-                if (candidate.dealStatus.clientPaid === true) {
-                    await Deal.updateOne(
+                const candidate4 = await Deal.findOne({_id: req.query.id},
+                    function (error, result) {
+                        res.status(200).json(result)
+                    })
+                if (candidate4.dealStatus.clientPaid === true) {
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.clientPaid": false
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 } else {
-                    await Deal.updateOne(
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.clientPaid": true
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 }
                 break
             case 'docSigned':
-                if (candidate.dealStatus.docSigned === true) {
-                    await Deal.updateOne(
+                const candidate5 = await Deal.findOne({_id: req.query.id},
+                    function (error, result) {
+                        res.status(200).json(result)
+                    })
+                if (candidate5.dealStatus.docSigned === true) {
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.docSigned": false
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 } else {
-                    await Deal.updateOne(
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.docSigned": true
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 }
                 break
             case 'docCollected':
-                if (candidate.dealStatus.docCollected === true) {
-                    await Deal.updateOne(
+                const candidate6 = await Deal.findOne({_id: req.query.id},
+                    function (error, result) {
+                        res.status(200).json(result)
+                    })
+                if (candidate6.dealStatus.docCollected === true) {
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.docCollected": false
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 } else {
-                    await Deal.updateOne(
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.docCollected": true
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 }
                 break
             case 'dealDone':
-                if (candidate.dealStatus.dealDone === true) {
-                    await Deal.updateOne(
+                const candidate7 = await Deal.findOne({_id: req.query.id},
+                    function (error, result) {
+                        res.status(200).json(result)
+                    })
+                if (candidate7.dealStatus.dealDone === true) {
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.dealDone": false
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 } else {
-                    await Deal.updateOne(
+                    await Deal.update(
                         {_id: req.query.id},
                         {
                             $set: {
                                 "dealStatus.dealDone": true
                             }
-                        },
-                        function (error, result) {
-                            res.status(200).json(result)
                         })
                 }
                 break

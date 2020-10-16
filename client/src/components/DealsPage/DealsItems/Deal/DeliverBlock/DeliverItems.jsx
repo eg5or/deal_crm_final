@@ -6,7 +6,7 @@ import Popover from "@material-ui/core/Popover";
 import Tooltip from "@material-ui/core/Tooltip";
 
 
-const DeliverItem = ({name, tel, auto, sum, dealId, position, deleteItemFunction, dealDone}) => {
+const DeliverItem = ({name, tel, auto, sum, dealId, position, deleteItemFunction, dealDone, managerId}) => {
     // -----------------------------------------------------------------------------------------------
     // show Actions
     const [showActions, setShowActions] = useState(false)
@@ -19,7 +19,7 @@ const DeliverItem = ({name, tel, auto, sum, dealId, position, deleteItemFunction
     // -----------------------------------------------------------------------------------------------
     // delete Item
     const onDelete = () => {
-        deleteItemFunction(dealId, name, sum)
+        deleteItemFunction(dealId, name, sum, managerId)
     }
     // -----------------------------------------------------------------------------------------------
     // popup window ItemInfo

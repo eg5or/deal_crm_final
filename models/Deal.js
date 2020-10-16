@@ -3,9 +3,7 @@ const {Schema, Types, model} = require('mongoose')
 const dealSchema = new Schema({
     date: {type: Date, required: true},
     client: {type: String, required: true},
-    responsibility: {
-        name: {type: String, required: true},
-    },
+    responsibility: { type: Types.ObjectId, ref: 'Employee' },
     dealStatus: {
         approved: {type: Boolean, default: false},
         providerPaid: {type: Boolean, default: false},
@@ -22,7 +20,8 @@ const dealSchema = new Schema({
     drivers: [],
     forwarders: [],
     commentManager: {type: String, default: ''},
-    commentHead: {type: String, default: ''}
+    commentHead: {type: String, default: ''},
+    dealNumber: {type: Number, default: ''}
 
 })
 

@@ -42,6 +42,7 @@ module.exports.me = async function (req, res) {
     // в req.body приходит id
     const id = req.body.id
     const result = await Employee.findById(id, '-password -__v')
+        .populate('head', ('-password -__v -birthday -head -intel -location -position -tel -email'))
     if (result) {
         // если пользователь найден
         try {

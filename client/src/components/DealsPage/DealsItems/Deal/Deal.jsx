@@ -1,46 +1,60 @@
 import React, {useState} from 'react';
+// styles
 import classes from './deal.module.css'
+// React components
 import CenterBlockItems from './CenterBlock/CenterBlockItems';
+import StatusBlock from "./StatusBlock";
+import DeliverItem from "./DeliverBlock/DeliverItems";
+// other
+import {useFormik} from "formik";
+// иконки
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import BusinessIcon from '@material-ui/icons/Business';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+// Material UI components
+import Grid from "@material-ui/core/Grid";
 import Switch from "@material-ui/core/Switch";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import {useFormik} from "formik";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import BusinessIcon from '@material-ui/icons/Business';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Grid from "@material-ui/core/Grid";
-import StatusBlock from "./StatusBlock";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import DeliverItem from "./DeliverBlock/DeliverItems";
+import {dateNormalize} from "../../../../common/DateNormalize/DateNormalize";
+import {NavLink} from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 
 const Deal = (props) => {
-
+    // -----------------------------------------------------------------------------------------------------------------
+    // отрисовка водителей
     let driversElements = props.drivers.map(d => <DeliverItem key={d.id}
-                                                         name={d.driverName}
-                                                         tel={d.tel}
-                                                         auto={d.auto}
-                                                         sum={d.sum}
-                                                         dealId={props.id}
-                                                         position={props.authBlock.position}
-                                                         deleteItemFunction={props.deleteDriverFromDeal}
-                                                         dealDone={props.dealStatus.dealDone}
+                                                              name={d.driverName}
+                                                              tel={d.tel}
+                                                              auto={d.auto}
+                                                              sum={d.sum}
+                                                              dealId={props.id}
+                                                              position={props.authBlock.position}
+                                                              deleteItemFunction={props.deleteDriverFromDeal}
+                                                              dealDone={props.dealStatus.dealDone}
+                                                              managerId={props.managerId}
     />)
-
+    // -----------------------------------------------------------------------------------------------------------------
+    // отрисовка экспедиторов
     let forwardersElements = props.forwarders.map(d => <DeliverItem key={d.id}
-                                                                  name={d.forwarderName}
-                                                                  tel={d.tel}
-                                                                  sum={d.sum}
-                                                                  dealId={props.id}
-                                                                  position={props.authBlock.position}
-                                                                  deleteItemFunction={props.deleteForwarderFromDeal}
-                                                                  dealDone={props.dealStatus.dealDone}
+                                                                    name={d.forwarderName}
+                                                                    tel={d.tel}
+                                                                    sum={d.sum}
+                                                                    dealId={props.id}
+                                                                    position={props.authBlock.position}
+                                                                    deleteItemFunction={props.deleteForwarderFromDeal}
+                                                                    dealDone={props.dealStatus.dealDone}
+                                                                    managerId={props.managerId}
     />)
-
+    // -----------------------------------------------------------------------------------------------------------------
+    // отрисовка счетов для клиента
     let clientInvoicesElements = props.clientInvoices.map(clientInvoice => <CenterBlockItems
         key={clientInvoice._id}
         company={clientInvoice.company}
@@ -51,8 +65,10 @@ const Deal = (props) => {
         deleteFile={props.deleteFile}
         position={props.authBlock.position}
         dealDone={props.dealStatus.dealDone}
+        managerId={props.managerId}
     />)
-
+    // -----------------------------------------------------------------------------------------------------------------
+    // отрисовка счетов поставщиков
     let providerInvoicesElements = props.providerInvoices.map(providerInvoice => <CenterBlockItems
         key={providerInvoice.id}
         company={providerInvoice.company}
@@ -63,18 +79,22 @@ const Deal = (props) => {
         deleteFile={props.deleteFile}
         position={props.authBlock.position}
         dealDone={props.dealStatus.dealDone}
+        managerId={props.managerId}
     />)
-
+    // -----------------------------------------------------------------------------------------------------------------
+    // отрисовка документов
     let docsElements = props.allDocs.map(doc => <CenterBlockItems key={doc.id}
-                                                     company={doc.company}
-                                                     fileUrl={doc.fileUrl}
-                                                     sum={doc.sum}
-                                                     typeFile={doc.typeFile}
-                                                     dealId={props.id}
-                                                     deleteFile={props.deleteFile}
-                                                     position={props.authBlock.position}
-                                                     dealDone={props.dealStatus.dealDone}
+                                                                  company={doc.company}
+                                                                  fileUrl={doc.fileUrl}
+                                                                  sum={doc.sum}
+                                                                  typeFile={doc.typeFile}
+                                                                  dealId={props.id}
+                                                                  deleteFile={props.deleteFile}
+                                                                  position={props.authBlock.position}
+                                                                  dealDone={props.dealStatus.dealDone}
+                                                                  managerId={props.managerId}
     />)
+    // -----------------------------------------------------------------------------------------------------------------
     // Formik для окна ADD FILE
     const formik = useFormik({
         initialValues: {
@@ -86,22 +106,20 @@ const Deal = (props) => {
             sumForwarder: '',
             commentManager: '',
             commentHead: ''
-        },
-        onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
-        },
+        }
     });
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // конвертируем ДАТУ для сделки в нормальный формат
+
     let convertedDate = new Date(Date.parse(props.date))
     let dateString = convertedDate.getDate() + '.' + (convertedDate.getMonth() + 1) + '.' + convertedDate.getFullYear()
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // локальные стэйты
     const [openAddFile, setOpenAddFile] = React.useState(false);
     const [openAddDriver, setOpenAddDriver] = React.useState(false);
     const [openAddForwarder, setOpenAddForwarder] = React.useState(false);
     let [typeFile, setTypeFile] = useState('')
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // окно DRIVERS
     // открыть
     const onAddDriverOpen = () => {
@@ -113,13 +131,13 @@ const Deal = (props) => {
         formik.values.driver = ''
         formik.values.sumDriver = ''
     }
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // Ф-я добавления водителя
     const onAddDriver = () => {
-        props.addDriver(props.id, formik.values.driver, Number(formik.values.sumDriver))
+        props.addDriver(props.id, formik.values.driver, Number(formik.values.sumDriver), props.managerId)
         onAddDriverClose()
     }
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // окно FORWARDERS
     // открыть
     const onAddForwarderOpen = () => {
@@ -131,13 +149,13 @@ const Deal = (props) => {
         formik.values.forwarder = ''
         formik.values.sumForwarder = ''
     }
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // Ф-я добавления экспедитора
     const onAddForwarder = () => {
-        props.addForwarder(props.id, formik.values.forwarder, Number(formik.values.sumForwarder))
+        props.addForwarder(props.id, formik.values.forwarder, Number(formik.values.sumForwarder), props.managerId)
         onAddForwarderClose()
     }
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // окно ADD FILE
     // открыть для ClientInvoices
     const onAddFileOpenCI = () => {
@@ -158,19 +176,18 @@ const Deal = (props) => {
     const onAddFileClose = () => {
         setOpenAddFile(false)
     }
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // Ф-я загрузки файлов (срабатывает при добавлении файлов)
     const onUploadFile = (e) => {
         if (e.target.files.length) {
-            props.saveFile(e.target.files[0], props.id, formik.values.company, Number(formik.values.sum), typeFile)
+            props.saveFile(e.target.files[0], props.id, formik.values.company, Number(formik.values.sum), typeFile, props.managerId)
             onAddFileClose()
             formik.values.company = ''
             formik.values.sum = 0
             typeFile = ''
         }
     }
-    // console.log(formik.values.driver, Number(formik.values.sumDriver))
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // вычисляем константы для Сделки:
     // Сумма счетов клиента
     const sumClientInvoices = props.clientInvoices.reduce((s, i) => s = s + Number(i.sum), 0)
@@ -178,7 +195,7 @@ const Deal = (props) => {
     const sumProviderInvoices = props.providerInvoices.reduce((s, i) => s = s + Number(i.sum), 0)
     // Сумма документов
     const sumAllDocs = props.allDocs.reduce((s, i) => s = s + Number(i.sum), 0)
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // Сумма Доставки
     const sumAllDrivers = props.drivers.reduce((s, i) => s = s + Number(i.sum), 0)
     const sumAllForwarders = props.forwarders.reduce((s, i) => s = s + Number(i.sum), 0)
@@ -190,13 +207,14 @@ const Deal = (props) => {
     if (sumAllDocs !== 0) {
         sumDeltaWithDocs = sumClientInvoices - sumAllDocs - sumDeliver
     }
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // переключатель готовности сделки
     const toggleDealDone = (status) => {
         props.toggleStatus(props.id, status) // та же санка что и для переключения статусов
     }
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // Комментарии
+    // менеджер
     const [editModeCM, setEditModeCM] = useState(false)
     const onEditModeCMOn = () => {
         setEditModeCM(true)
@@ -212,6 +230,7 @@ const Deal = (props) => {
         setEditModeCM(false)
         formik.values.commentManager = props.commentManager
     }
+    // руководитель
     const [editModeCH, setEditModeCH] = useState(false)
     const onEditModeCHOn = () => {
         setEditModeCH(true)
@@ -236,7 +255,7 @@ const Deal = (props) => {
             case 'CH':
                 text = formik.values.commentHead
         }
-        props.editComment(props.id, type, text)
+        props.editComment(props.id, type, text, props.managerId)
     }
     // validation
     let errorTextCM = false
@@ -247,16 +266,16 @@ const Deal = (props) => {
     if (formik.values.commentHead.length > 165) {
         errorTextCH = true
     }
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // Добавляем водителей и экспедиторов в списки для выбора при добавлении
     let optionsDriversElements = props.allDrivers.map(driver => <option value={driver._id}>{driver.name}</option>)
-    let optionsForwardersElements = props.allForwarders.map(forwarder => <option value={forwarder._id}>{forwarder.name}</option>)
-    // --------------------------------------------------------
+    let optionsForwardersElements = props.allForwarders.map(forwarder => <option
+        value={forwarder._id}>{forwarder.name}</option>)
+    // -----------------------------------------------------------------------------------------------------------------
     // Доступ
     const position = props.authBlock.position
     const dealDone = props.dealStatus.dealDone
-
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     return (
         <div className={classes.deal}>
             {/*----------------------начало-------------------ОКНО ADD FILE------------------------------------------*/}
@@ -465,12 +484,24 @@ const Deal = (props) => {
             </Dialog>
             {/*----------------------конец--------------------ОКНО ADD FORWARDER-------------------------------------*/}
             <div className={classes.leftBlock}>
-                <div className={(position === 'manager' || position === 'chief' || position === 'director') ? classes.titleManager : classes.title}>
-                    <div className={classes.date}>{dateString}</div>
+                <div
+                    className={(position === 'manager' || position === 'chief' || position === 'director') ? classes.titleManager : classes.title}>
+                    <div className={classes.dealNumber}>
+                        <NavLink to={`dealspage/${props.id}`}>
+                            {props.location === 'korolev' ? 'ДК-' : 'ДМ-'}{props.dealNumber}
+                        </NavLink>
+                    </div>
+                    <div className={classes.date}>{dateNormalize(props.date)}</div>
                     <div className={classes.client}>{props.client}</div>
-                    {(position === 'manager' || position === 'chief' || position === 'director') && <div className={classes.doneSwitcher}>
+                    {(position === 'manager' || position === 'chief' || position === 'director') &&
+                    <div className={classes.doneSwitcher}>
                         <div className={classes.doneSwitcherContainer}>
-                            <div className={`${classes.titleDoneSwitcher} ${!props.dealStatus.dealDone && classes.light_txt}`}>Готово</div>
+                            {props.loading.dealDone &&
+                            <div className={classes.loadingDealDone}><CircularProgress color="primary" size={20}/>
+                            </div>}
+                            <div
+                                className={`${classes.titleDoneSwitcher} ${!props.dealStatus.dealDone && classes.light_txt} ${props.loading.dealDone && classes.loadingDealDoneText}`}>Готово
+                            </div>
                             {(position === 'manager') && <Switch
                                 checked={props.dealStatus.dealDone}
                                 onChange={() => {
@@ -486,7 +517,9 @@ const Deal = (props) => {
                 <StatusBlock
                     dealStatus={props.dealStatus}
                     dealId={props.id}
+                    managerId={props.managerId}
                     authBlock={props.authBlock}
+                    loading={props.loading}
                     // functions
                     toggleStatus={props.toggleStatus}
                 />
@@ -495,11 +528,14 @@ const Deal = (props) => {
                 <div className={classes.clientInvoices}>
                     <div className={classes.headerClientInvoices}>
                         <div className={classes.titleClientInvoices}>счета клиенту</div>
+                        {props.loading.fileCI &&
+                        <div className={classes.loading}><CircularProgress color="secondary" size={20}/></div>}
                         <div className={classes.sumClientInvoices}>{sumClientInvoices.toLocaleString()} ₽</div>
                     </div>
-                    <div className={`${classes.clientInvoicesItems} ${classes.docsFilesItems}`}>
+                    <div className={classes.docsFilesItems}>
                         {clientInvoicesElements}
-                        {(position === 'manager' || position === 'chief') && !dealDone && <div className={classes.addFile} onClick={onAddFileOpenCI}>
+                        {(position === 'manager' || position === 'chief') && !dealDone &&
+                        <div className={classes.addFile} onClick={onAddFileOpenCI}>
                             <div className={classes.plus}>+</div>
                             <div className={classes.addFileText}>Добавить<br/>файл</div>
                         </div>}
@@ -508,11 +544,14 @@ const Deal = (props) => {
                 <div className={classes.providerInvoices}>
                     <div className={classes.headerProviderInvoices}>
                         <div className={classes.titleProviderInvoices}>счета поставщиков</div>
+                        {props.loading.filePI &&
+                        <div className={classes.loading}><CircularProgress color="secondary" size={20}/></div>}
                         <div className={classes.sumProviderInvoices}>{sumProviderInvoices.toLocaleString()} ₽</div>
                     </div>
-                    <div className={`${classes.providerInvoicesItems} ${classes.docsFilesItems}`}>
+                    <div className={classes.docsFilesItems}>
                         {providerInvoicesElements}
-                        {(position === 'manager' || position === 'chief') && !dealDone && <div className={classes.addFile} onClick={onAddFileOpenPI}>
+                        {(position === 'manager' || position === 'chief') && !dealDone &&
+                        <div className={classes.addFile} onClick={onAddFileOpenPI}>
                             <div className={classes.plus}>+</div>
                             <div className={classes.addFileText}>Добавить<br/>файл</div>
                         </div>}
@@ -521,9 +560,11 @@ const Deal = (props) => {
                 <div className={classes.allDocs}>
                     <div className={classes.headerAllDoc}>
                         <div className={classes.titleAllDoc}>документы</div>
-                        <div className={classes.delta}>{sumAllDocs.toLocaleString()} ₽</div>
+                        {props.loading.fileDOC &&
+                        <div className={classes.loading}><CircularProgress color="secondary" size={20}/></div>}
+                        <div className={classes.sumAllDocs}>{sumAllDocs.toLocaleString()} ₽</div>
                     </div>
-                    <div className={`${classes.docsItems} ${classes.docsFilesItems}`}>
+                    <div className={classes.docsFilesItems}>
                         {docsElements}
                         {(position === 'manager' || position === 'chief' || position === 'secretary') && <div
                             className={classes.addFile}
@@ -537,6 +578,8 @@ const Deal = (props) => {
             </div>
             <div className={classes.rightBlock}>
                 <div className={classes.titleDeliver}>Доставка</div>
+                {props.loading.delivery &&
+                <div className={classes.loading}><CircularProgress color="secondary" size={20}/></div>}
                 <div className={classes.sumDeliver}>{sumDeliver.toLocaleString()} ₽</div>
                 <div className={classes.drivers}>
                     <div className={classes.titleDriversForwarders}>Водители:</div>
@@ -565,14 +608,16 @@ const Deal = (props) => {
                         <div className={classes.deltaTitle}>Дельта без доков</div>
                         <div className={classes.deltaSum}>{sumDeltaOutDocs.toLocaleString()} ₽</div>
                     </div>
-                    <div className={classes.deltaWithDocs}>
+                    {sumDeltaWithDocs !== 0 && <div className={classes.deltaWithDocs}>
                         <div className={classes.deltaTitle}>Дельта с доками</div>
                         <div className={classes.deltaSum}>{sumDeltaWithDocs.toLocaleString()} ₽</div>
-                    </div>
+                    </div>}
                 </div>
                 <div className={classes.commentsBlock}>
                     <div className={`${classes.commentTitle} ${classes.commentTitleManager}`}>
                         Комментарий менеджера:
+                        {props.loading.commentManager &&
+                        <div className={classes.loadingComment}><CircularProgress color="secondary" size={13}/></div>}
                     </div>
                     <div className={`${classes.lengthTextManager}`}>
                         <div className={classes.errorText}>
@@ -583,8 +628,9 @@ const Deal = (props) => {
                         </div>
                     </div>
                     {!editModeCM
-                        ? (position === 'manager') && <div className={`${classes.editComment} ${classes.editCommentManager}`}
-                               onClick={onEditModeCMOn}>редактировать</div>
+                        ? (position === 'manager') &&
+                        <div className={`${classes.editComment} ${classes.editCommentManager}`}
+                             onClick={onEditModeCMOn}>редактировать</div>
                         : <div className={`${classes.editComment} ${classes.editCommentManager}`}
                                onClick={onEditModeCMOff}>сохранить</div>}
                     {editModeCM && <div className={classes.cancelEditManager} onClick={onEditModeCMCancel}>Х</div>}
@@ -606,6 +652,8 @@ const Deal = (props) => {
                     </div>
                     <div className={`${classes.commentTitle} ${classes.commentTitleHead}`}>
                         Комментарий руководителя:
+                        {props.loading.commentHead &&
+                        <div className={classes.loadingComment}><CircularProgress color="secondary" size={13}/></div>}
                     </div>
                     <div className={`${classes.lengthTextHead}`}>
                         <div className={classes.errorText}>
@@ -617,7 +665,7 @@ const Deal = (props) => {
                     </div>
                     {!editModeCH
                         ? (position === 'chief') && <div className={`${classes.editComment} ${classes.editCommentHead}`}
-                               onClick={onEditModeCHOn}>редактировать</div>
+                                                         onClick={onEditModeCHOn}>редактировать</div>
                         : <div className={`${classes.editComment} ${classes.editCommentHead}`}
                                onClick={onEditModeCHOff}>сохранить</div>}
                     {editModeCH && <div className={classes.cancelEditHead} onClick={onEditModeCHCancel}>Х</div>}

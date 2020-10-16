@@ -6,6 +6,7 @@ import {Redirect, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {clearEmailAndPassword, login, newEmailTextAC, newPasswordTextAC, register} from "../../redux/auth-reducer";
 import classes from './LoginPage.module.css'
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class LoginPage extends React.Component {
 
@@ -28,6 +29,7 @@ class LoginPage extends React.Component {
             </div>
             {this.props.responseMessage !== '' &&
             <div className={classes.errorBlock}><Alert severity="error">{this.props.responseMessage}</Alert></div>}
+            {this.props.isWaitingLogin && <div className={classes.isWaitingLogin}><CircularProgress color="primary" size={30}/></div>}
         </div>
     }
 }
@@ -37,6 +39,7 @@ const mapStateToProps = (state) => ({
     newEmailText: state.authBlock.newEmailText,
     newPasswordText: state.authBlock.newPasswordText,
     responseMessage: state.authBlock.responseMessage,
+    isWaitingLogin: state.authBlock.isWaitingLogin,
 })
 
 export default compose(

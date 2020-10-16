@@ -32,7 +32,7 @@ const AddDeal = (props) => {
         props.closeDropDownClients()
     }
     const onAddDeal = () => {
-        props.addDeal(new Date(newDataInputElement.current.value), props.clientInputText, props.currentEmployeeName)
+        props.addDeal(new Date(newDataInputElement.current.value), props.clientInputText)
         props.handleClick()
     }
     //
@@ -85,19 +85,19 @@ const AddDeal = (props) => {
         setFilter(newFilter);
     };
     //
-    return <div>
+    return <div className={classes.addDealContainer}>
         <div className={`${classes.buttonArea} ${classes.most_light_bg}`}>
             <div>
                 <Button
                     onClick={props.handleClick}
                     variant="contained"
                     color="primary"
-                    size="large"
+                    size="medium"
                 >
                     {props.buttonToggle ? 'Отмена' : 'Добавить сделку'}
                 </Button>
             </div>
-            {!props.buttonToggle && <div className={classes.filters}>
+            {/*{!props.buttonToggle && <div className={classes.filters}>
                 <Grid item>
                     <ToggleButtonGroup size="small" value={filter} exclusive onChange={filterChange}>
                         {(props.position !== 'secretary') && <ToggleButton value="noDealDone">
@@ -120,7 +120,7 @@ const AddDeal = (props) => {
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Grid>
-            </div>}
+            </div>}*/}
         </div>
         <div className={classes.addDeal} style={
             {

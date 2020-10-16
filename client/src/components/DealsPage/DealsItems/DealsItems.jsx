@@ -13,9 +13,12 @@ const DealsItems = (props) => {
                                                    allDrivers={props.allDrivers}
                                                    allForwarders={props.allForwarders}
                                                    id={d._id}
+                                                   dealNumber={d.dealNumber}
                                                    date={d.date}
                                                    client={d.client}
                                                    manager={d.responsibility.name}
+                                                   location={d.responsibility.location}
+                                                   managerId={d.responsibility._id}
                                                    dealStatus={d.dealStatus}
                                                    clientInvoices={d.clientInvoices}
                                                    providerInvoices={d.providerInvoices}
@@ -26,6 +29,7 @@ const DealsItems = (props) => {
                                                    commentManager={d.commentManager}
                                                    commentHead={d.commentHead}
                                                    authBlock={props.authBlock}
+                                                   loading={props.loading}
                                                    // functions
                                                    saveFile={props.saveFile}
                                                    deleteFile={props.deleteFile}
@@ -40,7 +44,7 @@ const DealsItems = (props) => {
 
     return (
         <div>
-            <div className={classes.dealsPageItems}>
+            <div className={`${classes.dealsPageItems}`}>
                 {dealsElements}
             </div>
         </div>
