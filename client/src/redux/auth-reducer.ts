@@ -1,4 +1,5 @@
 import {authAPI} from "../API/api";
+import {setManagerMode} from './settings-reducer'
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const UPDATE_NEW_EMAIL_TEXT = 'UPDATE_NEW_EMAIL_TEXT';
@@ -141,6 +142,11 @@ export const getAuthUserData = () => async (dispatch: any) => {
             const me = await authAPI.me(userDataLocalStorage.id, userDataLocalStorage.token)
             if (me.statusText === 'OK') {
                 dispatch(setAuthUserData(me.data, true))
+                if (me.data.position === 'manager') {
+                    dispatch(setManagerMode(true))
+                } else {
+                    dispatch(setManagerMode(false))
+                }
             }
         } catch (e) {
             return Promise

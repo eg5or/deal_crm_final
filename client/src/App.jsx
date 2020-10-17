@@ -20,6 +20,7 @@ import Preloader from "./common/Preloader/Preloader";
 import NotificationsContainer from "./components/Profile/Notifications/NotificationsContainer";
 // reducers
 import {initializeApp} from "./redux/appReducer";
+import SettingsContainer from "./components/Settings/SettingsContainer";
 
 class App extends React.Component {
     componentDidMount() {
@@ -53,6 +54,7 @@ class App extends React.Component {
                     <Route path='/dealspage/:id?' render={() => <DealsPageContainer/>}/>
                     <Route path='/pricelistcreator' render={() => <PriceListCreator/>}/>
                     <Route path='/profile' render={() => <ProfileContainer/>}/>
+                    <Route path='/settings' render={() => <SettingsContainer/>}/>
                     <Route path='/notifications/:page?' render={() => <NotificationsContainer/>}/>
                     <Route path='/vars' render={() => {
                         return <div className='app-wrapper-content-with-sidebar'>

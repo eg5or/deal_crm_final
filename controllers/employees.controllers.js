@@ -3,9 +3,11 @@ const errorHandler = require('../utils/errorHandler')
 
 module.exports.getAll = async function (req, res) {
     try {
-        await Employee.find({}, function (error, result) {
-            res.status(200).json(result)
-        })
+        await Employee.find({})
+            .populate('head')
+            .exec(function (error, result) {
+                res.status(200).json(result)
+            })
     } catch (e) {
         // Обработать ошибку
         errorHandler(res, e)
@@ -33,10 +35,6 @@ module.exports.getAllManagersNames = async function (req, res) {
         errorHandler(res, e)
     }
 }
-
-
-
-
 
 
 module.exports.remove = async function (req, res) {
@@ -91,5 +89,39 @@ module.exports.update = async function (req, res) {
         res.status(409).json({
             message: `Сотрудника с id ${req.params.id} не существует!`
         })
+    }
+}
+
+module.exports.changePosition = async function (req, res) {
+    try {
+        const candidate = await Employee.findOne({_id: req.query.id})
+        console.log(candidate)
+        if(candidate.position === 'manager') {
+            await Employee.update({_id: req.query.id},
+                {
+                    $set: {
+                        "position": candidate.positionTrue,
+                    }
+                },
+                function (err, result) {
+                    res.status(201).json(result)
+                }
+            );
+        } else {
+            await Employee.update({_id: req.query.id},
+                {
+                    $set: {
+                        "position": "manager",
+                    }
+                },
+                function (err, result) {
+                    res.status(201).json(result)
+                }
+            );
+        }
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+        console.log('ошибка changePosition')
     }
 }

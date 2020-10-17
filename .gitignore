@@ -10,7 +10,7 @@ __benchmarks__
 build/
 client/build
 client/build_old
-config/
+config/default.json
 uploads/
 remote-repo/
 coverage/

@@ -346,6 +346,7 @@ export const deleteFile = (id, file, type, managerId) => async (dispatch, getSta
 
 // добавление водителя в сделку
 export const addDriver = (id, driverId, sum, managerId) => async (dispatch, getState) => {
+    const headId = getState().authBlock.head._id
     try {
         dispatch(toggleLoading('delivery', true))
         let response = await dealsAPI.addDriverToDeal(id, driverId, sum)
@@ -355,6 +356,7 @@ export const addDriver = (id, driverId, sum, managerId) => async (dispatch, getS
             dispatch(loadingDealsPage())
         }
         dispatch(addNewNotification(managerId, id, `добавил водителя`))
+        dispatch(addNewNotification(headId, id, `добавил водителя`))
     } catch (e) {
         alert(e.response.data.message)
     }
@@ -362,6 +364,7 @@ export const addDriver = (id, driverId, sum, managerId) => async (dispatch, getS
 
 // добавление экспедитора в сделку
 export const addForwarder = (id, forwarderId, sum, managerId) => async (dispatch, getState) => {
+    const headId = getState().authBlock.head._id
     try {
         dispatch(toggleLoading('delivery', true))
         let response = await dealsAPI.addForwarderToDeal(id, forwarderId, sum)
@@ -371,6 +374,7 @@ export const addForwarder = (id, forwarderId, sum, managerId) => async (dispatch
             dispatch(loadingDealsPage())
         }
         dispatch(addNewNotification(managerId, id, `добавил экспедитора`))
+        dispatch(addNewNotification(headId, id, `добавил экспедитора`))
     } catch (e) {
         alert(e.response.data.message)
     }
@@ -378,6 +382,7 @@ export const addForwarder = (id, forwarderId, sum, managerId) => async (dispatch
 
 // удаление водителя из сделки
 export const deleteDriverFromDeal = (id, name, sum, managerId) => async (dispatch, getState) => {
+    const headId = getState().authBlock.head._id
     try {
         dispatch(toggleLoading('delivery', true))
         let response = await dealsAPI.deleteDriverFromDeal(id, name, sum)
@@ -386,7 +391,8 @@ export const deleteDriverFromDeal = (id, name, sum, managerId) => async (dispatc
         } else {
             dispatch(loadingDealsPage())
         }
-        dispatch(addNewNotification(managerId, id, `удалил экспедитора ${name} сумма ${sum}`))
+        dispatch(addNewNotification(managerId, id, `удалил водителя ${name} сумма ${sum}`))
+        dispatch(addNewNotification(headId, id, `удалил водителя ${name} сумма ${sum}`))
     } catch (e) {
         alert(e.response.data.message)
     }
@@ -394,6 +400,7 @@ export const deleteDriverFromDeal = (id, name, sum, managerId) => async (dispatc
 
 // удаление экспедитора из сделки
 export const deleteForwarderFromDeal = (id, name, sum, managerId) => async (dispatch, getState) => {
+    const headId = getState().authBlock.head._id
     try {
         dispatch(toggleLoading('delivery', true))
         let response = await dealsAPI.deleteForwarderFromDeal(id, name, sum)
@@ -402,7 +409,8 @@ export const deleteForwarderFromDeal = (id, name, sum, managerId) => async (disp
         } else {
             dispatch(loadingDealsPage())
         }
-        dispatch(addNewNotification(managerId, id, `удалил водителя ${name} сумма ${sum}`))
+        dispatch(addNewNotification(managerId, id, `удалил экспедитора ${name} сумма ${sum}`))
+        dispatch(addNewNotification(headId, id, `удалил экспедитора ${name} сумма ${sum}`))
     } catch (e) {
         alert(e.response.data.message)
     }
@@ -425,6 +433,7 @@ export const editComment = (id, type, text, managerId) => async (dispatch, getSt
             dispatch(loadingDealsPage())
         }
         dispatch(addNewNotification(managerId, id, `изменил комментарий на: ${text}`))
+        dispatch(addNewNotification(headId, id, `изменил комментарий на: ${text}`))
     } catch (e) {
         alert(e.response.data.message)
     }

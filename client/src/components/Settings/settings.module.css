@@ -1,0 +1,43 @@
+.settingsPage {
+    background-color: #eceff1;
+    padding: 30px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 4fr 2fr;
+    grid-template-areas: "title title"
+                         "settings avatarBlock"
+                         "settings changePassword";
+}
+
+.title {
+    grid-area: title;
+}
+
+.settings {
+    grid-area: settings;
+}
+
+.managerMode {
+    display: flex;
+    flex-direction: row;
+}
+.switcher,
+.value,
+.label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.label {
+
+}
+
+.switcher {
+
+}
+
+.value {
+
+}

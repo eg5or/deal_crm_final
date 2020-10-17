@@ -1,7 +1,8 @@
 import * as axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://92.63.100.121:5000/api/',
+    /*baseURL: 'http://92.63.100.121:5000/api/',*/
+    baseURL: 'http://localhost:5000/api/',
     /*headers: {
         'Authorization': token || ''
     }*/
@@ -218,6 +219,9 @@ export const employeesAPI = {
     },
     deleteEmployee(id) {
         return instance.delete(`employees/${id}`)
+    },
+    changePosition(id) {
+        return instance.patch(`employees/managermode?id=${id}`)
     }
 }
 

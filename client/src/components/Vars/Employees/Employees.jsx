@@ -64,7 +64,7 @@ const Employees = (props) => {
                         },
                         {title: 'Имя', field: 'name'},
                         {title: 'E-mail', field: 'email', editable: 'never'},
-                        {title: 'Начальник', field: 'head'},
+                        {title: 'Начальник', field: 'head.name'},
                         {title: 'Офис', field: 'location', lookup: {
                                 korolev: 'Королёв',
                                 tushino: 'Тушино'
@@ -86,7 +86,7 @@ const Employees = (props) => {
                         fontSize: 13,
                     }
                 }}
-                editable={{
+                /*editable={{
                     onRowUpdate: (newData, oldData) =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
@@ -111,7 +111,7 @@ const Employees = (props) => {
                             }, 1000);
                         })
 
-                }}
+                }}*/
                 localization={localization}
             />
         </div>

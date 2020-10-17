@@ -118,7 +118,7 @@ const ProfileBlock = ({
             <div className={classes.btnActionsBlock}>
                 <Tooltip title="Настройки" placement="bottom-end">
                     <NavLink
-                        to='/profile'
+                        to='/settings'
                     >
                         <div className={classes.btnAction}><SettingsIcon/></div>
                     </NavLink>

@@ -10,6 +10,7 @@ import thunkMiddleware from 'redux-thunk'
 import appReducer from "./appReducer";
 import profileReducer from "./profileReducer";
 import notificationsReducer from "./notificationsReducer";
+import settingsReducer from "./settings-reducer";
 
 let reducers = combineReducers({
     app: appReducer,
@@ -21,7 +22,8 @@ let reducers = combineReducers({
     driversPage: driversReducer,
     forwardersPage: forwardersReducer,
     profilePage: profileReducer,
-    notifications: notificationsReducer
+    notifications: notificationsReducer,
+    settings: settingsReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -2,6 +2,7 @@ const {Schema, model} = require('mongoose')
 
 const employeeSchema = new Schema({
     position: {type: String},
+    positionTrue: {type: String},
     name: {type: String},
     head: { type: Schema.Types.ObjectId, ref: 'Employee' },
     location: {type: String},
