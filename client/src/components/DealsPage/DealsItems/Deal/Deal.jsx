@@ -180,10 +180,10 @@ const Deal = (props) => {
     // Ф-я загрузки файлов (срабатывает при добавлении файлов)
     const onUploadFile = (e) => {
         if (e.target.files.length) {
-            props.saveFile(e.target.files[0], props.id, formik.values.company, Number(formik.values.sum), typeFile, props.managerId)
+            props.saveFile(e.target.files[0], props.id, formik.values.company, Number(formik.values.sum.replace(",",".")), typeFile, props.managerId)
             onAddFileClose()
             formik.values.company = ''
-            formik.values.sum = 0
+            formik.values.sum = ''
             typeFile = ''
         }
     }
