@@ -4,6 +4,7 @@ import authReducer from "./auth-reducer";
 import clientsReducer from "./clients-reducer";
 import driversReducer from "./drivers-reducer";
 import forwardersReducer from "./forwarders-reducer";
+import companiesReducer from "./companies-reducer";
 import employeesReducer from "./employees-reducer";
 import addDealReducer from './add-deal-reducer';
 import thunkMiddleware from 'redux-thunk'
@@ -21,6 +22,7 @@ let reducers = combineReducers({
     clientsPage: clientsReducer,
     driversPage: driversReducer,
     forwardersPage: forwardersReducer,
+    companiesPage: companiesReducer,
     profilePage: profileReducer,
     notifications: notificationsReducer,
     settings: settingsReducer

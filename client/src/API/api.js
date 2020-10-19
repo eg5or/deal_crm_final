@@ -170,6 +170,21 @@ export const driversAPI = {
     }
 }
 
+export const companiesAPI = {
+    getAllCompanies() {
+        return instance.get(`companies`).then(response => response.data)
+    },
+    addNewCompany(name, bill, tax) {
+        return instance.post(`companies/add`, {name: name, bill: bill, tax: tax})
+    },
+    updateCompany(id, name, bill, tax) {
+        return instance.patch(`companies/${id}`, {name: name, bill: bill, tax: tax})
+    },
+    deleteCompany(id) {
+        return instance.delete(`companies/${id}`)
+    }
+}
+
 export const forwardersAPI = {
     getAllForwarders() {
         return instance.get(`forwarders`).then(response => response.data)

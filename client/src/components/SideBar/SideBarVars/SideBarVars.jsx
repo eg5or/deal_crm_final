@@ -33,6 +33,15 @@ const SideBarVars = (props) => {
                         Сотрудники
                     </NavLink>
                 </div>
+                <div className={classes.item}>
+                    <NavLink
+                        to='/vars/companies'
+                        className={classes.link}
+                        activeClassName={classes.active}
+                    >
+                        Компании
+                    </NavLink>
+                </div>
             </div>
         </div>
     )
