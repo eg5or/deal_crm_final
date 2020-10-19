@@ -8,23 +8,17 @@ import DeliverItem from "./DeliverBlock/DeliverItems";
 // other
 import {useFormik} from "formik";
 // иконки
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
 // Material UI components
-import Grid from "@material-ui/core/Grid";
 import Switch from "@material-ui/core/Switch";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import {dateNormalize} from "../../../../common/DateNormalize/DateNormalize";
 import {NavLink} from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import AddFile from "./Add/AddFile";
+import AddDriver from "./Add/AddDriver";
+import AddForwarder from "./Add/AddForwarder";
+import Comments from "./Comments/Comments";
 
 
 const Deal = (props) => {
@@ -95,67 +89,26 @@ const Deal = (props) => {
                                                                   managerId={props.managerId}
     />)
     // -----------------------------------------------------------------------------------------------------------------
-    // Formik для окна ADD FILE
-    const formik = useFormik({
-        initialValues: {
-            driver: '',
-            sumDriver: '',
-            forwarder: '',
-            sumForwarder: '',
-            commentManager: '',
-            commentHead: ''
-        }
-    });
-    // -----------------------------------------------------------------------------------------------------------------
-    // конвертируем ДАТУ для сделки в нормальный формат
-
-    let convertedDate = new Date(Date.parse(props.date))
-    let dateString = convertedDate.getDate() + '.' + (convertedDate.getMonth() + 1) + '.' + convertedDate.getFullYear()
-    // -----------------------------------------------------------------------------------------------------------------
-    // локальные стэйты
-    const [openAddDriver, setOpenAddDriver] = React.useState(false);
-    const [openAddForwarder, setOpenAddForwarder] = React.useState(false);
-    // окно ADD FILE
-    const [openAddFile, setOpenAddFile] = React.useState(false);
-    let [typeFile, setTypeFile] = useState('')
-    // -----------------------------------------------------------------------------------------------------------------
     // окно DRIVERS
+    // локальный стэйт
+    const [openAddDriver, setOpenAddDriver] = React.useState(false);
     // открыть
     const onAddDriverOpen = () => {
         setOpenAddDriver(true)
     }
-    // закрыть
-    const onAddDriverClose = () => {
-        setOpenAddDriver(false)
-        formik.values.driver = ''
-        formik.values.sumDriver = ''
-    }
-    // -----------------------------------------------------------------------------------------------------------------
-    // Ф-я добавления водителя
-    const onAddDriver = () => {
-        props.addDriver(props.id, formik.values.driver, Number(formik.values.sumDriver), props.managerId)
-        onAddDriverClose()
-    }
     // -----------------------------------------------------------------------------------------------------------------
     // окно FORWARDERS
+    // локальный стэйт
+    const [openAddForwarder, setOpenAddForwarder] = React.useState(false);
     // открыть
     const onAddForwarderOpen = () => {
         setOpenAddForwarder(true)
     }
-    // закрыть
-    const onAddForwarderClose = () => {
-        setOpenAddForwarder(false)
-        formik.values.forwarder = ''
-        formik.values.sumForwarder = ''
-    }
-    // -----------------------------------------------------------------------------------------------------------------
-    // Ф-я добавления экспедитора
-    const onAddForwarder = () => {
-        props.addForwarder(props.id, formik.values.forwarder, Number(formik.values.sumForwarder), props.managerId)
-        onAddForwarderClose()
-    }
     // -----------------------------------------------------------------------------------------------------------------
     // окно ADD FILE
+    // локальный стэйт
+    const [openAddFile, setOpenAddFile] = React.useState(false);
+    let [typeFile, setTypeFile] = useState('')
     // открыть для ClientInvoices
     const onAddFileOpenCI = () => {
         setOpenAddFile(true)
@@ -197,65 +150,6 @@ const Deal = (props) => {
         props.toggleStatus(props.id, status) // та же санка что и для переключения статусов
     }
     // -----------------------------------------------------------------------------------------------------------------
-    // Комментарии
-    // менеджер
-    const [editModeCM, setEditModeCM] = useState(false)
-    const onEditModeCMOn = () => {
-        setEditModeCM(true)
-        formik.values.commentManager = props.commentManager
-    }
-    const onEditModeCMOff = () => {
-        setEditModeCM(false)
-        if (formik.values.commentManager !== props.commentManager) {
-            onEditComment('CM')
-        }
-    }
-    const onEditModeCMCancel = () => {
-        setEditModeCM(false)
-        formik.values.commentManager = props.commentManager
-    }
-    // руководитель
-    const [editModeCH, setEditModeCH] = useState(false)
-    const onEditModeCHOn = () => {
-        setEditModeCH(true)
-        formik.values.commentHead = props.commentHead
-    }
-    const onEditModeCHOff = () => {
-        setEditModeCH(false)
-        if (formik.values.commentHead !== props.commentHead) {
-            onEditComment('CH')
-        }
-    }
-    const onEditModeCHCancel = () => {
-        setEditModeCH(false)
-        formik.values.commentHead = props.commentHead
-    }
-    const onEditComment = (type) => {
-        let text = ''
-        switch (type) {
-            case 'CM':
-                text = formik.values.commentManager
-                break
-            case 'CH':
-                text = formik.values.commentHead
-        }
-        props.editComment(props.id, type, text, props.managerId)
-    }
-    // validation
-    let errorTextCM = false
-    if (formik.values.commentManager.length > 165) {
-        errorTextCM = true
-    }
-    let errorTextCH = false
-    if (formik.values.commentHead.length > 165) {
-        errorTextCH = true
-    }
-    // -----------------------------------------------------------------------------------------------------------------
-    // Добавляем водителей, экспедиторов и список компаний в списки для выбора при добавлении
-    let optionsDriversElements = props.allDrivers.map(driver => <option value={driver._id}>{driver.name}</option>)
-    let optionsForwardersElements = props.allForwarders.map(forwarder => <option
-        value={forwarder._id}>{forwarder.name}</option>)
-    // -----------------------------------------------------------------------------------------------------------------
     // Доступ
     const position = props.authBlock.position
     const dealDone = props.dealStatus.dealDone
@@ -274,128 +168,22 @@ const Deal = (props) => {
             />
             {/*----------------------конец--------------------ОКНО ADD FILE------------------------------------------*/}
             {/*----------------------начало-------------------ОКНО ADD DRIVER----------------------------------------*/}
-            <Dialog onClose={onAddDriverClose} aria-labelledby="customized-dialog-title" open={openAddDriver}>
-                <DialogTitle id="customized-dialog-title" onClose={onAddDriverClose}>
-                    Выбрать водителя
-                </DialogTitle>
-                <DialogContent dividers>
-                    <div>
-                        <Grid container spacing={1} alignItems="flex-end">
-                            <Grid item>
-                                <AccountCircleIcon/>
-                            </Grid>
-                            <Grid item>
-                                <Select
-                                    native
-                                    value={formik.values.driver}
-                                    onChange={formik.handleChange}
-                                    inputProps={{
-                                        name: 'driver',
-                                        id: 'driver',
-                                    }}
-                                >
-                                    <option value="" disabled>
-                                        Выберите водителя
-                                    </option>
-                                    {optionsDriversElements}
-                                </Select>
-                            </Grid>
-                        </Grid>
-                    </div>
-                    <div>
-                        <Grid container spacing={1} alignItems="flex-end">
-                            <Grid item>
-                                <MonetizationOnIcon/>
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    id="sumDriver"
-                                    label="Сумма"
-                                    type='text'
-                                    name='sumDriver'
-                                    onChange={formik.handleChange}
-                                    on
-                                    value={formik.values.sumDriver}
-                                    size="small"
-                                    InputProps={{
-                                        endAdornment: <InputAdornment position="start">₽</InputAdornment>
-                                    }}
-                                />
-                            </Grid>
-                        </Grid>
-                    </div>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onAddDriver} color="primary">
-                        Добавить
-                    </Button>
-                    <Button onClick={onAddDriverClose} color="primary">
-                        Закрыть
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <AddDriver allDrivers={props.allDrivers}
+                       openAddDriver={openAddDriver}
+                       setOpenAddDriver={setOpenAddDriver}
+                       addDriver={props.addDriver}
+                       id={props.id}
+                       managerId={props.managerId}
+            />
             {/*----------------------конец--------------------ОКНО ADD DRIVER----------------------------------------*/}
             {/*----------------------начало-------------------ОКНО ADD FORWARDER-------------------------------------*/}
-            <Dialog onClose={onAddForwarderClose} aria-labelledby="customized-dialog-title" open={openAddForwarder}>
-                <DialogTitle id="customized-dialog-title" onClose={onAddForwarderClose}>
-                    Выбрать водителя
-                </DialogTitle>
-                <DialogContent dividers>
-                    <div>
-                        <Grid container spacing={1} alignItems="flex-end">
-                            <Grid item>
-                                <AccountCircleIcon/>
-                            </Grid>
-                            <Grid item>
-                                <Select
-                                    native
-                                    value={formik.values.forwarder}
-                                    onChange={formik.handleChange}
-                                    inputProps={{
-                                        name: 'forwarder',
-                                        id: 'forwarder',
-                                    }}
-                                >
-                                    <option value="" disabled>
-                                        Выберите экспедитора
-                                    </option>
-                                    {optionsForwardersElements}
-                                </Select>
-                            </Grid>
-                        </Grid>
-                    </div>
-                    <div>
-                        <Grid container spacing={1} alignItems="flex-end">
-                            <Grid item>
-                                <MonetizationOnIcon/>
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    id="sumForwarder"
-                                    label="Сумма"
-                                    type='text'
-                                    name='sumForwarder'
-                                    onChange={formik.handleChange}
-                                    on
-                                    value={formik.values.sumForwarder}
-                                    size="small"
-                                    InputProps={{
-                                        endAdornment: <InputAdornment position="start">₽</InputAdornment>
-                                    }}
-                                />
-                            </Grid>
-                        </Grid>
-                    </div>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onAddForwarder} color="primary">
-                        Добавить
-                    </Button>
-                    <Button onClick={onAddForwarderClose} color="primary">
-                        Закрыть
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <AddForwarder allForwarders={props.allForwarders}
+                       openAddForwarder={openAddForwarder}
+                       setOpenAddForwarder={setOpenAddForwarder}
+                       addForwarder={props.addForwarder}
+                       id={props.id}
+                       managerId={props.managerId}
+            />
             {/*----------------------конец--------------------ОКНО ADD FORWARDER-------------------------------------*/}
             <div className={classes.leftBlock}>
                 <div
@@ -527,80 +315,14 @@ const Deal = (props) => {
                         <div className={classes.deltaSum}>{sumDeltaWithDocs.toLocaleString()} ₽</div>
                     </div>}
                 </div>
-                <div className={classes.commentsBlock}>
-                    <div className={`${classes.commentTitle} ${classes.commentTitleManager}`}>
-                        Комментарий менеджера:
-                        {props.loading.commentManager &&
-                        <div className={classes.loadingComment}><CircularProgress color="secondary" size={13}/></div>}
-                    </div>
-                    <div className={`${classes.lengthTextManager}`}>
-                        <div className={classes.errorText}>
-                            {errorTextCM && 'Максимальная длина 165 символов!  '}
-                        </div>
-                        <div className={`${classes.currentLengthText} ${!editModeCM && classes.displayNone}`}>
-                            {formik.values.commentManager.length}
-                        </div>
-                    </div>
-                    {!editModeCM
-                        ? (position === 'manager') &&
-                        <div className={`${classes.editComment} ${classes.editCommentManager}`}
-                             onClick={onEditModeCMOn}>редактировать</div>
-                        : <div className={`${classes.editComment} ${classes.editCommentManager}`}
-                               onClick={onEditModeCMOff}>сохранить</div>}
-                    {editModeCM && <div className={classes.cancelEditManager} onClick={onEditModeCMCancel}>Х</div>}
-                    <div className={`${classes.comment} ${classes.commentManager}`}>
-                        {!editModeCM
-                            ? props.commentManager
-                            : <TextField
-                                id="commentManager"
-                                //label="commentManager"
-                                multiline
-                                fullWidth
-                                size={'small'}
-                                error={errorTextCM}
-                                rowsMax={2}
-                                value={formik.values.commentManager}
-                                defaultValue={props.commentManager}
-                                onChange={formik.handleChange}
-                            />}
-                    </div>
-                    <div className={`${classes.commentTitle} ${classes.commentTitleHead}`}>
-                        Комментарий руководителя:
-                        {props.loading.commentHead &&
-                        <div className={classes.loadingComment}><CircularProgress color="secondary" size={13}/></div>}
-                    </div>
-                    <div className={`${classes.lengthTextHead}`}>
-                        <div className={classes.errorText}>
-                            {errorTextCH && 'Максимальная длина 165 символов!  '}
-                        </div>
-                        <div className={`${classes.currentLengthText} ${!editModeCH && classes.displayNone}`}>
-                            {formik.values.commentHead.length}
-                        </div>
-                    </div>
-                    {!editModeCH
-                        ? (position === 'chief') && <div className={`${classes.editComment} ${classes.editCommentHead}`}
-                                                         onClick={onEditModeCHOn}>редактировать</div>
-                        : <div className={`${classes.editComment} ${classes.editCommentHead}`}
-                               onClick={onEditModeCHOff}>сохранить</div>}
-                    {editModeCH && <div className={classes.cancelEditHead} onClick={onEditModeCHCancel}>Х</div>}
-                    <div className={`${classes.comment} ${classes.commentHead}`}>
-                        {!editModeCH
-                            ? props.commentHead
-                            : <TextField
-                                id="commentHead"
-                                //label="Multiline"
-                                multiline
-                                fullWidth
-                                autoFocus={true}
-                                size={'small'}
-                                error={errorTextCH}
-                                rowsMax={2}
-                                value={formik.values.commentHead}
-                                defaultValue={props.commentHead}
-                                onChange={formik.handleChange}
-                            />}
-                    </div>
-                </div>
+                <Comments loading={props.loading.commentManager}
+                          editComment={props.editComment}
+                          position={position}
+                          commentManager={props.commentManager}
+                          commentHead={props.commentHead}
+                          id={props.id}
+                          managerId={props.managerId}
+                />
             </div>
         </div>
     )
