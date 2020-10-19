@@ -86,6 +86,7 @@ class DealsPage extends React.Component {
                     deals={this.props.dealsData}
                     allDrivers={this.props.driversData}
                     allForwarders={this.props.forwardersData}
+                    allCompanies={this.props.companiesTableData}
                     saveFile={this.props.saveFile}
                     deleteFile={this.props.deleteFile}
                     addDriver={this.props.addDriver}
@@ -109,6 +110,7 @@ const mapStateToProps = (state) => {
         dealsData: state.dealsPage.dealsData,
         driversData: state.dealsPage.driversData,
         forwardersData: state.dealsPage.forwardersData,
+        companiesTableData: state.companiesPage.companiesTableData,
         authBlock: state.authBlock,
         filter: state.dealsPage.filter,
         initialized: state.dealsPage.initialized,
@@ -130,7 +132,7 @@ export const DealsPageContainer = compose(
         deleteDriverFromDeal,
         deleteForwarderFromDeal,
         editComment,
-        loadingOneDeal,
+        loadingOneDeal
     }),
     withRouter,
     // WithAuthRedirect

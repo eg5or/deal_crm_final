@@ -12,6 +12,7 @@ const DealsItems = (props) => {
     let dealsElements = sortedDeals.map(d => <Deal key={d._id}
                                                    allDrivers={props.allDrivers}
                                                    allForwarders={props.allForwarders}
+                                                   allCompanies={props.allCompanies}
                                                    id={d._id}
                                                    dealNumber={d.dealNumber}
                                                    date={d.date}

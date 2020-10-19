@@ -1,6 +1,7 @@
 import {dealsAPI, driversAPI, forwardersAPI, uploadAPI} from "../API/api";
 import {addNewNotification} from "./notificationsReducer";
 import {dateNormalize} from "../common/DateNormalize/DateNormalize";
+import {loadingCompaniesTableData} from "./companies-reducer";
 
 // constants
 const SET_DEALS_DATA = 'dealCRM/dealspage/SET_DEALS_DATA';
@@ -129,6 +130,7 @@ export const loadingOneDeal = (id) => async (dispatch, getState) => {
         }
         dispatch(loadingDriversTableData())
         dispatch(loadingForwardersTableData())
+        dispatch(loadingCompaniesTableData())
     } catch (e) {
         alert(e.response.data.message)
     }
@@ -165,6 +167,7 @@ export const loadingDeals = (filter, page) => async (dispatch, getState) => {
         }
         dispatch(loadingDriversTableData())
         dispatch(loadingForwardersTableData())
+        dispatch(loadingCompaniesTableData())
     }
 }
 // выключение всех загрузок

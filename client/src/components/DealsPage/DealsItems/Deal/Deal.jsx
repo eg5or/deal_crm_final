@@ -271,6 +271,7 @@ const Deal = (props) => {
     let optionsDriversElements = props.allDrivers.map(driver => <option value={driver._id}>{driver.name}</option>)
     let optionsForwardersElements = props.allForwarders.map(forwarder => <option
         value={forwarder._id}>{forwarder.name}</option>)
+    let optionsCompaniesElements = props.allCompanies.map(company => <option value={company._id}>{company.name}</option>)
     // -----------------------------------------------------------------------------------------------------------------
     // Доступ
     const position = props.authBlock.position
@@ -303,9 +304,7 @@ const Deal = (props) => {
                                         <option value="" disabled>
                                             Выберите компанию
                                         </option>
-                                        <option value={'Демир'}>Демир</option>
-                                        <option value={'АСТ'}>АСТ</option>
-                                        <option value={'ТП'}>ТП</option>
+                                        {optionsCompaniesElements}
                                     </Select>
                                     : <TextField
                                         id="company"
