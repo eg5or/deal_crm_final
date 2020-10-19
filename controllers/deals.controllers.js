@@ -5,6 +5,7 @@ const Deal = require('../models/Deal')
 const Counter = require('../models/Counter')
 const Driver = require('../models/Driver')
 const Forwarder = require('../models/Forwarder')
+const Company = require('../models/Company')
 const errorHandler = require('../utils/errorHandler')
 
 // Загрузка файлов MULTER
@@ -34,7 +35,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
     storage: storageConfig,
-    limits: {fileSize: 2 * 1024 * 1024}, // ограничение размера загружаемого файла
+    limits: {fileSize: 5 * 1024 * 1024}, // ограничение размера загружаемого файла
     fileFilter: fileFilter
 }).single('filedata')
 
@@ -187,12 +188,15 @@ module.exports.upload = function (req, res) {
                 console.log('Обновление сделки');
                 switch (req.query.type) {
                     case 'CI':
+                        const company = await Company.findOne({_id: req.query.company})
                         await Deal.updateOne(
                             {_id: req.query.id},
                             {
                                 $addToSet: {
                                     "clientInvoices": {
-                                        company: req.query.company,
+                                        company: company.name,
+                                        bill: company.bill,
+                                        tax: company.tax,
                                         fileUrl: `${path.basename(file)}`,
                                         sum: req.query.sum,
                                         typeFile: req.query.type

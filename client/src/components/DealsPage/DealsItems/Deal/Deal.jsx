@@ -9,7 +9,6 @@ import DeliverItem from "./DeliverBlock/DeliverItems";
 import {useFormik} from "formik";
 // иконки
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import BusinessIcon from '@material-ui/icons/Business';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 // Material UI components
 import Grid from "@material-ui/core/Grid";
@@ -25,6 +24,7 @@ import TextField from "@material-ui/core/TextField";
 import {dateNormalize} from "../../../../common/DateNormalize/DateNormalize";
 import {NavLink} from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import AddFile from "./Add/AddFile";
 
 
 const Deal = (props) => {
@@ -98,8 +98,6 @@ const Deal = (props) => {
     // Formik для окна ADD FILE
     const formik = useFormik({
         initialValues: {
-            company: '',
-            sum: '',
             driver: '',
             sumDriver: '',
             forwarder: '',
@@ -115,9 +113,10 @@ const Deal = (props) => {
     let dateString = convertedDate.getDate() + '.' + (convertedDate.getMonth() + 1) + '.' + convertedDate.getFullYear()
     // -----------------------------------------------------------------------------------------------------------------
     // локальные стэйты
-    const [openAddFile, setOpenAddFile] = React.useState(false);
     const [openAddDriver, setOpenAddDriver] = React.useState(false);
     const [openAddForwarder, setOpenAddForwarder] = React.useState(false);
+    // окно ADD FILE
+    const [openAddFile, setOpenAddFile] = React.useState(false);
     let [typeFile, setTypeFile] = useState('')
     // -----------------------------------------------------------------------------------------------------------------
     // окно DRIVERS
@@ -171,21 +170,6 @@ const Deal = (props) => {
     const onAddFileOpenDOC = () => {
         setOpenAddFile(true)
         setTypeFile('DOC')
-    }
-    // закрыть
-    const onAddFileClose = () => {
-        setOpenAddFile(false)
-    }
-    // -----------------------------------------------------------------------------------------------------------------
-    // Ф-я загрузки файлов (срабатывает при добавлении файлов)
-    const onUploadFile = (e) => {
-        if (e.target.files.length) {
-            props.saveFile(e.target.files[0], props.id, formik.values.company, Number(formik.values.sum.replace(",",".")), typeFile, props.managerId)
-            onAddFileClose()
-            formik.values.company = ''
-            formik.values.sum = ''
-            typeFile = ''
-        }
     }
     // -----------------------------------------------------------------------------------------------------------------
     // вычисляем константы для Сделки:
@@ -267,11 +251,10 @@ const Deal = (props) => {
         errorTextCH = true
     }
     // -----------------------------------------------------------------------------------------------------------------
-    // Добавляем водителей и экспедиторов в списки для выбора при добавлении
+    // Добавляем водителей, экспедиторов и список компаний в списки для выбора при добавлении
     let optionsDriversElements = props.allDrivers.map(driver => <option value={driver._id}>{driver.name}</option>)
     let optionsForwardersElements = props.allForwarders.map(forwarder => <option
         value={forwarder._id}>{forwarder.name}</option>)
-    let optionsCompaniesElements = props.allCompanies.map(company => <option value={company._id}>{company.name}</option>)
     // -----------------------------------------------------------------------------------------------------------------
     // Доступ
     const position = props.authBlock.position
@@ -280,83 +263,15 @@ const Deal = (props) => {
     return (
         <div className={classes.deal}>
             {/*----------------------начало-------------------ОКНО ADD FILE------------------------------------------*/}
-            <Dialog onClose={onAddFileClose} aria-labelledby="customized-dialog-title" open={openAddFile}>
-                <DialogTitle id="customized-dialog-title" onClose={onAddFileClose}>
-                    Загрузить файл
-                </DialogTitle>
-                <DialogContent dividers>
-                    <div>
-                        <Grid container spacing={1} alignItems="flex-end">
-                            <Grid item>
-                                <BusinessIcon/>
-                            </Grid>
-                            <Grid item>
-                                {typeFile === 'CI'
-                                    ? <Select
-                                        native
-                                        value={formik.values.company}
-                                        onChange={formik.handleChange}
-                                        inputProps={{
-                                            name: 'company',
-                                            id: 'company',
-                                        }}
-                                    >
-                                        <option value="" disabled>
-                                            Выберите компанию
-                                        </option>
-                                        {optionsCompaniesElements}
-                                    </Select>
-                                    : <TextField
-                                        id="company"
-                                        label="Компания"
-                                        type='text'
-                                        name='company'
-                                        onChange={formik.handleChange}
-                                        on
-                                        value={formik.values.company}
-                                        size="small"
-                                    />}
-                            </Grid>
-                        </Grid>
-                    </div>
-                    <div>
-                        <Grid container spacing={1} alignItems="flex-end">
-                            <Grid item>
-                                <MonetizationOnIcon/>
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    id="sum"
-                                    label="Сумма счета"
-                                    type='text'
-                                    name='sum'
-                                    onChange={formik.handleChange}
-                                    on
-                                    value={formik.values.sum}
-                                    size="small"
-                                    InputProps={{
-                                        endAdornment: <InputAdornment position="start">₽</InputAdornment>
-                                    }}
-                                />
-                            </Grid>
-                        </Grid>
-                    </div>
-                    <div>
-                        <input className={classes.inputUpload} type={'file'} id="contained-button-file"
-                               onChange={onUploadFile}/>
-                    </div>
-                </DialogContent>
-                <DialogActions>
-                    <label htmlFor="contained-button-file">
-                        <Button variant="contained" color="primary" component="span">
-                            Загрузить
-                        </Button>
-                    </label>
-                    <Button onClick={onAddFileClose} color="primary">
-                        Закрыть
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <AddFile allCompanies={props.allCompanies}
+                     openAddFile={openAddFile}
+                     setOpenAddFile={setOpenAddFile}
+                     typeFile={typeFile}
+                     setTypeFile={setTypeFile}
+                     saveFile={props.saveFile}
+                     id={props.id}
+                     managerId={props.managerId}
+            />
             {/*----------------------конец--------------------ОКНО ADD FILE------------------------------------------*/}
             {/*----------------------начало-------------------ОКНО ADD DRIVER----------------------------------------*/}
             <Dialog onClose={onAddDriverClose} aria-labelledby="customized-dialog-title" open={openAddDriver}>
