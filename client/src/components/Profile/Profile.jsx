@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import classes from './Profile.module.css'
 import MailIcon from '@material-ui/icons/Mail';
 import ApartmentIcon from '@material-ui/icons/Apartment';
@@ -17,8 +17,22 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+import {changePasswordToNew} from "../../redux/auth-reducer";
 
-const Profile = ({profileData: {name, position, head, intel, tel, location, birthday, email, avatar}}) => {
+const Profile = ({profileData: {
+    name,
+    position,
+    head,
+    intel,
+    tel,
+    location,
+    birthday,
+    email,
+    avatar,
+    textResponseMessage,
+    typeResponseMessage}, changePasswordToNew}) => {
     let positionRU = ''
     switch (position) {
         case 'manager':
@@ -49,10 +63,7 @@ const Profile = ({profileData: {name, position, head, intel, tel, location, birt
     }
 
     const [values, setValues] = React.useState({
-        amount: '',
         password: '',
-        weight: '',
-        weightRange: '',
         showPassword: false,
     });
 
@@ -67,6 +78,24 @@ const Profile = ({profileData: {name, position, head, intel, tel, location, birt
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+    console.log(values)
+    const onChangePassword = () => {
+        changePasswordToNew(values.password)
+        onSnackOpen()
+    }
+    const [open, setOpen] = useState(false)
+
+    const onSnackOpen = () => {
+        setOpen(true)
+    }
+
+    const onSnackClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false)
+    }
+
     return (
         <div className={classes.profilePage}>
             <div className={classes.title}><h1>Профиль</h1></div>
@@ -129,8 +158,13 @@ const Profile = ({profileData: {name, position, head, intel, tel, location, birt
                 </div>
             </div>
             <div className={classes.changePassword}>
-                <div className={classes.titlePassword}>Сменить пароль</div>
-                <div className={classes.labelPassword}>Введите новый пароль:</div>
+                <div className={classes.titlePassword}>
+                    <div className={classes.titleBold}>Сменить пароль</div>
+                    <div className={classes.description}>(не забудь запомнить или записать его)</div>
+                </div>
+                <div className={classes.labelPassword}>
+                    Новый пароль
+                </div>
                 <div className={classes.inputPassword}>
                     <FormControl  variant="outlined">
                         <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
@@ -155,7 +189,15 @@ const Profile = ({profileData: {name, position, head, intel, tel, location, birt
                         />
                     </FormControl>
                 </div>
+                <div className={classes.btnChangePassword}>
+                    <Button variant="contained" onClick={onChangePassword}>Изменить</Button>
+                </div>
             </div>
+            <Snackbar open={textResponseMessage} autoHideDuration={6000} onClose={onSnackClose}>
+                <Alert onClose={onSnackClose} severity="success">
+                    {textResponseMessage}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }

@@ -27,8 +27,8 @@ class LoginPage extends React.Component {
                     login={this.props.login}
                 />
             </div>
-            {this.props.responseMessage !== '' &&
-            <div className={classes.errorBlock}><Alert severity="error">{this.props.responseMessage}</Alert></div>}
+            {this.props.textResponseMessage !== null &&
+            <div className={classes.errorBlock}><Alert severity="error">{this.props.textResponseMessage}</Alert></div>}
             {this.props.isWaitingLogin && <div className={classes.isWaitingLogin}><CircularProgress color="primary" size={30}/></div>}
         </div>
     }
@@ -38,7 +38,8 @@ const mapStateToProps = (state) => ({
     isAuth: state.authBlock.isAuth,
     newEmailText: state.authBlock.newEmailText,
     newPasswordText: state.authBlock.newPasswordText,
-    responseMessage: state.authBlock.responseMessage,
+    textResponseMessage: state.authBlock.textResponseMessage,
+    typeResponseMessage: state.authBlock.typeResponseMessage,
     isWaitingLogin: state.authBlock.isWaitingLogin,
 })
 

@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 // components
 import Settings from "./Settings";
+// reducers
 import {changePosition} from "../../redux/settings-reducer";
 
 class SettingsContainer extends React.Component {

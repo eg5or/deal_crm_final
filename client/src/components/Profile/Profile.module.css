@@ -62,9 +62,13 @@
 }
 
 .avatar {
-
+    width: 300px;
+    height: 400px;
 }
 .avatar img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
     border-radius: 10px;
 }
 
@@ -75,14 +79,15 @@
 .changePassword {
     background-color: #b0bec5;
     border-radius: 10px;
+    padding: 10px;
     grid-area: changePassword;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: 1fr 1fr;
-    grid-template-areas: "titlePassword titlePassword"
-                         "labelPassword inputPassword";
+    grid-template-areas: "titlePassword titlePassword titlePassword"
+                         "labelPassword inputPassword btnChangePassword";
 }
-
+.btnChangePassword,
 .titlePassword,
 .labelPassword,
 .inputPassword {
@@ -93,8 +98,19 @@
 
 .titlePassword {
     grid-area: titlePassword;
+    flex-direction: row;
+}
+
+.titleBold {
     font-size: 20px;
     font-weight: bold;
+}
+
+.description {
+    font-size: 13px;
+    color: #607d8b;
+    font-weight: lighter;
+    padding: 10px;
 }
 
 .labelPassword {
@@ -105,4 +121,8 @@
 .inputPassword {
     grid-area: inputPassword;
 
+}
+
+.btnChangePassword {
+    grid-area: btnChangePassword;
 }

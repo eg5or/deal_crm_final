@@ -29,7 +29,7 @@ const Settings = ({profileData: {position, positionTrue}, changePosition, manage
         <div className={classes.settingsPage}>
             <div className={classes.title}><h1>Настройки</h1></div>
             <div className={classes.settings}>
-                {positionTrue === 'chief' | positionTrue === 'director' ? <div className={classes.managerMode}>
+                {positionTrue === 'chief' || positionTrue === 'director' ? <div className={classes.managerMode}>
                     <div className={classes.label}>Режим менеджера: </div>
                     <div className={classes.switcher}>
                         <Switch
@@ -40,7 +40,7 @@ const Settings = ({profileData: {position, positionTrue}, changePosition, manage
                         />
                     </div>
                     <div className={classes.value}>{managerMode ? 'Включен' : 'Выключен'}</div>
-                </div> : <div></div>}
+                </div> : <div/>}
             </div>
 
 

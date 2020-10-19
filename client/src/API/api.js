@@ -40,8 +40,8 @@ export const authAPI = {
         })
     },
 
-    logoutFromCRM(id) {
-        return instance.delete(`auth/logout/${id}`)
+    changePassword(id, newPassword) {
+        return instance.post(`auth/changepwd`, {id, newPassword})
     },
 
     authorized(id) {

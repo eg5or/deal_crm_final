@@ -18,7 +18,7 @@ module.exports.login = async function (req, res) {
                 email: candidate.email,
                 userId: candidate._id,
                 access: candidate.position
-            }, config.get('jwt'), {expiresIn: 3600 }) // 2ой параметр секретный ключ 3ий параметр время жизни токена
+            }, config.get('jwt'), {expiresIn: 3600}) // 2ой параметр секретный ключ 3ий параметр время жизни токена
 
             res.status(200).json({
                 token: `Bearer ${token}`,
@@ -112,4 +112,32 @@ module.exports.register = async function (req, res) {
             errorHandler(res, e)
         }
     }
+}
+
+module.exports.changePassword = async function (req, res) {
+    // в req к нам приходит id пользователя и новый пароль
+    // зашифровываем новый пароль
+    const salt = bcrypt.genSaltSync(10) // доп безопасность
+    const newPassword = bcrypt.hashSync(req.body.newPassword, salt) // зашифрованный новый пароль
+    try {
+        await Employee.update({_id: req.body.id},
+            {
+                $set: {
+                    "password": newPassword,
+                }
+            },
+            function (err, result) {
+                res.status(201).json({
+                    message: 'Пароль успешно изменен'
+                })
+            }
+        );
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+        res.status(500).json({
+            message: e
+        })
+    }
+
 }

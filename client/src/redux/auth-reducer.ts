@@ -14,7 +14,8 @@ export type InitialStateType = {
     isAuth: boolean
     newEmailText: string | null
     newPasswordText: string | null
-    responseMessage: string | null
+    textResponseMessage: string | null
+    typeResponseMessage: 'error' | 'inform' | null
     token: string
     isWaitingLogin: boolean
 }
@@ -23,7 +24,8 @@ let initialState: InitialStateType = {
     isAuth: false,
     newEmailText: '',
     newPasswordText: '',
-    responseMessage: '',
+    textResponseMessage: null,
+    typeResponseMessage: null,
     token: '',
     isWaitingLogin: false
 }
@@ -63,7 +65,8 @@ const authReducer = (state = initialState, action: any): InitialStateType => {
         case SET_RESPONSE_MESSAGE:
             return {
                 ...state,
-                responseMessage: action.message
+                textResponseMessage: action.message,
+                typeResponseMessage: action.typeMessage
             };
         case SET_TOKEN_DATA:
             return {
@@ -117,8 +120,9 @@ export const clearEmailAndPassword = (): ClearEmailAndPassword => ({type: CLEAR_
 type SetResponseMessage = {
     type: typeof SET_RESPONSE_MESSAGE
     message: string
+    typeMessage: 'error' | 'inform' | null
 }
-export const setResponseMessage = (message: string): SetResponseMessage => ({type: SET_RESPONSE_MESSAGE, message});
+export const setResponseMessage = (message: string, typeMessage: 'error' | 'inform' | null): SetResponseMessage => ({type: SET_RESPONSE_MESSAGE, message, typeMessage});
 
 type SetTokenData = {
     type: typeof SET_TOKEN_DATA
@@ -167,7 +171,7 @@ export const login = (email: string, password: string) => async (dispatch: any) 
         dispatch(setAuthUserData(me.data, true))
         dispatch(toggleIsWaitingLogin(false))
     } else {
-        dispatch(setResponseMessage(response.message))
+        dispatch(setResponseMessage(response.message, 'error'))
     }
 }
 
@@ -179,11 +183,20 @@ export const logout = () => async (dispatch: any) => {
 export const register = (email: string, password: string) => async (dispatch: any) => {
     const data = await authAPI.registerToCRM(email, password).catch((err: any) => err.response.data)
     if (data.message) {
-        dispatch(setResponseMessage(data.message))
+        dispatch(setResponseMessage(data.message, 'error'))
     } else {
         dispatch(clearEmailAndPassword())
     }
+}
 
+export const changePasswordToNew = (newPassword: string) => async (dispatch: any, getState: any) => {
+    const id = getState().authBlock._id
+    const data = await authAPI.changePassword(id, newPassword).catch((err: any) => err.response.data)
+    if (data.status === 201) {
+        dispatch(setResponseMessage(data.data.message, 'inform'))
+    } else {
+        dispatch(setResponseMessage(data.data.message, 'error'))
+    }
 }
 
 export default authReducer;
