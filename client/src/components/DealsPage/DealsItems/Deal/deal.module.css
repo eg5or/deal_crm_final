@@ -42,10 +42,23 @@
     background-color: #455a64;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 7fr 1fr 4fr;
-    grid-template-areas: "titleDeliver . loading sumDeliver"
-                         "drivers drivers forwarders forwarders"
+    grid-template-areas: "titleLeft sumLeft loading btnRight"
+                         "deliveryOrOther deliveryOrOther deliveryOrOther deliveryOrOther"
                          "allDelta allDelta allDelta allDelta"
                          "commentsBlock commentsBlock commentsBlock commentsBlock";
+}
+
+.deliveryOrOther {
+    grid-area: deliveryOrOther;
+    display: flex;
+    flex-direction: row;
+}
+
+.other,
+.delivery {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 }
 
 /* дельта */
@@ -336,8 +349,9 @@
 }
 
 /* доставка */
-.titleDeliver,
-.sumDeliver {
+.btnRight,
+.titleLeft,
+.sumLeft {
     background-color: #607d8b;
     color: white;
     font-size: 15px;
@@ -346,32 +360,55 @@
     align-items: center;
 }
 
-.titleDeliver {
-    grid-area: titleDeliver;
+.titleLeft {
+    grid-area: titleLeft;
     text-transform: uppercase;
     justify-content: center;
 }
 
-.sumDeliver {
-    grid-area: sumDeliver;
+.btnRight {
+    grid-area: btnRight;
+    text-transform: uppercase;
+    justify-content: center;
+}
+
+.btnRight:hover {
+    background-color: #263238;
+    color: white;
+    cursor: pointer;
+}
+
+.btnRight:active {
+    background-color: #b0bec5;
+    color: #263238;
+}
+
+.sumLeft {
+    grid-area: sumLeft;
     justify-content: flex-end;
     padding-right: 10px;
 }
 
-.drivers {
-    grid-area: drivers;
+.taxes,
+.gifts,
+.drivers,
+.forwarders {
+    width: 50%;
 }
 
+.titleTaxesGifts,
 .titleDriversForwarders {
     margin: 10px 0;
     padding-left: 10px;
     color: #b0bec5;
 }
 
+.taxesItems,
 .driversItems {
     padding-left: 10px;
 }
 
+.addGift,
 .addDriverForwarder {
     background-color: #607d8b;
     height: 30px;
@@ -383,21 +420,20 @@
     color: white;
 }
 
+.addGift:hover,
 .addDriverForwarder:hover {
     background-color: #263238;
     color: white;
     cursor: pointer;
 }
 
+.addGift:active,
 .addDriverForwarder:active {
     background-color: #b0bec5;
     color: #263238;
 }
 
-.forwarders {
-    grid-area: forwarders;
-}
-
+.giftsItems,
 .forwardersItems {
     padding: 0 10px;
 }

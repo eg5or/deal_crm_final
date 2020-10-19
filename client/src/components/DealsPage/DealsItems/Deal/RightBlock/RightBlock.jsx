@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import classes from "../deal.module.css";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Comments from "../Comments/Comments";
@@ -27,31 +27,31 @@ const RightBlock = ({
                         deleteForwarderFromDeal,
                         addDriver,
                         addForwarder
-}) => {
+                    }) => {
     // -----------------------------------------------------------------------------------------------------------------
     // отрисовка водителей
     let driversElements = drivers.map(d => <DeliverItem key={d.id}
-                                                              name={d.driverName}
-                                                              tel={d.tel}
-                                                              auto={d.auto}
-                                                              sum={d.sum}
-                                                              dealId={id}
-                                                              position={position}
-                                                              deleteItemFunction={deleteDriverFromDeal}
-                                                              dealDone={dealDone}
-                                                              managerId={managerId}
+                                                        name={d.driverName}
+                                                        tel={d.tel}
+                                                        auto={d.auto}
+                                                        sum={d.sum}
+                                                        dealId={id}
+                                                        position={position}
+                                                        deleteItemFunction={deleteDriverFromDeal}
+                                                        dealDone={dealDone}
+                                                        managerId={managerId}
     />)
     // -----------------------------------------------------------------------------------------------------------------
     // отрисовка экспедиторов
     let forwardersElements = forwarders.map(d => <DeliverItem key={d.id}
-                                                                    name={d.forwarderName}
-                                                                    tel={d.tel}
-                                                                    sum={d.sum}
-                                                                    dealId={id}
-                                                                    position={position}
-                                                                    deleteItemFunction={deleteForwarderFromDeal}
-                                                                    dealDone={dealDone}
-                                                                    managerId={managerId}
+                                                              name={d.forwarderName}
+                                                              tel={d.tel}
+                                                              sum={d.sum}
+                                                              dealId={id}
+                                                              position={position}
+                                                              deleteItemFunction={deleteForwarderFromDeal}
+                                                              dealDone={dealDone}
+                                                              managerId={managerId}
     />)
     // окно DRIVERS
     // локальный стэйт
@@ -67,6 +67,11 @@ const RightBlock = ({
     // открыть
     const onAddForwarderOpen = () => {
         setOpenAddForwarder(true)
+    }
+    // -----------------------------------------------------------------------------------------------------------------
+    const [openOther, setOpenOther] = useState(false)
+    const onChangeOpenOther = () => {
+        setOpenOther(!openOther)
     }
     // -----------------------------------------------------------------------------------------------------------------
     return (
@@ -90,31 +95,63 @@ const RightBlock = ({
             />
             {/*----------------------конец--------------------ОКНО ADD FORWARDER-------------------------------------*/}
             <div className={classes.rightBlock}>
-                <div className={classes.titleDeliver}>Доставка</div>
+                {openOther
+                    ? <>
+                        <div className={classes.titleLeft}>Другое</div>
+                        <div className={classes.sumLeft}>{sumDeliver.toLocaleString()} ₽</div>
+                    </>
+                    : <>
+                        <div className={classes.titleLeft}>Доставка</div>
+                        <div className={classes.sumLeft}>{sumDeliver.toLocaleString()} ₽</div>
+                    </>}
                 {loading.delivery &&
                 <div className={classes.loading}><CircularProgress color="secondary" size={20}/></div>}
-                <div className={classes.sumDeliver}>{sumDeliver.toLocaleString()} ₽</div>
-                <div className={classes.drivers}>
-                    <div className={classes.titleDriversForwarders}>Водители:</div>
-                    <div className={classes.driversItems}>
-                        {driversElements}
-                        {(position === 'manager' || position === 'chief') && <div
-                            className={classes.addDriverForwarder}
-                            onClick={onAddDriverOpen}>
-                            + добавить водителя
+                <div className={classes.btnRight} onClick={onChangeOpenOther}>{openOther ? 'Доставка' : 'Другое'}</div>
+                <div className={classes.deliveryOrOther}>
+                    {!openOther
+                        ? <div className={classes.delivery}>
+                            <div className={classes.drivers}>
+                                <div className={classes.titleDriversForwarders}>Водители:</div>
+                                <div className={classes.driversItems}>
+                                    {driversElements}
+                                    {(position === 'manager' || position === 'chief') && <div
+                                        className={classes.addDriverForwarder}
+                                        onClick={onAddDriverOpen}>
+                                        + добавить водителя
+                                    </div>}
+                                </div>
+                            </div>
+                            <div className={classes.forwarders}>
+                                <div className={classes.titleDriversForwarders}>Экспедиторы:</div>
+                                <div className={classes.forwardersItems}>
+                                    {forwardersElements}
+                                    {(position === 'manager' || position === 'chief') && <div
+                                        className={classes.addDriverForwarder}
+                                        onClick={onAddForwarderOpen}>
+                                        + добавить экспедитора
+                                    </div>}
+                                </div>
+                            </div>
+                        </div>
+                        : <div className={classes.other}>
+                            <div className={classes.taxes}>
+                                <div className={classes.titleTaxesGifts}>Налоги:</div>
+                                <div className={classes.taxesItems}>
+                                    {/*{taxesElements}*/}
+                                </div>
+                            </div>
+                            <div className={classes.gifts}>
+                                <div className={classes.titleTaxesGifts}>Расходы:</div>
+                                <div className={classes.giftsItems}>
+                                    {/*{giftsElements}*/}
+                                    {(position === 'manager' || position === 'chief' || position === 'director') && <div
+                                        className={classes.addGift}
+                                        onClick={onAddForwarderOpen}>
+                                        + добавить расход
+                                    </div>}
+                                </div>
+                            </div>
                         </div>}
-                    </div>
-                </div>
-                <div className={classes.forwarders}>
-                    <div className={classes.titleDriversForwarders}>Экспедиторы:</div>
-                    <div className={classes.forwardersItems}>
-                        {forwardersElements}
-                        {(position === 'manager' || position === 'chief') && <div
-                            className={classes.addDriverForwarder}
-                            onClick={onAddForwarderOpen}>
-                            + добавить экспедитора
-                        </div>}
-                    </div>
                 </div>
                 <div className={classes.allDelta}>
                     <div className={classes.deltaOutDocs}>
