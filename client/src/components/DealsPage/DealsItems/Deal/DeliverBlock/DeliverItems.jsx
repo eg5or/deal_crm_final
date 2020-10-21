@@ -6,7 +6,7 @@ import Popover from "@material-ui/core/Popover";
 import Tooltip from "@material-ui/core/Tooltip";
 
 
-const DeliverItem = ({name, tel, auto, sum, dealId, position, deleteItemFunction, dealDone, managerId}) => {
+const DeliverItem = ({name, tel, auto, sum, dealId, position, deleteItemFunction, dealDone, managerId, bill, tax, sumTax, openOther, giftName, comment}) => {
     // -----------------------------------------------------------------------------------------------
     // show Actions
     const [showActions, setShowActions] = useState(false)
@@ -36,8 +36,8 @@ const DeliverItem = ({name, tel, auto, sum, dealId, position, deleteItemFunction
     // -----------------------------------------------------------------------------------------------
     return (
         <div className={classes.deliverItem} onMouseEnter={onShowActions} onMouseLeave={onHideActions}>
-            <div className={classes.name}>{name}</div>
-            {(position === 'manager' || position === 'chief') && !dealDone
+            <div className={`${classes.name} ${name && name.length > 16 && classes.smallText}`}>{!openOther ? name : `${bill === 'nn' ? ' +' : ' -'} ${tax} %` || giftName }</div>
+            {(position === 'manager' || position === 'chief') && !dealDone && !openOther
                 ? <Tooltip title="Удалить" placement="bottom-end">
                     <div
                         className={`${classes.icon} ${!showActions && classes.noActive}`}
@@ -47,11 +47,13 @@ const DeliverItem = ({name, tel, auto, sum, dealId, position, deleteItemFunction
                     </div>
                 </Tooltip>
                 : <div className={classes.emptyIcon}/>}
-            <Tooltip title="Информация" placement="bottom-start">
+            {!openOther
+                ? <Tooltip title="Информация" placement="bottom-start">
                 <div className={`${classes.icon} ${!showActions && classes.noActive}`} onClick={handleClick}>
                     <InfoIcon fontSize={'small'}/>
                 </div>
-            </Tooltip>
+                </Tooltip>
+                : <div className={classes.emptyIcon}/>}
             <Popover
                 id={id}
                 open={open}
@@ -67,12 +69,13 @@ const DeliverItem = ({name, tel, auto, sum, dealId, position, deleteItemFunction
                 }}
             >
                 <div className={classes.popup}>
-                    <div className={classes.popupItems}>тел. {tel}</div>
+                    {comment && <div className={classes.popupItems}>{comment}</div>}
+                    {tel && <div className={classes.popupItems}>тел. {tel}</div>}
                     {auto && <div className={classes.popupItems}>авто: {auto}</div>}
                 </div>
 
             </Popover>
-            <div className={classes.sum}>{sum.toLocaleString()} ₽</div>
+            <div className={classes.sum}>{!openOther ? sum.toLocaleString() : sumTax.toLocaleString() || sum.toLocaleString()} ₽</div>
         </div>
     )
 

@@ -198,8 +198,14 @@ module.exports.upload = function (req, res) {
                                         bill: company.bill,
                                         tax: company.tax,
                                         fileUrl: `${path.basename(file)}`,
-                                        sum: req.query.sum,
+                                        sum: +req.query.sum,
                                         typeFile: req.query.type
+                                    },
+                                    "taxes": {
+                                        fileUrl: `${path.basename(file)}`,
+                                        bill: company.bill,
+                                        tax: company.tax,
+                                        sumTax: +req.query.sum * company.tax / 100,
                                     }
                                 }
                             },
@@ -267,7 +273,10 @@ module.exports.deleteFile = async function (req, res) {
                         $pull: {
                             "clientInvoices": {
                                 fileUrl: req.query.file
-                            }
+                            },
+                            "taxes": {
+                                fileUrl: req.query.file
+                            },
                         }
                     },
                     {multi: true},
@@ -403,6 +412,52 @@ module.exports.deleteForwarderFromDeal = async function (req, res) {
                 $pull: {
                     "forwarders": {
                         forwarderName: req.query.name,
+                        sum: +req.query.sum
+                    }
+                }
+            },
+            {multi: true},
+            function (error, result) {
+                res.status(200).json(result)
+            })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
+
+
+module.exports.addGiftToDeal = async function (req, res) {
+    try {
+        await Deal.updateOne(
+            {_id: req.body.id},
+            {
+                $addToSet: {
+                    "gifts": {
+                        giftName: req.body.name,
+                        comment: req.body.comment,
+                        sum: +req.body.sum
+                    }
+                }
+            },
+            {new: true, upsert: true},
+            function (error, result) {
+                res.status(200).json(result)
+            })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
+
+module.exports.deleteGiftFromDeal = async function (req, res) {
+    try {
+        await Deal.updateOne(
+            {_id: req.query.id},
+            {
+                $pull: {
+                    "gifts": {
+                        giftName: req.query.name,
                         sum: +req.query.sum
                     }
                 }

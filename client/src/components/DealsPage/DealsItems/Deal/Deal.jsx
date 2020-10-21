@@ -1,22 +1,29 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 // styles
 import classes from './deal.module.css'
 // React components
 import StatusBlock from "./StatusBlock";
-import DeliverItem from "./DeliverBlock/DeliverItems";
 // other
 // иконки
-
+import PrintIcon from '@material-ui/icons/Print';
 // Material UI components
 import Switch from "@material-ui/core/Switch";
 import {dateNormalize} from "../../../../common/DateNormalize/DateNormalize";
 import {NavLink} from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import AddDriver from "./Add/AddDriver";
-import AddForwarder from "./Add/AddForwarder";
-import Comments from "./Comments/Comments";
 import CenterBlock from "./CenterBlock/CenterBlock";
 import RightBlock from "./RightBlock/RightBlock";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import {Document, Page} from "react-pdf/dist/umd/entry.webpack";
+import DialogActions from "@material-ui/core/DialogActions";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import PrintItem from "./Print/PrintItem";
+import ApplicationAuto from "./Print/ApplicationAuto";
+import ComponentToPrint from "./Print/ComponentToPrint";
+import ReactToPrint from "react-to-print";
 
 
 const Deal = (props) => {
@@ -31,9 +38,12 @@ const Deal = (props) => {
     // Сумма Доставки
     const sumAllDrivers = props.drivers.reduce((s, i) => s = s + Number(i.sum), 0)
     const sumAllForwarders = props.forwarders.reduce((s, i) => s = s + Number(i.sum), 0)
+    const sumAllTaxes = props.taxes.reduce((s, i) => i.bill === 'nn' ? s = s + +i.sumTax : s = s - +i.sumTax, 0)
+    const sumAllGifts = props.gifts.reduce((s, i) => s = s + Number(i.sum), 0)
     const sumDeliver = sumAllDrivers + sumAllForwarders
+    const sumOther = sumAllTaxes + sumAllGifts
     // Сумма дельты без доков
-    const sumDeltaOutDocs = sumClientInvoices - sumProviderInvoices - sumDeliver
+    const sumDeltaOutDocs = sumClientInvoices - sumProviderInvoices - sumDeliver - sumOther
     // Сумма дельты с доками
     let sumDeltaWithDocs = 0
     if (sumAllDocs !== 0) {
@@ -49,6 +59,16 @@ const Deal = (props) => {
     const position = props.authBlock.position
     const dealDone = props.dealStatus.dealDone
     // -----------------------------------------------------------------------------------------------------------------
+    // Open Print
+    const [openPrint, setOpenPrint] = useState(false)
+    const onOpenPrintDialog = () => {
+        setOpenPrint(true)
+    }
+    const onClosePrintDialog = () => {
+        setOpenPrint(false)
+    }
+    const componentRef = useRef();
+    // -----------------------------------------------------------------------------------------------------------------
     return (
         <div className={classes.deal}>
 
@@ -56,6 +76,7 @@ const Deal = (props) => {
                 <div
                     className={(position === 'manager' || position === 'chief' || position === 'director') ? classes.titleManager : classes.title}>
                     <div className={classes.dealNumber}>
+                        <PrintIcon className={classes.print} onClick={onOpenPrintDialog}/>
                         <NavLink to={`dealspage/${props.id}`}>
                             {props.location === 'korolev' ? 'ДК-' : 'ДМ-'}{props.dealNumber}
                         </NavLink>
@@ -110,6 +131,8 @@ const Deal = (props) => {
             />
             <RightBlock drivers={props.drivers}
                         forwarders={props.forwarders}
+                        gifts={props.gifts}
+                        taxes={props.taxes}
                         allDrivers={props.allDrivers}
                         allForwarders={props.allForwarders}
                         id={props.id}
@@ -118,6 +141,7 @@ const Deal = (props) => {
                         position={position}
                         dealDone={dealDone}
                         sumDeliver={sumDeliver}
+                        sumOther={sumOther}
                         sumDeltaOutDocs={sumDeltaOutDocs}
                         sumDeltaWithDocs={sumDeltaWithDocs}
                         commentHead={props.commentHead}
@@ -125,9 +149,51 @@ const Deal = (props) => {
                         editComment={props.editComment}
                         deleteDriverFromDeal={props.deleteDriverFromDeal}
                         deleteForwarderFromDeal={props.deleteForwarderFromDeal}
+                        deleteGiftFromDeal={props.deleteGiftFromDeal}
                         addDriver={props.addDriver}
                         addForwarder={props.addForwarder}
+                        addGift={props.addGift}
             />
+            <Dialog
+                onClose={onClosePrintDialog}
+                open={openPrint}
+                maxWidth={"xl"}
+            >
+                <DialogTitle id="customized-dialog-title" onClose={onClosePrintDialog}>
+                    <div className={classes.headerDialogPrint}>
+                        <div className={classes.titleDialogPrint}>Сделка {props.location === 'korolev' ? 'ДК-' : 'ДМ-'}{props.dealNumber} от {dateNormalize(props.date)}</div>
+                        <div className={classes.buttonPrint}><ReactToPrint
+                            trigger={() => <Button
+                                variant="contained"
+                                color="primary"
+                                startIcon={<PrintIcon />}
+                            >
+                                Печатать
+                            </Button>}
+                            content={() => componentRef.current}
+                        /></div>
+                    </div>
+                </DialogTitle>
+                <DialogContent dividers>
+                    <ComponentToPrint ref={componentRef}
+                                      location={props.location}
+                                      dealNumber={props.dealNumber}
+                                      date={props.date}
+                                      client={props.client}
+                                      drivers={props.drivers}
+                                      forwarders={props.forwarders}
+                                      gifts={props.gifts}
+                                      clientInvoices={props.clientInvoices}
+                                      providerInvoices={props.providerInvoices}
+
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={onClosePrintDialog} color="primary">
+                        Закрыть
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 

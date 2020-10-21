@@ -17,8 +17,10 @@ router.delete('/delete', controller.deleteFile) // готово
 router.post('/status', controller.toggleStatus) // готово
 router.post('/driver', controller.addDriverToDeal) // готово
 router.post('/forwarder', controller.addForwarderToDeal) // готово
+router.post('/gift', controller.addGiftToDeal) // готово
 router.delete('/driver', controller.deleteDriverFromDeal) // готово
 router.delete('/forwarder', controller.deleteForwarderFromDeal) // готово
+router.delete('/gift', controller.deleteGiftFromDeal) // готово
 router.post('/comment', controller.editComment) // готово
 router.get('/:id', controller.getById) // готово
 router.delete('/:id', controller.remove)

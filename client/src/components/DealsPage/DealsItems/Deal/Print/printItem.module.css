@@ -1,0 +1,5 @@
+.pageBreak {
+        margin-top: 1rem;
+        display: block;
+        page-break-after: always;
+    }

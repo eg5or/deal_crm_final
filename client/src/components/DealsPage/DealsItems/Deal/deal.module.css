@@ -12,6 +12,34 @@
 
 }
 
+.headerDialogPrint {
+    display: flex;
+}
+.titleDialogPrint,
+.buttonPrint {
+    width: 100%
+}
+
+.titleDialogPrint {
+    display: flex;
+    justify-content: flex-start;
+}
+.buttonPrint {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.print {
+    position: absolute;
+    left: 3px;
+    top: 3px;
+}
+
+.print:hover {
+    cursor: pointer;
+    color: #607d8b;
+}
+
 /* левый блок */
 .leftBlock {
     grid-area: leftBlock;
@@ -164,6 +192,7 @@
     justify-content: center;
     align-items: center;
     font-weight: bold;
+    position: relative;
 }
 
 /* дата */
@@ -358,6 +387,15 @@
     font-weight: bold;
     display: flex;
     align-items: center;
+    justify-content: center;
+}
+
+.otherIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 15px;
+    color: #f57c00;
 }
 
 .titleLeft {

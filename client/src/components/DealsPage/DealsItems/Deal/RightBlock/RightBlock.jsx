@@ -1,15 +1,18 @@
 import React, {useState} from "react";
 import classes from "../deal.module.css";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import Comments from "../Comments/Comments";
 import DeliverItem from "../DeliverBlock/DeliverItems";
 import AddDriver from "../Add/AddDriver";
 import AddForwarder from "../Add/AddForwarder";
+import AddGift from "../Add/AddGift";
 
 
 const RightBlock = ({
                         drivers,
                         forwarders,
+                        gifts,
                         allDrivers,
                         allForwarders,
                         id,
@@ -18,6 +21,7 @@ const RightBlock = ({
                         position,
                         dealDone,
                         sumDeliver,
+                        sumOther,
                         sumDeltaOutDocs,
                         sumDeltaWithDocs,
                         commentHead,
@@ -25,9 +29,25 @@ const RightBlock = ({
                         editComment,
                         deleteDriverFromDeal,
                         deleteForwarderFromDeal,
+                        deleteGiftFromDeal,
                         addDriver,
-                        addForwarder
+                        addForwarder,
+                        taxes,
+                        addGift
                     }) => {
+    // -----------------------------------------------------------------------------------------------------------------
+    // окно FORWARDERS
+    // локальный стэйт
+    const [openAddForwarder, setOpenAddForwarder] = React.useState(false);
+    // открыть
+    const onAddForwarderOpen = () => {
+        setOpenAddForwarder(true)
+    }
+    // -----------------------------------------------------------------------------------------------------------------
+    const [openOther, setOpenOther] = useState(false)
+    const onChangeOpenOther = () => {
+        setOpenOther(!openOther)
+    }
     // -----------------------------------------------------------------------------------------------------------------
     // отрисовка водителей
     let driversElements = drivers.map(d => <DeliverItem key={d.id}
@@ -53,6 +73,31 @@ const RightBlock = ({
                                                               dealDone={dealDone}
                                                               managerId={managerId}
     />)
+    // -----------------------------------------------------------------------------------------------------------------
+    // отрисовка расходов
+    let giftsElements = gifts.map(d => <DeliverItem key={d.id}
+                                                              name={d.giftName}
+                                                              comment={d.comment}
+                                                              sum={d.sum}
+                                                              dealId={id}
+                                                              position={position}
+                                                              deleteItemFunction={deleteGiftFromDeal}
+                                                              dealDone={dealDone}
+                                                              managerId={managerId}
+    />)
+    // -----------------------------------------------------------------------------------------------------------------
+    // отрисовка налогов
+    let taxesElements = taxes.map(d => <DeliverItem key={d.id}
+                                                              name={d.forwarderName}
+                                                              bill={d.bill}
+                                                              tax={d.tax}
+                                                              sumTax={d.sumTax}
+                                                              dealId={id}
+                                                              position={position}
+                                                              dealDone={dealDone}
+                                                              managerId={managerId}
+                                                              openOther={openOther}
+    />)
     // окно DRIVERS
     // локальный стэйт
     const [openAddDriver, setOpenAddDriver] = React.useState(false);
@@ -61,19 +106,15 @@ const RightBlock = ({
         setOpenAddDriver(true)
     }
     // -----------------------------------------------------------------------------------------------------------------
-    // окно FORWARDERS
+    // окно GIFTS
     // локальный стэйт
-    const [openAddForwarder, setOpenAddForwarder] = React.useState(false);
+    const [openAddGift, setOpenAddGift] = React.useState(false);
     // открыть
-    const onAddForwarderOpen = () => {
-        setOpenAddForwarder(true)
+    const onAddGiftOpen = () => {
+        setOpenAddGift(true)
     }
     // -----------------------------------------------------------------------------------------------------------------
-    const [openOther, setOpenOther] = useState(false)
-    const onChangeOpenOther = () => {
-        setOpenOther(!openOther)
-    }
-    // -----------------------------------------------------------------------------------------------------------------
+
     return (
         <>
             {/*----------------------начало-------------------ОКНО ADD DRIVER----------------------------------------*/}
@@ -94,11 +135,20 @@ const RightBlock = ({
                           managerId={managerId}
             />
             {/*----------------------конец--------------------ОКНО ADD FORWARDER-------------------------------------*/}
+            {/*----------------------начало-------------------ОКНО ADD GIFT-------------------------------------*/}
+            <AddGift
+                          openAddGift={openAddGift}
+                          setOpenAddGift={setOpenAddGift}
+                          addGift={addGift}
+                          id={id}
+                          managerId={managerId}
+            />
+            {/*----------------------конец--------------------ОКНО ADD GIFT-------------------------------------*/}
             <div className={classes.rightBlock}>
                 {openOther
                     ? <>
                         <div className={classes.titleLeft}>Другое</div>
-                        <div className={classes.sumLeft}>{sumDeliver.toLocaleString()} ₽</div>
+                        <div className={classes.sumLeft}>{sumOther.toLocaleString()} ₽</div>
                     </>
                     : <>
                         <div className={classes.titleLeft}>Доставка</div>
@@ -106,7 +156,14 @@ const RightBlock = ({
                     </>}
                 {loading.delivery &&
                 <div className={classes.loading}><CircularProgress color="secondary" size={20}/></div>}
-                <div className={classes.btnRight} onClick={onChangeOpenOther}>{openOther ? 'Доставка' : 'Другое'}</div>
+                {openOther
+                    ? <div className={classes.btnRight} onClick={onChangeOpenOther}>
+                    <div>Доставка</div>
+                </div>
+                    : <div className={classes.btnRight} onClick={onChangeOpenOther}>
+                        {gifts.length > 0 && <div className={classes.otherIcon}><ErrorOutlineIcon /></div>}
+                        <div>Другое</div>
+                    </div>}
                 <div className={classes.deliveryOrOther}>
                     {!openOther
                         ? <div className={classes.delivery}>
@@ -137,16 +194,16 @@ const RightBlock = ({
                             <div className={classes.taxes}>
                                 <div className={classes.titleTaxesGifts}>Налоги:</div>
                                 <div className={classes.taxesItems}>
-                                    {/*{taxesElements}*/}
+                                    {taxesElements}
                                 </div>
                             </div>
                             <div className={classes.gifts}>
                                 <div className={classes.titleTaxesGifts}>Расходы:</div>
                                 <div className={classes.giftsItems}>
-                                    {/*{giftsElements}*/}
+                                    {giftsElements}
                                     {(position === 'manager' || position === 'chief' || position === 'director') && <div
                                         className={classes.addGift}
-                                        onClick={onAddForwarderOpen}>
+                                        onClick={onAddGiftOpen}>
                                         + добавить расход
                                     </div>}
                                 </div>

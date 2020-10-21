@@ -23,6 +23,10 @@
     color: white;
 }
 
+.smallText {
+    font-size: 10px;
+}
+
 .sum {
     background-color: #b0bec5;
     display: flex;

@@ -27,6 +27,8 @@ const DealsItems = (props) => {
                                                    delta={d.delta}
                                                    drivers={d.drivers}
                                                    forwarders={d.forwarders}
+                                                   gifts={d.gifts}
+                                                   taxes={d.taxes}
                                                    commentManager={d.commentManager}
                                                    commentHead={d.commentHead}
                                                    authBlock={props.authBlock}
@@ -36,9 +38,11 @@ const DealsItems = (props) => {
                                                    deleteFile={props.deleteFile}
                                                    addDriver={props.addDriver}
                                                    addForwarder={props.addForwarder}
+                                                   addGift={props.addGift}
                                                    toggleStatus={props.toggleStatus}
                                                    deleteDriverFromDeal={props.deleteDriverFromDeal}
                                                    deleteForwarderFromDeal={props.deleteForwarderFromDeal}
+                                                   deleteGiftFromDeal={props.deleteGiftFromDeal}
                                                    editComment={props.editComment}
 
     />)

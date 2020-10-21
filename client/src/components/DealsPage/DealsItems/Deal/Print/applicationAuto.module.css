@@ -1,0 +1,89 @@
+.container {
+    border-radius: 15px;
+    border: 1px dashed #263238;
+    padding: 10px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    page-break-before: always;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 1px dashed #263238;
+    padding: 0 10px 10px 10px;
+}
+
+.title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    font-weight: bolder;
+}
+
+.client {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+}
+
+.table {
+    display: flex;
+    justify-content: stretch;
+    font-size: 13px;
+    height: 100%;
+}
+
+.titleTable {
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+.gifts,
+.forwarders,
+.drivers {
+    width: 100%;
+    padding: 10px;
+}
+.gifts ul,
+.forwarders ul,
+.drivers ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+.forwarders {
+
+}
+
+.gifts {
+
+}
+.gifts li,
+.forwarders li,
+.drivers li {
+    padding: 5px 8px;
+    background-color: lightgrey;
+    border-radius: 7px;
+    margin-bottom: 5px;
+}
+
+
+.footer {
+    border-top: 1px dashed #263238;
+    padding: 10px 10px 0 10px;
+}
+
+.address {
+
+}
+
+.pageBreak {
+    margin-top: 1rem;
+    display: block;
+    page-break-before: auto;
+}

@@ -135,11 +135,17 @@ export const dealsAPI = {
     addForwarderToDeal(id, forwarderId, sum) {
         return instance.post(`deals/forwarder`, {id, forwarderId, sum})
     },
+    addGiftToDeal(id, name, comment, sum) {
+        return instance.post(`deals/gift`, {id, name, comment, sum})
+    },
     deleteDriverFromDeal(id, name, sum) {
         return instance.delete(`deals/driver?id=${id}&name=${name}&sum=${sum}`)
     },
     deleteForwarderFromDeal(id, name, sum) {
         return instance.delete(`deals/forwarder?id=${id}&name=${name}&sum=${sum}`)
+    },
+    deleteGiftFromDeal(id, name, sum) {
+        return instance.delete(`deals/gift?id=${id}&name=${name}&sum=${sum}`)
     },
     editComment(id, type, text) {
         return instance.post(`deals/comment`, {id, type, text})

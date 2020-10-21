@@ -19,6 +19,8 @@ const dealSchema = new Schema({
     delta: {type: Number, default: ''},
     drivers: [],
     forwarders: [],
+    taxes: [],
+    gifts: [],
     commentManager: {type: String, default: ''},
     commentHead: {type: String, default: ''},
     dealNumber: {type: Number, default: ''}

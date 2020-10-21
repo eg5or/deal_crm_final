@@ -365,6 +365,24 @@ export const addDriver = (id, driverId, sum, managerId) => async (dispatch, getS
     }
 }
 
+// добавление расхода в сделку
+export const addGift = (id, giftName, comment, sum, managerId) => async (dispatch, getState) => {
+    const headId = getState().authBlock.head._id
+    try {
+        dispatch(toggleLoading('delivery', true))
+        let response = await dealsAPI.addGiftToDeal(id, giftName, comment, sum)
+        if (getState().dealsPage.oneDealMode) {
+            dispatch(loadingDealsPage(id))
+        } else {
+            dispatch(loadingDealsPage())
+        }
+        dispatch(addNewNotification(managerId, id, `добавил расход ${giftName} на сумму ${sum}`))
+        dispatch(addNewNotification(headId, id, `добавил расход ${giftName} на сумму ${sum}`))
+    } catch (e) {
+        alert(e.response.data.message)
+    }
+}
+
 // добавление экспедитора в сделку
 export const addForwarder = (id, forwarderId, sum, managerId) => async (dispatch, getState) => {
     const headId = getState().authBlock.head._id
@@ -414,6 +432,24 @@ export const deleteForwarderFromDeal = (id, name, sum, managerId) => async (disp
         }
         dispatch(addNewNotification(managerId, id, `удалил экспедитора ${name} сумма ${sum}`))
         dispatch(addNewNotification(headId, id, `удалил экспедитора ${name} сумма ${sum}`))
+    } catch (e) {
+        alert(e.response.data.message)
+    }
+}
+
+// удаление расхода из сделки
+export const deleteGiftFromDeal = (id, name, sum, managerId) => async (dispatch, getState) => {
+    const headId = getState().authBlock.head._id
+    try {
+        dispatch(toggleLoading('delivery', true))
+        let response = await dealsAPI.deleteGiftFromDeal(id, name, sum)
+        if (getState().dealsPage.oneDealMode) {
+            dispatch(loadingDealsPage(id))
+        } else {
+            dispatch(loadingDealsPage())
+        }
+        dispatch(addNewNotification(managerId, id, `удалил расход ${name} на сумму ${sum}`))
+        dispatch(addNewNotification(headId, id, `удалил расход ${name} на сумму ${sum}`))
     } catch (e) {
         alert(e.response.data.message)
     }
