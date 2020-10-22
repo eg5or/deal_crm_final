@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import classes from "../deal.module.css";
+import classes from "./comments.module.css"
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TextField from "@material-ui/core/TextField";
 import {useFormik} from "formik";
@@ -71,28 +71,29 @@ const Comments = ({commentManager, commentHead, editComment, loading, id, manage
     // -----------------------------------------------------------------------------------------------------------------
     return (
         <>
-            <div className={classes.commentsBlock}>
-                <div className={`${classes.commentTitle} ${classes.commentTitleManager}`}>
-                    Комментарий менеджера:
-                    {loading.commentManager &&
-                    <div className={classes.loadingComment}><CircularProgress color="secondary" size={13}/></div>}
-                </div>
-                <div className={`${classes.lengthTextManager}`}>
-                    <div className={classes.errorText}>
-                        {errorTextCM && 'Максимальная длина 165 символов!  '}
+                <div className={classes.commentHeaderManager}>
+                    <div className={`${classes.commentTitle} ${classes.commentTitleManager}`}>
+                        Комментарий менеджера:
+                        {loading.commentManager &&
+                        <div className={classes.loadingComment}><CircularProgress color="secondary" size={13}/></div>}
                     </div>
-                    <div className={`${classes.currentLengthText} ${!editModeCM && classes.displayNone}`}>
-                        {formik.values.commentManager.length}
+                    <div className={`${classes.lengthTextManager}`}>
+                        <div className={classes.errorText}>
+                            {errorTextCM && 'Максимальная длина 165 символов!  '}
+                        </div>
+                        <div className={`${classes.currentLengthText} ${!editModeCM && classes.displayNone}`}>
+                            {formik.values.commentManager.length}
+                        </div>
                     </div>
+                    {!editModeCM
+                        ? (position === 'manager') &&
+                        <div className={`${classes.editComment} ${classes.editCommentManager}`}
+                             onClick={onEditModeCMOn}>редактировать</div>
+                        : <div className={`${classes.editComment} ${classes.editCommentManager}`}
+                               onClick={onEditModeCMOff}>сохранить</div>}
+                    {editModeCM && <div className={classes.cancelEditManager} onClick={onEditModeCMCancel}>Х</div>}
                 </div>
-                {!editModeCM
-                    ? (position === 'manager') &&
-                    <div className={`${classes.editComment} ${classes.editCommentManager}`}
-                         onClick={onEditModeCMOn}>редактировать</div>
-                    : <div className={`${classes.editComment} ${classes.editCommentManager}`}
-                           onClick={onEditModeCMOff}>сохранить</div>}
-                {editModeCM && <div className={classes.cancelEditManager} onClick={onEditModeCMCancel}>Х</div>}
-                <div className={`${classes.comment} ${classes.commentManager}`}>
+                <div className={`${classes.comment} ${classes.commentManager} ${!editModeCM && commentManager.length < 1 && classes.commentClear}`}>
                     {!editModeCM
                         ? commentManager
                         : <TextField
@@ -108,26 +109,28 @@ const Comments = ({commentManager, commentHead, editComment, loading, id, manage
                             onChange={formik.handleChange}
                         />}
                 </div>
-                <div className={`${classes.commentTitle} ${classes.commentTitleHead}`}>
-                    Комментарий руководителя:
-                    {loading.commentHead &&
-                    <div className={classes.loadingComment}><CircularProgress color="secondary" size={13}/></div>}
-                </div>
-                <div className={`${classes.lengthTextHead}`}>
-                    <div className={classes.errorText}>
-                        {errorTextCH && 'Максимальная длина 165 символов!  '}
+                <div className={classes.commentHeaderHead}>
+                    <div className={`${classes.commentTitle} ${classes.commentTitleHead}`}>
+                        Комментарий руководителя:
+                        {loading.commentHead &&
+                        <div className={classes.loadingComment}><CircularProgress color="secondary" size={13}/></div>}
                     </div>
-                    <div className={`${classes.currentLengthText} ${!editModeCH && classes.displayNone}`}>
-                        {formik.values.commentHead.length}
+                    <div className={`${classes.lengthTextHead}`}>
+                        <div className={classes.errorText}>
+                            {errorTextCH && 'Максимальная длина 165 символов!  '}
+                        </div>
+                        <div className={`${classes.currentLengthText} ${!editModeCH && classes.displayNone}`}>
+                            {formik.values.commentHead.length}
+                        </div>
                     </div>
+                    {!editModeCH
+                        ? (position === 'chief') && <div className={`${classes.editComment} ${classes.editCommentHead}`}
+                                                         onClick={onEditModeCHOn}>редактировать</div>
+                        : <div className={`${classes.editComment} ${classes.editCommentHead}`}
+                               onClick={onEditModeCHOff}>сохранить</div>}
+                    {editModeCH && <div className={classes.cancelEditHead} onClick={onEditModeCHCancel}>Х</div>}
                 </div>
-                {!editModeCH
-                    ? (position === 'chief') && <div className={`${classes.editComment} ${classes.editCommentHead}`}
-                                                     onClick={onEditModeCHOn}>редактировать</div>
-                    : <div className={`${classes.editComment} ${classes.editCommentHead}`}
-                           onClick={onEditModeCHOff}>сохранить</div>}
-                {editModeCH && <div className={classes.cancelEditHead} onClick={onEditModeCHCancel}>Х</div>}
-                <div className={`${classes.comment} ${classes.commentHead}`}>
+                <div className={`${classes.comment} ${classes.commentHead} ${!editModeCH && commentHead.length < 1 && classes.commentClear}`}>
                     {!editModeCH
                         ? commentHead
                         : <TextField
@@ -144,7 +147,6 @@ const Comments = ({commentManager, commentHead, editComment, loading, id, manage
                             onChange={formik.handleChange}
                         />}
                 </div>
-            </div>
         </>
     )
 }

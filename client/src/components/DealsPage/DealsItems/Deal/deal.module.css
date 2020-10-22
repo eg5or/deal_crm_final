@@ -66,17 +66,22 @@
 /* правый блок */
 .rightBlock {
     grid-area: rightBlock;
-    display: grid;
+    display: flex;
     background-color: #455a64;
+    flex-direction: column;
+    position: relative;
+}
+
+.deliveryOrOtherHeader {
+    height: 35px;
+    display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 7fr 1fr 4fr;
+    grid-template-rows: 1fr;
     grid-template-areas: "titleLeft sumLeft loading btnRight"
-                         "deliveryOrOther deliveryOrOther deliveryOrOther deliveryOrOther"
-                         "allDelta allDelta allDelta allDelta"
-                         "commentsBlock commentsBlock commentsBlock commentsBlock";
 }
 
 .deliveryOrOther {
+    height: 100%;
     grid-area: deliveryOrOther;
     display: flex;
     flex-direction: row;
@@ -89,8 +94,88 @@
     width: 100%;
 }
 
+/* Адрес доставки  */
+.addressContainer {
+    position: relative;
+    height: 50px;
+    overflow: hidden;
+    margin-bottom: 3px;
+
+}
+
+.address {
+    height: 30px;
+    background-color: #263238;
+    color: #eceff1;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: -470px;
+    top: 0;
+    transition: left 0.3s linear;
+    border-radius: 0 10px 10px 0;
+
+}
+.textareaAddress {
+    display: flex;
+}
+.textareaAddressLabel {
+    display: flex;
+    align-items: center;
+}
+.textareaAddressInput{
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+.textareaAddressInput input{
+    color: #eceff1;
+    width: 380px;
+    font-size: 13px;
+    padding: 0 0 2px 0;
+}
+
+.iconSaveAddress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #eceff1;
+    padding: 0 5px;
+}
+
+.iconSaveAddress:hover {
+    color: #607d8b;
+    cursor: pointer;
+}
+
+.addressOpen {
+    left: 0;
+}
+.addressText {
+    height: 25px;
+    width: 450px;
+    padding: 0 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.addressLabel {
+    height: 25px;
+    width: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addressLabel:hover {
+    color: #607d8b;
+    cursor: pointer;
+}
+
 /* дельта */
 .allDelta {
+    height: 25px;
     grid-area: allDelta;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -356,12 +441,6 @@
     align-items: center;
     padding-right: 10px;
 }
-.loadingComment {
-    grid-area: loadingComment;
-    position: absolute;
-    top: 5px;
-    right: -15px;
-}
 .loadingDealDone {
     position: absolute;
     top: 0;
@@ -474,144 +553,5 @@
 .giftsItems,
 .forwardersItems {
     padding: 0 10px;
-}
-
-/* комментарии */
-.commentsBlock {
-    background-color: #607d8b;
-    grid-area: commentsBlock;
-    display: grid;
-    grid-template-columns: 5fr 6fr 1fr 3fr;
-    grid-template-rows: 1fr 3fr 1fr 3fr;
-    grid-template-areas: "commentTitleManager lengthTextManager cancelEditManager editCommentManager"
-                         "commentManager commentManager commentManager commentManager"
-                         "commentTitleHead lengthTextHead cancelEditHead editCommentHead"
-                         "commentHead commentHead commentHead commentHead";
-}
-
-.cancelEditManager {
-    grid-area: cancelEditManager;
-}
-.cancelEditHead {
-    grid-area: cancelEditHead;
-}
-.cancelEditManager,
-.cancelEditHead {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #b0bec5;
-    font-size: 10px;
-}
-
-.cancelEditManager:hover,
-.cancelEditHead:hover {
-    background-color: #263238;
-    cursor: pointer;
-    color: #b0bec5;
-}
-
-.cancelEditManager:active,
-.cancelEditHead:active {
-    background-color: #b0bec5;
-    color: #263238;
-}
-
-.lengthTextManager {
-    grid-area: lengthTextManager;
-    font-size: 10px;
-    display: grid;
-    grid-template-columns: 5fr 1fr;
-    grid-template-rows: 1fr;
-}
-
-.lengthTextHead {
-    grid-area: lengthTextHead;
-    font-size: 10px;
-    display: grid;
-    grid-template-columns: 5fr 1fr;
-    grid-template-rows: 1fr;
-}
-
-.currentLengthText {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #263238;
-    color: #b0bec5;
-}
-
-.displayNone {
-    display: none;
-}
-
-.errorText {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: right;
-    color: red;
-}
-
-.commentTitleManager {
-    grid-area: commentTitleManager;
-}
-
-.commentTitleHead {
-    grid-area: commentTitleHead;
-}
-
-.commentTitle {
-    padding: 3px 0 0 10px;
-    font-size: 13px;
-    color: #263238;
-    position: relative;
-}
-
-.commentManager {
-    grid-area: commentManager;
-}
-
-.commentHead {
-    grid-area: commentHead;
-}
-
-.commentHead input{
-    font-size: 10px;
-}
-
-.comment {
-    padding: 5px 20px;
-    color: white;
-    font-size: 13px;
-}
-
-.editCommentManager {
-    grid-area: editCommentManager;
-}
-
-.editCommentHead {
-    grid-area: editCommentHead;
-}
-
-.editComment {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #b0bec5;
-    font-size: 10px;
-    text-transform: uppercase;
-    color: #263238;
-}
-
-.editComment:hover {
-    background-color: #263238;
-    cursor: pointer;
-    color: #b0bec5;
-}
-
-.editComment:active {
-    background-color: #b0bec5;
-    color: #263238;
 }
 
