@@ -11,7 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import Tooltip from "@material-ui/core/Tooltip";
 import {Document, Page} from 'react-pdf/dist/esm/entry.webpack';
-import Slide from "@material-ui/core/Slide";
+import config from '../../../../../config/config.json'
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 const CenterBlockItems = (props) => {
@@ -127,7 +127,7 @@ const CenterBlockItems = (props) => {
                 </DialogTitle>
                 <DialogContent dividers>
                     {props.fileUrl.split('.')[1] === 'pdf' && <Document
-                        file={'uploads/' + `${props.fileUrl}`}
+                        file={`${config.baseUrl}/uploads/${props.fileUrl}`}
                         onLoadSuccess={onDocumentLoadSuccess}
                     >
                         <Page
@@ -136,7 +136,7 @@ const CenterBlockItems = (props) => {
                         />
                     </Document>}
                     <div className={`${classes.image} ${zoom ? classes.zoom : classes.noZoom}`} onClick={onZoom}>
-                        <img alt='' src={'uploads/' + `${props.fileUrl}`}/>
+                        <img alt='' src={`${config.baseUrl}/uploads/${props.fileUrl}`}/>
                     </div>
                 </DialogContent>
                 <DialogActions>

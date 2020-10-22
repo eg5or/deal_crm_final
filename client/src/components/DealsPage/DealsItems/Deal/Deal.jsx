@@ -24,6 +24,7 @@ import PrintItem from "./Print/PrintItem";
 import ApplicationAuto from "./Print/ApplicationAuto";
 import ComponentToPrint from "./Print/ComponentToPrint";
 import ReactToPrint from "react-to-print";
+import {editAddress} from "../../../../redux/deals-reducer";
 
 
 const Deal = (props) => {
@@ -146,7 +147,9 @@ const Deal = (props) => {
                         sumDeltaWithDocs={sumDeltaWithDocs}
                         commentHead={props.commentHead}
                         commentManager={props.commentManager}
+                        address={props.address}
                         editComment={props.editComment}
+                        editAddress={props.editAddress}
                         deleteDriverFromDeal={props.deleteDriverFromDeal}
                         deleteForwarderFromDeal={props.deleteForwarderFromDeal}
                         deleteGiftFromDeal={props.deleteGiftFromDeal}
@@ -185,6 +188,7 @@ const Deal = (props) => {
                                       gifts={props.gifts}
                                       clientInvoices={props.clientInvoices}
                                       providerInvoices={props.providerInvoices}
+                                      address={props.address}
 
                     />
                 </DialogContent>

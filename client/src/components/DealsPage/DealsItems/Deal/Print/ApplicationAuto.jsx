@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./applicationAuto.module.css"
 import {dateNormalize} from "../../../../../common/DateNormalize/DateNormalize";
 
-const ApplicationAuto = ({location, client, date, dealNumber, drivers, forwarders, gifts}) => {
+const ApplicationAuto = ({location, client, date, dealNumber, drivers, forwarders, gifts, address}) => {
     // -----------------------------------------------------------------------------------------------------------------
     const driversElements = drivers.map(d => <li key={d.id}>{d.driverName} - <b>{d.sum.toLocaleString()} руб.</b></li>)
     const forwardersElements = forwarders.map(f => <li
@@ -35,7 +35,7 @@ const ApplicationAuto = ({location, client, date, dealNumber, drivers, forwarder
                     </div>
                 </div>
                 <div className={classes.footer}>
-                    <div className={classes.address}>Адрес:</div>
+                    <div className={classes.address}>Адрес доставки: {address}</div>
                 </div>
             </div>
         </>

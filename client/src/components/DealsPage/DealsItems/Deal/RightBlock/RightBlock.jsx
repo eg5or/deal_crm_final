@@ -4,6 +4,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import SaveIcon from '@material-ui/icons/Save';
+import EditIcon from '@material-ui/icons/Edit';
 import Comments from "../Comments/Comments";
 import DeliverItem from "../DeliverBlock/DeliverItems";
 import AddDriver from "../Add/AddDriver";
@@ -30,7 +31,9 @@ const RightBlock = ({
                         sumDeltaWithDocs,
                         commentHead,
                         commentManager,
+                        address,
                         editComment,
+                        editAddress,
                         deleteDriverFromDeal,
                         deleteForwarderFromDeal,
                         deleteGiftFromDeal,
@@ -124,13 +127,25 @@ const RightBlock = ({
     // открыть
     const onAddressOpen = () => {
         setOpenAddress(!openAddress)
+        setAddressEditMode(false)
+    }
+    // address режим редактирования
+    // локальный стэйт
+    const [addressEditMode, setAddressEditMode] = React.useState(false);
+    // открыть
+    const onAddressEditMode = () => {
+        setAddressEditMode(true)
     }
     // -----------------------------------------------------------------------------------------------------------------
     const formik = useFormik({
         initialValues: {
-            addressText: '',
+            addressText: address,
         }
     });
+    const onAddressEdit = () => {
+        editAddress(id, formik.values.addressText, managerId)
+        setAddressEditMode(false)
+    }
     return (
         <>
             {/*----------------------начало-------------------ОКНО ADD DRIVER----------------------------------------*/}
@@ -231,23 +246,27 @@ const RightBlock = ({
                 <div className={classes.addressContainer}>
                     <div className={`${classes.address} ${openAddress && classes.addressOpen}`}>
                         <div className={classes.addressText}>
-                            {/*<div className={classes.addressValue}>Адрес: </div>*/}
-
                             <div className={classes.textareaAddress}>
-                                <div className={classes.textareaAddressLabel}>Адрес: </div>
-                                <div className={classes.textareaAddressInput}>
-                                    <TextField
-                                        id="addressText"
-                                        fullWidth
-                                        size={'small'}
-                                        value={formik.values.addressText}
-                                        onChange={formik.handleChange}
-                                    />
-                                </div>
-                                <div className={classes.iconSaveAddress}><SaveIcon fontSize={"small"}/></div>
+                                <div className={classes.textareaAddressLabel}>Адрес:</div>
+                                {addressEditMode
+                                    ? <div className={classes.textareaAddressInput}>
+                                        <TextField
+                                            id="addressText"
+                                            fullWidth
+                                            size={'small'}
+                                            value={formik.values.addressText}
+                                            defaultValue={address}
+                                            onChange={formik.handleChange}
+                                        />
+                                    </div>
+                                    : <div className={classes.addressValue}>{address}</div>}
+                                {addressEditMode
+                                    ? <div className={classes.iconSaveAddress} onClick={onAddressEdit}><SaveIcon fontSize={"small"}/></div>
+                                    : (position === 'manager') && <div className={classes.iconSaveAddress} onClick={onAddressEditMode}><EditIcon fontSize={"small"}/></div>}
                             </div>
                         </div>
-                        <div className={classes.addressLabel}><LocationOnIcon onClick={onAddressOpen} fontSize="small"/></div>
+                        <div className={`${classes.addressLabel} ${address.length > 0 && classes.addressTrue}`}><LocationOnIcon onClick={onAddressOpen} fontSize="small"/>
+                        </div>
                     </div>
                 </div>
                 <div className={classes.allDelta}>

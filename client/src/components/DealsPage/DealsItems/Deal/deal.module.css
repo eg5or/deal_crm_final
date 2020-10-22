@@ -135,6 +135,12 @@
     font-size: 13px;
     padding: 0 0 2px 0;
 }
+.addressValue {
+    width: 380px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+}
 
 .iconSaveAddress {
     display: flex;
@@ -171,6 +177,10 @@
 .addressLabel:hover {
     color: #607d8b;
     cursor: pointer;
+}
+
+.addressTrue {
+    color: #f57c00;
 }
 
 /* дельта */

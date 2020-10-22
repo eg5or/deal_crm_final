@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './DealsItems.module.css'
 import Deal from './Deal/Deal';
+import {editAddress} from "../../../redux/deals-reducer";
 
 const DealsItems = (props) => {
     let sortedDeals = props.deals
@@ -29,6 +30,7 @@ const DealsItems = (props) => {
                                                    forwarders={d.forwarders}
                                                    gifts={d.gifts}
                                                    taxes={d.taxes}
+                                                   address={d.address}
                                                    commentManager={d.commentManager}
                                                    commentHead={d.commentHead}
                                                    authBlock={props.authBlock}
@@ -44,6 +46,7 @@ const DealsItems = (props) => {
                                                    deleteForwarderFromDeal={props.deleteForwarderFromDeal}
                                                    deleteGiftFromDeal={props.deleteGiftFromDeal}
                                                    editComment={props.editComment}
+                                                   editAddress={props.editAddress}
 
     />)
 

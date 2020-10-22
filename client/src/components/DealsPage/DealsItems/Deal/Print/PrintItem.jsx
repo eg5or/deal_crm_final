@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Document, Page} from "react-pdf/dist/umd/entry.webpack";
 import classes from "./printItem.module.css"
+import config from '../../../../../config/config.json'
 
 const PrintItem = ({fileUrl}) => {
     // -----------------------------------------------------------------------------------------------------------------
@@ -14,7 +15,7 @@ const PrintItem = ({fileUrl}) => {
         <>
             {fileUrl.split('.')[1] === 'pdf'
                 ? <Document
-                file={'uploads/' + `${fileUrl}`}
+                file={`${config.baseUrl}/uploads/${fileUrl}`}
                 onLoadSuccess={onDocumentLoadSuccess}
             >
                 <Page
@@ -23,7 +24,7 @@ const PrintItem = ({fileUrl}) => {
                 />
             </Document>
                 :  <div className={`${classes.image}`}>
-                <img alt='' src={'uploads/' + `${fileUrl}`}/>
+                <img alt='' src={`${config.baseUrl}/uploads/${fileUrl}`}/>
             </div>}
             <div className={classes.pageBreak} />
         </>

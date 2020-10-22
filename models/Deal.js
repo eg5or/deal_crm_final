@@ -21,6 +21,7 @@ const dealSchema = new Schema({
     forwarders: [],
     taxes: [],
     gifts: [],
+    address: {type: String, default: ''},
     commentManager: {type: String, default: ''},
     commentHead: {type: String, default: ''},
     dealNumber: {type: Number, default: ''}

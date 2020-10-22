@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import classes from './ProfileBlock.module.css'
 import Button from "@material-ui/core/Button";
 import Clock from "../../Сlock/Clock";
-import AvatarDefault from '../../../assets/images/avatar_default.jpg'
+import config from '../../../config/config.json'
 import SettingsIcon from '@material-ui/icons/Settings';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MultilineChartIcon from '@material-ui/icons/MultilineChart';
@@ -77,7 +77,7 @@ const ProfileBlock = ({
             <div className={classes.position}>{positionRU}</div>
             <div className={classes.name}>{name}</div>
             <div className={classes.email}>{email}</div>
-            <img className={classes.avatar} src={avatar === '' ? 'images/avatars/default.png' : avatar}/>
+            <img className={classes.avatar} src={avatar === '' ? `${config.baseUrl}/images/avatars/default.png` : `${config.baseUrl}/${avatar}`}/>
             <div className={classes.alertStatuses}>
                 {countNoDoneDeals === 0
                     ? <Tooltip title="Все сделки отправлены!" placement="bottom-end">

@@ -121,6 +121,9 @@ export const loadingDealsPage = (id, filter, page) => async (dispatch, getState)
 export const loadingOneDeal = (id) => async (dispatch, getState) => {
     try {
         dispatch(toggleOneDealMode(true))
+        dispatch(loadingDriversTableData())
+        dispatch(loadingForwardersTableData())
+        dispatch(loadingCompaniesTableData())
         if (getState().app.initialized) {
             let token = getState().authBlock.token
             dispatch(toggleIsFetching(true))
@@ -128,11 +131,8 @@ export const loadingOneDeal = (id) => async (dispatch, getState) => {
             dispatch(toggleIsFetching(false))
             dispatch(setDealsData(oneDeal))
         }
-        dispatch(loadingDriversTableData())
-        dispatch(loadingForwardersTableData())
-        dispatch(loadingCompaniesTableData())
     } catch (e) {
-        alert(e.response.data.message)
+        alert(e)
     }
 }
 // загрузка списка сделок
@@ -473,6 +473,24 @@ export const editComment = (id, type, text, managerId) => async (dispatch, getSt
         }
         dispatch(addNewNotification(managerId, id, `изменил комментарий на: ${text}`))
         dispatch(addNewNotification(headId, id, `изменил комментарий на: ${text}`))
+    } catch (e) {
+        alert(e.response.data.message)
+    }
+}
+// редактировать адрес доставки
+export const editAddress = (id, text, managerId) => async (dispatch, getState) => {
+    const employeeId = getState().authBlock._id
+    const headId = getState().authBlock.head._id
+    try {
+        dispatch(toggleLoading('commentManager', true))
+        let response = await dealsAPI.editAddress(id, text)
+        if (getState().dealsPage.oneDealMode) {
+            dispatch(loadingDealsPage(id))
+        } else {
+            dispatch(loadingDealsPage())
+        }
+        dispatch(addNewNotification(managerId, id, `изменил адрес доставки на: ${text}`))
+        dispatch(addNewNotification(headId, id, `изменил адрес доставки на: ${text}`))
     } catch (e) {
         alert(e.response.data.message)
     }

@@ -22,6 +22,7 @@ class ComponentToPrint extends React.Component {
                         drivers={this.props.drivers}
                         forwarders={this.props.forwarders}
                         gifts={this.props.gifts}
+                        address={this.props.address}
                         />
                 </div>
             </>

@@ -14,7 +14,7 @@ import DealsItems from "./DealsItems/DealsItems";
 import {
     addDriver,
     addForwarder, addGift, deleteDriverFromDeal,
-    deleteFile, deleteForwarderFromDeal, deleteGiftFromDeal, editComment, loadingDealsPage, loadingOneDeal,
+    deleteFile, deleteForwarderFromDeal, deleteGiftFromDeal, editAddress, editComment, loadingDealsPage, loadingOneDeal,
     saveFile,
     toggleStatus
 } from "../../redux/deals-reducer";
@@ -97,6 +97,7 @@ class DealsPage extends React.Component {
                     deleteForwarderFromDeal={this.props.deleteForwarderFromDeal}
                     deleteGiftFromDeal={this.props.deleteGiftFromDeal}
                     editComment={this.props.editComment}
+                    editAddress={this.props.editAddress}
                     authBlock={this.props.authBlock}
                     isFetching={this.props.isFetching}
                     loading={this.props.loading}
@@ -136,6 +137,7 @@ export const DealsPageContainer = compose(
         deleteForwarderFromDeal,
         deleteGiftFromDeal,
         editComment,
+        editAddress,
         loadingOneDeal,
     }),
     withRouter,

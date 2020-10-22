@@ -3,9 +3,6 @@ import * as axios from 'axios';
 const instance = axios.create({
     /*baseURL: 'http://92.63.100.121:5000/api/',*/
     baseURL: 'http://localhost:5000/api/',
-    /*headers: {
-        'Authorization': token || ''
-    }*/
 });
 
 export const uploadAPI = {
@@ -149,6 +146,9 @@ export const dealsAPI = {
     },
     editComment(id, type, text) {
         return instance.post(`deals/comment`, {id, type, text})
+    },
+    editAddress(id, text) {
+        return instance.post(`deals/address`, {id, text})
     },
     updateDeal(id, type, name, manager) {
         return instance.patch(`deals/${id}`, {type: type, name: name, manager: manager})

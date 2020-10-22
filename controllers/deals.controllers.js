@@ -184,81 +184,81 @@ module.exports.upload = function (req, res) {
                 console.log('Ошибка ', e);
             }
         } else {*/
-            try {
-                console.log('Обновление сделки');
-                switch (req.query.type) {
-                    case 'CI':
-                        const company = await Company.findOne({_id: req.query.company})
-                        await Deal.updateOne(
-                            {_id: req.query.id},
-                            {
-                                $addToSet: {
-                                    "clientInvoices": {
-                                        company: company.name,
-                                        bill: company.bill,
-                                        tax: company.tax,
-                                        fileUrl: `${path.basename(file)}`,
-                                        sum: +req.query.sum,
-                                        typeFile: req.query.type
-                                    },
-                                    "taxes": {
-                                        fileUrl: `${path.basename(file)}`,
-                                        bill: company.bill,
-                                        tax: company.tax,
-                                        sumTax: +req.query.sum * company.tax / 100,
-                                    }
+        try {
+            console.log('Обновление сделки');
+            switch (req.query.type) {
+                case 'CI':
+                    const company = await Company.findOne({_id: req.query.company})
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $addToSet: {
+                                "clientInvoices": {
+                                    company: company.name,
+                                    bill: company.bill,
+                                    tax: company.tax,
+                                    fileUrl: `${path.basename(file)}`,
+                                    sum: +req.query.sum,
+                                    typeFile: req.query.type
+                                },
+                                "taxes": {
+                                    fileUrl: `${path.basename(file)}`,
+                                    bill: company.bill,
+                                    tax: company.tax,
+                                    sumTax: +req.query.sum * company.tax / 100,
                                 }
-                            },
-                            {new: true, upsert: true},
-                            function (err, result) {
-                                console.log('ошибка ----Обновление сделки------- ', err, result);
                             }
-                        );
-                        break
-                    case 'PI':
-                        await Deal.updateOne(
-                            {_id: req.query.id},
-                            {
-                                $addToSet: {
-                                    "providerInvoices": {
-                                        company: req.query.company,
-                                        fileUrl: `${path.basename(file)}`,
-                                        sum: req.query.sum,
-                                        typeFile: req.query.type
-                                    }
+                        },
+                        {new: true, upsert: true},
+                        function (err, result) {
+                            console.log('ошибка ----Обновление сделки------- ', err, result);
+                        }
+                    );
+                    break
+                case 'PI':
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $addToSet: {
+                                "providerInvoices": {
+                                    company: req.query.company,
+                                    fileUrl: `${path.basename(file)}`,
+                                    sum: req.query.sum,
+                                    typeFile: req.query.type
                                 }
-                            },
-                            {new: true, upsert: true},
-                            function (err, result) {
-                                console.log('ошибка ----Обновление сделки------- ', err, result);
                             }
-                        );
-                        break
-                    case 'DOC':
-                        await Deal.updateOne(
-                            {_id: req.query.id},
-                            {
-                                $addToSet: {
-                                    "allDocs": {
-                                        company: req.query.company,
-                                        fileUrl: `${path.basename(file)}`,
-                                        sum: req.query.sum,
-                                        typeFile: req.query.type
-                                    }
+                        },
+                        {new: true, upsert: true},
+                        function (err, result) {
+                            console.log('ошибка ----Обновление сделки------- ', err, result);
+                        }
+                    );
+                    break
+                case 'DOC':
+                    await Deal.updateOne(
+                        {_id: req.query.id},
+                        {
+                            $addToSet: {
+                                "allDocs": {
+                                    company: req.query.company,
+                                    fileUrl: `${path.basename(file)}`,
+                                    sum: req.query.sum,
+                                    typeFile: req.query.type
                                 }
-                            },
-                            {new: true, upsert: true},
-                            function (err, result) {
-                                console.log('ошибка ----Обновление сделки------- ', err, result);
                             }
-                        );
-                        break
-                }
-            } catch (e) {
-                // Обработать ошибку
-                errorHandler(res, e)
-                console.log('Ошибка ', e);
+                        },
+                        {new: true, upsert: true},
+                        function (err, result) {
+                            console.log('ошибка ----Обновление сделки------- ', err, result);
+                        }
+                    );
+                    break
             }
+        } catch (e) {
+            // Обработать ошибку
+            errorHandler(res, e)
+            console.log('Ошибка ', e);
+        }
     })
 } // готово
 
@@ -522,6 +522,28 @@ module.exports.editComment = async function (req, res) {
                         })
                     break
             }
+        } catch (e) {
+            // Обработать ошибку
+            errorHandler(res, e)
+        }
+    }
+
+} // готово
+
+module.exports.editAddress = async function (req, res) {
+    if (req.body.text.length <= 165) {
+        try {
+            await Deal.updateOne(
+                {_id: req.body.id},
+                {
+                    $set: {
+                        "address": req.body.text
+                    }
+                },
+                {new: true, upsert: true},
+                function (error, result) {
+                    res.status(200).json(result)
+                })
         } catch (e) {
             // Обработать ошибку
             errorHandler(res, e)
