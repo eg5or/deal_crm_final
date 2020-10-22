@@ -7,11 +7,14 @@ import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import classes from "../deal.module.css";
+import DoneIcon from '@material-ui/icons/Done';
+import DescriptionIcon from '@material-ui/icons/Description';
+import classes from "./addFile.module.css";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import {useFormik} from "formik";
+import {useDropzone} from 'react-dropzone'
 
 const AddFile = (props) => {
     // -----------------------------------------------------------------------------------------------------------------
@@ -27,23 +30,54 @@ const AddFile = (props) => {
     // закрыть
     const onAddFileClose = () => {
         props.setOpenAddFile(false)
+        setError('')
+        formik.values.company = ''
+        formik.values.sum = ''
+        props.setTypeFile('')
+        acceptedFiles.shift()
     }
     // -----------------------------------------------------------------------------------------------------------------
     // Ф-я загрузки файлов (срабатывает при добавлении файлов)
+    const [error, setError] = useState('')
     const onUploadFile = (e) => {
-        if (e.target.files.length) {
-            debugger
-            props.saveFile(e.target.files[0], props.id, formik.values.company, Number(formik.values.sum.replace(",",".")), props.typeFile, props.managerId)
+        if (acceptedFiles.length > 0 && acceptedFiles[0].size > 5*1024*1024) {
+            setError('Файл должен быть меньше 5 Мб')
+        } else if (acceptedFiles.length < 1) {
+            setError(`Добавьте файл!`)
+        } else if (formik.values.company.length < 1) {
+            setError(`Не заполнено поле "Компания"`)
+        } else if (formik.values.sum.length < 1) {
+            setError(`Не заполнено поле "Сумма счета"`)
+        } else if (fileRejections.length > 0) {
+            setError(fileRejections[0].errors[0].message)
+        } else {
+            props.saveFile(acceptedFiles[0], props.id, formik.values.company, Number(formik.values.sum.replace(",", ".")), props.typeFile, props.managerId)
             onAddFileClose()
-            formik.values.company = ''
-            formik.values.sum = ''
-            props.setTypeFile('')
         }
+
     }
     // -----------------------------------------------------------------------------------------------------------------
     // Добавляем список компаний в список для выбора при добавлении
-    let optionsCompaniesElements = props.allCompanies.map(company => <option value={company._id}>{company.name}</option>)
+    let optionsCompaniesElements = props.allCompanies.map(company => <option
+        value={company._id}>{company.name}</option>)
     // -----------------------------------------------------------------------------------------------------------------
+    const {acceptedFiles, fileRejections, getRootProps, getInputProps} = useDropzone({
+        accept: 'image/jpeg, image/png, application/pdf',
+        maxFiles: 1
+    });
+
+    const files = acceptedFiles.map(file => (
+        <li key={file.path}>
+            <div className={classes.fileIcon}><DescriptionIcon fontSize={"small"}  /></div>
+            <div className={classes.fileName}>{file.path} - {(file.size/1024/1024).toFixed(3)} Мб</div>
+        </li>
+    ));
+
+    // console.log(typeof errors[0].message)
+
+
+    const [dragEnter, setDragEnter] = useState(false)
+
     return (
         <>
             <Dialog onClose={onAddFileClose} aria-labelledby="customized-dialog-title" open={props.openAddFile}>
@@ -107,17 +141,24 @@ const AddFile = (props) => {
                             </Grid>
                         </Grid>
                     </div>
-                    <div>
-                        <input className={classes.inputUpload} type={'file'} id="contained-button-file"
-                               onChange={onUploadFile}/>
-                    </div>
+                    <section className={classes.uploadZone}>
+                        <div {...getRootProps({className: `${classes.dropZone} ${dragEnter && classes.dropZoneEnter}`})}
+                             onDragOver={() => {setDragEnter(true)}}
+                             onDragLeave={() => {setDragEnter(false)}}
+                        >
+                            <input {...getInputProps()} />
+                            <div className={classes.textInDropZone}>{files.length > 0 ? <DoneIcon fontSize={"large"}/> : `Перенесите один файл в эту область`}</div>
+                        </div>
+                        <aside>
+                            <ul>{files}</ul>
+                        </aside>
+                    </section>
+                    {error.length > 0 && <div className={classes.error}>{error}</div>}
                 </DialogContent>
                 <DialogActions>
-                    <label htmlFor="contained-button-file">
-                        <Button variant="contained" color="primary" component="span">
-                            Загрузить
-                        </Button>
-                    </label>
+                    <Button onClick={onUploadFile} variant="contained" color="primary" component="span">
+                        Загрузить
+                    </Button>
                     <Button onClick={onAddFileClose} color="primary">
                         Закрыть
                     </Button>

@@ -1,0 +1,64 @@
+.dropZone {
+    border: 2px dashed #263238;
+    border-radius: 10px;
+    width: 230px;
+    height: 100px;
+    margin-top: 20px;
+    padding: 10px;
+    position: relative;
+}
+.dropZone:hover {
+    border-color: #607d8b;
+}
+.dropZoneEnter {
+    background-color: #b0bec5;
+    transition: background-color 0.3s linear;
+}
+
+.okFile {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+.uploadZone li{
+    display: flex;
+}
+
+.fileIcon {
+    padding-right: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fileName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.uploadZone {
+    width: 250px;
+}
+
+.uploadZone ul{
+    list-style: none;
+    font-size: 12px;
+    padding: 0;
+}
+
+.textInDropZone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.error {
+    color: #d32f2f;
+    font-size: 13px;
+    font-weight: bolder;
+    width: 230px;
+}

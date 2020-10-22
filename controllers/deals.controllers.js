@@ -205,7 +205,7 @@ module.exports.upload = function (req, res) {
                                     fileUrl: `${path.basename(file)}`,
                                     bill: company.bill,
                                     tax: company.tax,
-                                    sumTax: +req.query.sum * company.tax / 100,
+                                    sumTax: (+req.query.sum * company.tax / 100).toFixed(2),
                                 }
                             }
                         },
