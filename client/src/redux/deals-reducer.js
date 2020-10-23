@@ -514,7 +514,7 @@ export const toggleStatus = (id, status, managerId) => async (dispatch, getState
                 const message = `изменил статус на новый: "сделка ${!dealStatusValue.dealStatus.approved ? `одобрена"` : `не одобрена"`}`
                 dispatch(addNewNotification(managerId, id, message))
                 dispatch(addNewNotification(employeeId, id, message))
-                dispatch(addNewNotification('5f71cadfa006e134b4d7cfd0', id, message))
+                dispatch(addNewNotification('5f900bfb1424d612bf673382', id, message))
             } catch (e) {
                 alert(e.response.data.message)
             }
@@ -548,15 +548,15 @@ export const toggleStatus = (id, status, managerId) => async (dispatch, getState
                 const message = `изменил статус на новый: "сделку ${!dealStatusValue.dealStatus.delivered ? `вывезли"` : `не вывезли"`}`
                 if (employeeId === managerId) {
                     dispatch(addNewNotification(employeeId, id, message))
-                    dispatch(addNewNotification('5f71cadfa006e134b4d7cfd0', id, message))
+                    dispatch(addNewNotification('5f900bfb1424d612bf673382', id, message))
                     dispatch(addNewNotification(headId, id, message))
-                } else if (employeeId === '5f71cadfa006e134b4d7cfd0') {
+                } else if (employeeId === '5f900bfb1424d612bf673382') {
                     dispatch(addNewNotification(employeeId, id, message))
                     dispatch(addNewNotification(managerId, id, message))
                     dispatch(addNewNotification(headId, id, message))
                 } else {
                     dispatch(addNewNotification(managerId, id, message))
-                    dispatch(addNewNotification('5f71cadfa006e134b4d7cfd0', id, message))
+                    dispatch(addNewNotification('5f900bfb1424d612bf673382', id, message))
                 }
             } catch (e) {
                 alert(e.response.data.message)
@@ -574,7 +574,7 @@ export const toggleStatus = (id, status, managerId) => async (dispatch, getState
                 const message = `изменил статус на новый: "клиент ${!dealStatusValue.dealStatus.clientPaid ? `оплатил"` : `не оплатил"`}`
                 dispatch(addNewNotification(headId, id, message))
                 dispatch(addNewNotification(employeeId, id, message))
-                dispatch(addNewNotification('5f71cadfa006e134b4d7cfd0', id, message))
+                dispatch(addNewNotification('5f900bfb1424d612bf673382', id, message))
             } catch (e) {
                 alert(e.response.data.message)
             }
@@ -591,7 +591,7 @@ export const toggleStatus = (id, status, managerId) => async (dispatch, getState
                 const message = `изменил статус на новый: "документы ${!dealStatusValue.dealStatus.docSigned ? `подписаны"` : `не подписаны"`}`
                 dispatch(addNewNotification(headId, id, message))
                 dispatch(addNewNotification(employeeId, id, message))
-                dispatch(addNewNotification('5f71cadfa006e134b4d7cfd0', id, message))
+                dispatch(addNewNotification('5f900bfb1424d612bf673382', id, message))
             } catch (e) {
                 alert(e.response.data.message)
             }
@@ -608,7 +608,7 @@ export const toggleStatus = (id, status, managerId) => async (dispatch, getState
                 const message = `изменил статус на новый: "документы ${!dealStatusValue.dealStatus.docCollected ? `собраны"` : `не собраны"`}`
                 dispatch(addNewNotification(headId, id, message))
                 dispatch(addNewNotification(employeeId, id, message))
-                dispatch(addNewNotification('5f71cadfa006e134b4d7cfd0', id, message))
+                dispatch(addNewNotification('5f900bfb1424d612bf673382', id, message))
             } catch (e) {
                 alert(e.response.data.message)
             }
@@ -624,7 +624,7 @@ export const toggleStatus = (id, status, managerId) => async (dispatch, getState
                 }
                 const message = `изменил статус готовности сделки на ${!dealStatusValue.dealStatus.dealDone ? 'Готово' : 'Не готово'}`
                 dispatch(addNewNotification(headId, id, message))
-                dispatch(addNewNotification('5f71cadfa006e134b4d7cfd0', id, message))
+                dispatch(addNewNotification('5f900bfb1424d612bf673382', id, message))
             } catch (e) {
                 alert(e.response.data.message)
             }

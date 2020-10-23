@@ -1,0 +1,76 @@
+.releases {
+    background-color: #eceff1;
+    padding: 10px 30px 30px 30px;
+}
+
+.title {
+
+}
+
+.releasesItems {
+
+}
+
+.release {
+
+}
+
+.titleItem {
+    font-weight: bolder;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.textItem {
+    margin-bottom: 20px;
+}
+
+.items ul{
+    list-style: none;
+    margin:0;
+    padding:0;
+}
+
+.items li{
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.iconItem {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 10px;
+}
+
+.item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.addRelease {
+
+}
+
+.textFields {
+    display: flex;
+    flex-direction: column;
+}
+
+.field {
+    margin-bottom: 20px;
+}
+
+.btn {
+
+}
+
+.date,
+.version {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.date {
+
+}

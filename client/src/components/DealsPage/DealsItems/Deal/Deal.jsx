@@ -39,12 +39,19 @@ const Deal = (props) => {
     // Сумма Доставки
     const sumAllDrivers = props.drivers.reduce((s, i) => s = s + Number(i.sum), 0)
     const sumAllForwarders = props.forwarders.reduce((s, i) => s = s + Number(i.sum), 0)
-    const sumAllTaxes = props.taxes.reduce((s, i) => i.bill === 'nn' ? s = s + +i.sumTax : s = s - +i.sumTax, 0)
+    const sumAllTaxes = props.taxes.reduce((s, i) => {
+        if (i.bill === 'nn') {
+            s = s + +i.sumTax
+        } else {
+            s = s - +i.sumTax
+        }
+        return s
+    }, 0)
     const sumAllGifts = props.gifts.reduce((s, i) => s = s + Number(i.sum), 0)
     const sumDeliver = sumAllDrivers + sumAllForwarders
     const sumOther = sumAllTaxes + sumAllGifts
     // Сумма дельты без доков
-    const sumDeltaOutDocs = sumClientInvoices - sumProviderInvoices - sumDeliver - sumOther
+    const sumDeltaOutDocs = sumClientInvoices - sumProviderInvoices - sumDeliver + sumAllTaxes - sumAllGifts
     // Сумма дельты с доками
     let sumDeltaWithDocs = 0
     if (sumAllDocs !== 0) {

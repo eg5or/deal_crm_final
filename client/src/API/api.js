@@ -302,3 +302,17 @@ export const notificationsAPI = {
         return instance.post(`notifications`, {creator, recipients, deal, message, read})
     }
 }
+export const releasesAPI = {
+    getAllReleases() {
+        return instance.get(`releases/`).then(response => response.data)
+    },
+    getOneRelease(version) {
+        return instance.get(`releases/last?version=${version}`).then(response => response.data)
+    },
+    createRelease(title, text, items, version, date) {
+        return instance.post(`releases/add`, {title, text, items, version, date}).then(response => response.data)
+    },
+    deleteRelease(id) {
+        return instance.delete(`releases/${id}`).then(response => response.data)
+    },
+}

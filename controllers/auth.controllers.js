@@ -18,7 +18,7 @@ module.exports.login = async function (req, res) {
                 email: candidate.email,
                 userId: candidate._id,
                 access: candidate.position
-            }, config.get('jwt'), {expiresIn: 3600}) // 2ой параметр секретный ключ 3ий параметр время жизни токена
+            }, config.get('jwt'), {expiresIn: 43200}) // 2ой параметр секретный ключ 3ий параметр время жизни токена
 
             res.status(200).json({
                 token: `Bearer ${token}`,

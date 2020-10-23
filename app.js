@@ -14,6 +14,7 @@ const companiesRoutes = require('./routes/companies.routes')
 const employeesRoutes = require('./routes/employees.routes')
 const notificationsRoutes = require('./routes/notifications.routes')
 const clientInvoicesRoutes = require('./routes/clientinvoices.routes')
+const releasesRoutes = require('./routes/releases.routes')
 
 mongoose.connect(config.get('mongoUri'), {
     useNewUrlParser: true,
@@ -43,6 +44,7 @@ app.use('/api/companies', companiesRoutes)
 app.use('/api/employees', employeesRoutes)
 app.use('/api/notifications', notificationsRoutes)
 app.use('/api/clientinvoices', clientInvoicesRoutes)
+app.use('/api/releases', releasesRoutes)
 
 module.exports = app
 

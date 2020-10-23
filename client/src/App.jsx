@@ -9,7 +9,7 @@ import Vars from './components/Vars/Vars';
 import PriceListCreator from './components/PriceListCreator/PriceListCreator';
 import {DealsPageContainer} from './components/DealsPage/DealsPageContainer';
 import Calculator from './components/Calculator/Calculator';
-import Header from './components/Header/Header';
+import {HeaderContainer} from './components/Header/Header';
 import NavBar from './components/NavBar/NavBar';
 import HeaderRightContainer from "./components/HeaderRight/HeaderRightContainer";
 import CompaniesContainer from "./components/Clients/ClientsContainer";
@@ -21,6 +21,7 @@ import NotificationsContainer from "./components/Profile/Notifications/Notificat
 // reducers
 import {initializeApp} from "./redux/appReducer";
 import SettingsContainer from "./components/Settings/SettingsContainer";
+import ReleasesContainer from "./components/Releases/ReleasesContainer";
 
 class App extends React.Component {
     componentDidMount() {
@@ -39,7 +40,7 @@ class App extends React.Component {
         return (
             <div className='app-wrapper'>
                 <div className='allHeader'>
-                    <Header/>
+                    <HeaderContainer />
                     <NavBar/>
                     <HeaderRightContainer/>
                 </div>
@@ -55,6 +56,7 @@ class App extends React.Component {
                     <Route path='/pricelistcreator' render={() => <PriceListCreator/>}/>
                     <Route path='/profile' render={() => <ProfileContainer/>}/>
                     <Route path='/settings' render={() => <SettingsContainer/>}/>
+                    <Route path='/releases' render={() => <ReleasesContainer/>}/>
                     <Route path='/notifications/:page?' render={() => <NotificationsContainer/>}/>
                     <Route path='/vars' render={() => {
                         return <div className='app-wrapper-content-with-sidebar'>
