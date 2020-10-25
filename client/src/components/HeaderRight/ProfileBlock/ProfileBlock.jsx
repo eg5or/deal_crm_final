@@ -132,7 +132,7 @@ const ProfileBlock = ({
                 </Tooltip>
                 <Tooltip title="Статистика" placement="bottom-start">
                     <NavLink
-                        to='/profile'
+                        to='/stats'
                     >
                         <div className={classes.btnAction}><MultilineChartIcon/></div>
                     </NavLink>

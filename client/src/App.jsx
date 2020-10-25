@@ -22,6 +22,7 @@ import NotificationsContainer from "./components/Profile/Notifications/Notificat
 import {initializeApp} from "./redux/appReducer";
 import SettingsContainer from "./components/Settings/SettingsContainer";
 import ReleasesContainer from "./components/Releases/ReleasesContainer";
+import Stats from "./components/Stats/Stats";
 
 class App extends React.Component {
     componentDidMount() {
@@ -56,6 +57,7 @@ class App extends React.Component {
                     <Route path='/pricelistcreator' render={() => <PriceListCreator/>}/>
                     <Route path='/profile' render={() => <ProfileContainer/>}/>
                     <Route path='/settings' render={() => <SettingsContainer/>}/>
+                    <Route path='/stats' render={() => <Stats/>}/>
                     <Route path='/releases' render={() => <ReleasesContainer/>}/>
                     <Route path='/notifications/:page?' render={() => <NotificationsContainer/>}/>
                     <Route path='/vars' render={() => {

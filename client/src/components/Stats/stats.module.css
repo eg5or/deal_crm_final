@@ -1,0 +1,148 @@
+.statsPage {
+    background-color: #eceff1;
+    padding: 5px 30px 30px 30px;
+    height: 1000px
+}
+
+.statsContent {
+    display: grid;
+    grid-template-columns: 1.5fr 4.5fr 3fr;
+    grid-template-rows: 50px 1fr;
+    grid-gap: 10px;
+    grid-template-areas: "managerBlock infoBlock generalStats"
+                         "graph graph generalStats";
+}
+.managerBlock {
+    grid-area: managerBlock;
+    background-color: #455a64;
+    color: #eceff1;
+    font-size: 18px;
+}
+.name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.infoBlock {
+    grid-area: infoBlock;
+    background-color: #b0bec5;
+}
+.generalStats {
+    grid-area: generalStats;
+    background-color: #b0bec5;
+    padding: 20px;
+}
+.titleGS {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+.tableGS {
+    font-size: 13px;
+}
+.valueGS,
+.labelGS,
+.iconGS,
+.rowsGS {
+    display: flex;
+}
+.rowsGS {
+    margin-bottom: 15px;
+    width: 100%;
+}
+.iconGS {
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+}
+.labelGS {
+    justify-content: flex-start;
+    margin-left: 10px;
+    align-items: center;
+    width: 50%;
+    border-bottom: 1px solid #78909c;
+}
+.valueGS {
+    justify-content: flex-end;
+    align-items: center;
+    width: 50%;
+    border-bottom: 1px solid #78909c;
+}
+
+.graph {
+    grid-area: graph;
+    background-color: #b0bec5;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: 90px 1fr;
+    grid-template-areas: "control result"
+                         "bar bar";
+}
+.control {
+    grid-area: control;
+    padding: 10px 20px 0 0;
+    display: flex;
+}
+.year {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin-left: 20px;
+}
+.month {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin-left: 20px;
+}
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin-left: 20px;
+}
+
+.yearControl {
+    width: 100%;
+}
+.monthControl {
+    width: 100%;
+}
+.result {
+    grid-area: result;
+    background-color: #455a64;
+    color: #eceff1;
+    padding: 10px;
+    font-size: 13px;
+}
+.valueR,
+.labelR,
+.rowsR {
+    display: flex;
+}
+.rowsR {
+    margin-bottom: 5px;
+    width: 100%;
+}
+.labelR {
+    justify-content: flex-start;
+    align-items: center;
+    width: 50%;
+    border-bottom: 1px solid #78909c;
+}
+.valueR {
+    justify-content: flex-end;
+    align-items: center;
+    width: 50%;
+    border-bottom: 1px solid #78909c;
+}
+.bar {
+    grid-area: bar;
+    height: 320px;
+}
