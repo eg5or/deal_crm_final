@@ -495,6 +495,32 @@ export const editAddress = (id, text, managerId) => async (dispatch, getState) =
         alert(e.response.data.message)
     }
 }
+// обновить дельту без доков
+export const updateDeltaWD = (id, deltaWD) => async (dispatch, getState) => {
+    try {
+        let response = await dealsAPI.updateDeltaWD(id, deltaWD)
+        if (getState().dealsPage.oneDealMode) {
+            dispatch(loadingDealsPage(id))
+        } else {
+            dispatch(loadingDealsPage())
+        }
+    } catch (e) {
+        alert(e.response.data.message)
+    }
+}
+// обновить дельту
+export const updateDelta = (id, delta) => async (dispatch, getState) => {
+    try {
+        let response = await dealsAPI.updateDelta(id, delta)
+        if (getState().dealsPage.oneDealMode) {
+            dispatch(loadingDealsPage(id))
+        } else {
+            dispatch(loadingDealsPage())
+        }
+    } catch (e) {
+        alert(e.response.data.message)
+    }
+}
 
 // переключатель статусов
 export const toggleStatus = (id, status, managerId) => async (dispatch, getState) => {

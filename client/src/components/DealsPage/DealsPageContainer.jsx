@@ -16,7 +16,7 @@ import {
     addForwarder, addGift, deleteDriverFromDeal,
     deleteFile, deleteForwarderFromDeal, deleteGiftFromDeal, editAddress, editComment, loadingDealsPage, loadingOneDeal,
     saveFile,
-    toggleStatus
+    toggleStatus, updateDelta, updateDeltaWD
 } from "../../redux/deals-reducer";
 
 class DealsPage extends React.Component {
@@ -101,6 +101,8 @@ class DealsPage extends React.Component {
                     authBlock={this.props.authBlock}
                     isFetching={this.props.isFetching}
                     loading={this.props.loading}
+                    updateDeltaWD={this.props.updateDeltaWD}
+                    updateDelta={this.props.updateDelta}
                 />
             </div>
         )
@@ -139,6 +141,8 @@ export const DealsPageContainer = compose(
         editComment,
         editAddress,
         loadingOneDeal,
+        updateDeltaWD,
+        updateDelta,
     }),
     withRouter,
     // WithAuthRedirect

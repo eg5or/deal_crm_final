@@ -60,130 +60,8 @@ module.exports.upload = function (req, res) {
             ok: ok,
             error
         })
-
         // записываем путь загруженного файла
         let file = req.file.path
-
-        // ЛОГИ на серваке
-        /*console.log(err);
-        console.log(req.headers);
-        console.log(req.file.path);*/
-
-        // проверяем тип загруженного файла
-        // если PDF то отправляем в конвертер
-        /*if (path.extname(file) === '.pdf') {
-            const options = {
-
-            };
-            const specimen1 = "./files/specimen1.pdf";
-
-            const outputDirectory = "./output/from-file-to-image";
-
-            rimraf.sync(outputDirectory);
-
-            mkdirsSync(outputDirectory);
-
-            const baseOptions = {
-                density: 100,
-                saveFilename: `${path.basename(file, path.extname(file))}`,
-                format: "png",
-                width: 600,
-                height: 600,
-                savePath: outputDirectory
-            };
-
-            const convert = fromPath(specimen1, baseOptions);
-
-            return convert(1);
-
-            /!*!// ОПЦИИ конвертирования
-            let opts = {
-                format: 'jpeg',
-                out_dir: path.dirname(file),
-                out_prefix: path.basename(file, path.extname(file)),
-                page: 1
-            }
-            // процесс конвертации
-            pdf.convert(file, opts)
-                .then(res => {
-                    console.log(`Конвертация завершилась успешно.`);
-                    // удаляем входной файл
-                    fs.unlink(file, err => {
-                        if (err) throw err
-                        console.log(`Old file: ${file} Deleted`)
-                    })
-                })
-                .catch(error => {
-                    console.error(error);
-                })
-*!/
-            try {
-                console.log('Обновление сделки');
-                switch (req.query.type) {
-                    case 'CI':
-                        await Deal.updateOne(
-                            {_id: req.query.id},
-                            {
-                                $addToSet: {
-                                    "clientInvoices": {
-                                        company: req.query.company,
-                                        fileUrl: `${path.basename(file, '.pdf')}-1.jpg`,
-                                        sum: req.query.sum,
-                                        typeFile: req.query.type
-                                    }
-                                }
-                            },
-                            {new: true, upsert: true},
-                            function (err, result) {
-                                console.log('ошибка ----Обновление сделки------- ', err, result);
-                            }
-                        );
-                        break
-                    case 'PI':
-                        await Deal.updateOne(
-                            {_id: req.query.id},
-                            {
-                                $addToSet: {
-                                    "providerInvoices": {
-                                        company: req.query.company,
-                                        fileUrl: `${path.basename(file, '.pdf')}-1.jpg`,
-                                        sum: req.query.sum,
-                                        typeFile: req.query.type
-                                    }
-                                }
-                            },
-                            {new: true, upsert: true},
-                            function (err, result) {
-                                console.log('ошибка ----Обновление сделки------- ', err, result);
-                            }
-                        );
-                        break
-                    case 'DOC':
-                        await Deal.updateOne(
-                            {_id: req.query.id},
-                            {
-                                $addToSet: {
-                                    "allDocs": {
-                                        company: req.query.company,
-                                        fileUrl: `${path.basename(file, '.pdf')}-1.jpg`,
-                                        sum: req.query.sum,
-                                        typeFile: req.query.type
-                                    }
-                                }
-                            },
-                            {new: true, upsert: true},
-                            function (err, result) {
-                                console.log('ошибка ----Обновление сделки------- ', err, result);
-                            }
-                        );
-                        break
-                }
-            } catch (e) {
-                // Обработать ошибку
-                errorHandler(res, e)
-                console.log('Ошибка ', e);
-            }
-        } else {*/
         try {
             console.log('Обновление сделки');
             switch (req.query.type) {
@@ -426,7 +304,6 @@ module.exports.deleteForwarderFromDeal = async function (req, res) {
     }
 } // готово
 
-
 module.exports.addGiftToDeal = async function (req, res) {
     try {
         await Deal.updateOne(
@@ -472,24 +349,24 @@ module.exports.deleteGiftFromDeal = async function (req, res) {
     }
 } // готово
 
-module.exports.editCommentManager = async function (req, res) {
-    try {
-        await Deal.updateOne(
-            {_id: req.body.id},
-            {
-                $set: {
-                    "commentManager": req.body.text
-                }
-            },
-            {new: true, upsert: true},
-            function (error, result) {
-                res.status(200).json(result)
-            })
-    } catch (e) {
-        // Обработать ошибку
-        errorHandler(res, e)
-    }
-} // готово
+// module.exports.editCommentManager = async function (req, res) {
+//     try {
+//         await Deal.updateOne(
+//             {_id: req.body.id},
+//             {
+//                 $set: {
+//                     "commentManager": req.body.text
+//                 }
+//             },
+//             {new: true, upsert: true},
+//             function (error, result) {
+//                 res.status(200).json(result)
+//             })
+//     } catch (e) {
+//         // Обработать ошибку
+//         errorHandler(res, e)
+//     }
+// } // готово
 
 module.exports.editComment = async function (req, res) {
     if (req.body.text.length <= 165) {
@@ -549,7 +426,43 @@ module.exports.editAddress = async function (req, res) {
             errorHandler(res, e)
         }
     }
+} // готово
 
+module.exports.updateDeltaWD = async function (req, res) {
+    try {
+        await Deal.updateOne(
+            {_id: req.body.id},
+            {
+                $set: {
+                    "deltaWD": req.body.deltaWD
+                }
+            },
+            {new: true, upsert: true},
+            function (error, result) {
+                res.status(200).json(result)
+            })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
+} // готово
+module.exports.updateDelta = async function (req, res) {
+    try {
+        await Deal.updateOne(
+            {_id: req.body.id},
+            {
+                $set: {
+                    "delta": req.body.delta
+                }
+            },
+            {new: true, upsert: true},
+            function (error, result) {
+                res.status(200).json(result)
+            })
+    } catch (e) {
+        // Обработать ошибку
+        errorHandler(res, e)
+    }
 } // готово
 
 module.exports.create = async function (req, res) {
@@ -564,7 +477,9 @@ module.exports.create = async function (req, res) {
                 date: req.body.date,
                 client: req.body.client,
                 responsibility: req.body.id,
-                dealNumber: ret.seq
+                dealNumber: ret.seq,
+                delta: 0,
+                deltaWD: 0
             })
             try {
                 await deal.save()
@@ -576,7 +491,6 @@ module.exports.create = async function (req, res) {
             }
         })
 } // готово
-
 
 module.exports.getAll = async function (req, res) {
     try {
@@ -1022,12 +936,6 @@ module.exports.getById = async function (req, res) {
 module.exports.remove = function (req, res) {
     res.status(200).json({
         message: 'remove deals OK'
-    })
-}
-
-module.exports.update = function (req, res) {
-    res.status(200).json({
-        message: 'update deals OK'
     })
 }
 

@@ -23,8 +23,9 @@ router.delete('/forwarder', controller.deleteForwarderFromDeal) // готово
 router.delete('/gift', controller.deleteGiftFromDeal) // готово
 router.post('/comment', controller.editComment) // готово
 router.post('/address', controller.editAddress) // готово
+router.post('/deltawd', controller.updateDeltaWD) // готово
+router.post('/delta', controller.updateDelta) // готово
 router.get('/:id', controller.getById) // готово
 router.delete('/:id', controller.remove)
-router.patch('/:id', controller.update)
 
 module.exports = router

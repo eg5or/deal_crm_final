@@ -150,8 +150,11 @@ export const dealsAPI = {
     editAddress(id, text) {
         return instance.post(`deals/address`, {id, text})
     },
-    updateDeal(id, type, name, manager) {
-        return instance.patch(`deals/${id}`, {type: type, name: name, manager: manager})
+    updateDeltaWD(id, deltaWD) {
+        return instance.post(`deals/deltawd`, {id, deltaWD})
+    },
+    updateDelta(id, delta) {
+        return instance.post(`deals/delta`, {id, delta})
     },
     deleteDeal(id) {
         return instance.delete(`deals/${id}`)

@@ -27,8 +27,8 @@ const RightBlock = ({
                         dealDone,
                         sumDeliver,
                         sumOther,
-                        sumDeltaOutDocs,
-                        sumDeltaWithDocs,
+                        delta,
+                        deltaWD,
                         commentHead,
                         commentManager,
                         address,
@@ -272,11 +272,11 @@ const RightBlock = ({
                 <div className={classes.allDelta}>
                     <div className={classes.deltaOutDocs}>
                         <div className={classes.deltaTitle}>Дельта без доков</div>
-                        <div className={classes.deltaSum}>{sumDeltaOutDocs.toLocaleString()} ₽</div>
+                        <div className={classes.deltaSum}>{deltaWD.toLocaleString()} ₽</div>
                     </div>
-                    {sumDeltaWithDocs !== 0 && <div className={classes.deltaWithDocs}>
+                    {delta !== 0 && <div className={classes.deltaWithDocs}>
                         <div className={classes.deltaTitle}>Дельта с доками</div>
-                        <div className={classes.deltaSum}>{sumDeltaWithDocs.toLocaleString()} ₽</div>
+                        <div className={classes.deltaSum}>{delta.toLocaleString()} ₽</div>
                     </div>}
                 </div>
                 <Comments loading={loading}

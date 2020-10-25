@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 // styles
 import classes from './deal.module.css'
 // React components
@@ -15,16 +15,11 @@ import CenterBlock from "./CenterBlock/CenterBlock";
 import RightBlock from "./RightBlock/RightBlock";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
-import {Document, Page} from "react-pdf/dist/umd/entry.webpack";
 import DialogActions from "@material-ui/core/DialogActions";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import PrintItem from "./Print/PrintItem";
-import ApplicationAuto from "./Print/ApplicationAuto";
 import ComponentToPrint from "./Print/ComponentToPrint";
 import ReactToPrint from "react-to-print";
-import {editAddress} from "../../../../redux/deals-reducer";
 
 
 const Deal = (props) => {
@@ -54,8 +49,8 @@ const Deal = (props) => {
     const sumDeltaOutDocs = sumClientInvoices - sumProviderInvoices - sumDeliver + sumAllTaxes - sumAllGifts
     // Сумма дельты с доками
     let sumDeltaWithDocs = 0
-    if (sumAllDocs !== 0) {
-        sumDeltaWithDocs = sumClientInvoices - sumAllDocs - sumDeliver
+    if (props.allDocs.length > 0) {
+        sumDeltaWithDocs = sumClientInvoices - sumAllDocs - sumDeliver + sumAllTaxes - sumAllGifts
     }
     // -----------------------------------------------------------------------------------------------------------------
     // переключатель готовности сделки
@@ -76,6 +71,19 @@ const Deal = (props) => {
         setOpenPrint(false)
     }
     const componentRef = useRef();
+    // -----------------------------------------------------------------------------------------------------------------
+    useEffect(() => {
+        if (props.deltaWD !== sumDeltaOutDocs) {
+            console.log('изменяем дельту без доков')
+            props.updateDeltaWD(props.id, sumDeltaOutDocs)
+        }
+    }, [sumDeltaOutDocs]);
+    useEffect(() => {
+        if (props.delta !== sumDeltaWithDocs) {
+            console.log('изменяем')
+            props.updateDelta(props.id, sumDeltaWithDocs)
+        }
+    }, [props.allDocs.length]);
     // -----------------------------------------------------------------------------------------------------------------
     return (
         <div className={classes.deal}>
@@ -150,8 +158,8 @@ const Deal = (props) => {
                         dealDone={dealDone}
                         sumDeliver={sumDeliver}
                         sumOther={sumOther}
-                        sumDeltaOutDocs={sumDeltaOutDocs}
-                        sumDeltaWithDocs={sumDeltaWithDocs}
+                        delta={props.delta}
+                        deltaWD={props.deltaWD}
                         commentHead={props.commentHead}
                         commentManager={props.commentManager}
                         address={props.address}
