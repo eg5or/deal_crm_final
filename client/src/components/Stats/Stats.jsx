@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { ResponsiveBar } from '@nivo/bar'
 // styles
 import classes from './stats.module.css'
@@ -15,6 +15,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {useFormik} from "formik";
 import Button from "@material-ui/core/Button";
 import BarChartIcon from '@material-ui/icons/BarChart';
+import {connect} from "react-redux";
+import {getGeneralStats, loadingStatsData} from "../../redux/stats-reducer";
+import {dateNormalize} from "../../common/DateNormalize/DateNormalize";
 
 const Stats = (props) => {
     const stats = [
@@ -30,19 +33,25 @@ const Stats = (props) => {
     // Formik для контроля графиков
     const formik = useFormik({
         initialValues: {
-            year: '',
-            month: '',
+            year: (new Date().getFullYear()),
+            month: (new Date().getMonth() + 1),
         }
     });
-    console.log(formik.values.year)
-    console.log(formik.values.month)
+    // -----------------------------------------------------------------------------------------------------------------
+    useEffect(() => {
+        props.getGeneralStats()
+    }, [props.statsData])
+
+    const onLoadStats = () => {
+        props.loadingStatsData(+formik.values.year, +formik.values.month)
+    }
     // -----------------------------------------------------------------------------------------------------------------
     return (
         <div className={classes.statsPage}>
             <div className={classes.title}><h1>Статистика</h1></div>
             <div className={classes.statsContent}>
                 <div className={classes.managerBlock}>
-                    <div className={classes.name}>Енот Енотов</div>
+                    <div className={classes.name}>{props.managerName}</div>
                 </div>
                 <div className={classes.infoBlock}></div>
                 <div className={classes.generalStats}>
@@ -51,32 +60,32 @@ const Stats = (props) => {
                         <div className={classes.rowsGS}>
                             <div className={classes.iconGS}><AssignmentIcon/></div>
                             <div className={classes.labelGS}>Всего сделок</div>
-                            <div className={classes.valueGS}>15</div>
+                            <div className={classes.valueGS}>{props.countDealGS}</div>
                         </div>
                         <div className={classes.rowsGS}>
                             <div className={classes.iconGS}><AccountBalanceWalletIcon/></div>
                             <div className={classes.labelGS}>Всего дельты</div>
-                            <div className={classes.valueGS}>1 856 340 ₽</div>
+                            <div className={classes.valueGS}>{props.sumDeltaGS.toLocaleString()} ₽</div>
                         </div>
                         <div className={classes.rowsGS}>
                             <div className={classes.iconGS}><FilterHdrIcon/></div>
                             <div className={classes.labelGS}>Самая большая дельта</div>
-                            <div className={classes.valueGS}>150 000 ₽</div>
+                            <div className={classes.valueGS}>{props.maxDeltaGS.toLocaleString()} ₽</div>
                         </div>
                         <div className={classes.rowsGS}>
                             <div className={classes.iconGS}><AccountBalanceIcon/></div>
                             <div className={classes.labelGS}>Сумма всех продаж</div>
-                            <div className={classes.valueGS}>15 750 200 ₽</div>
+                            <div className={classes.valueGS}>{props.sumAllClientInvoices.toLocaleString()} ₽</div>
                         </div>
                         <div className={classes.rowsGS}>
                             <div className={classes.iconGS}><MonetizationOnIcon/></div>
                             <div className={classes.labelGS}>БН</div>
-                            <div className={classes.valueGS}>10 250 000 ₽</div>
+                            <div className={classes.valueGS}>{props.sumBNClientInvoices.toLocaleString()} ₽</div>
                         </div>
                         <div className={classes.rowsGS}>
                             <div className={classes.iconGS}><MoneyOffIcon/></div>
                             <div className={classes.labelGS}>НН</div>
-                            <div className={classes.valueGS}>5 150 200 ₽</div>
+                            <div className={classes.valueGS}>{props.sumNNClientInvoices.toLocaleString()} ₽</div>
                         </div>
                     </div>
                 </div>
@@ -114,7 +123,7 @@ const Stats = (props) => {
                                         id: 'month',
                                     }}
                                 >
-                                    <MenuItem value="">
+                                    <MenuItem value={0}>
                                         <em>Все</em>
                                     </MenuItem>
                                     <MenuItem value={1}>Январь</MenuItem>
@@ -138,6 +147,7 @@ const Stats = (props) => {
                                 color="secondary"
                                 size="large"
                                 startIcon={<BarChartIcon />}
+                                onClick={onLoadStats}
                             >
                                 Обновить
                             </Button>
@@ -146,24 +156,32 @@ const Stats = (props) => {
                     <div className={classes.result}>
                         <div className={classes.rowsR}>
                             <div className={classes.labelR}>Дельта:</div>
-                            <div className={classes.valueR}>150 000 ₽</div>
+                            <div className={classes.valueR}>{props.sumDelta.toLocaleString()} ₽</div>
                         </div>
                         <div className={classes.rowsR}>
                             <div className={classes.labelR}>Кол-во сделок:</div>
-                            <div className={classes.valueR}>7</div>
+                            <div className={classes.valueR}>{props.countDeal}</div>
                         </div>
                         <div className={classes.rowsR}>
                             <div className={classes.labelR}>Самая большая дельта:</div>
-                            <div className={classes.valueR}>59 000 ₽</div>
+                            <div className={classes.valueR}>{props.maxDelta.toLocaleString()} ₽</div>
                         </div>
                     </div>
                     <div className={classes.bar}>
                         <ResponsiveBar
-                            data={stats}
-                            keys={['delta']}
-                            indexBy="date"
-                            margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+                            data={props.statsData}
+                            keys={['delta', 'deltaWD']}
+                            indexBy={d => {
+                                if (d.date.length < 10) {
+                                    return d.date
+                                } else {
+                                    return dateNormalize(d.date)
+                                }
+                            }}
+                            label={d => `${d.value.toLocaleString()} ₽`}
+                            margin={{ top: 20, right: 130, bottom: 50, left: 60 }}
                             padding={0.3}
+                            groupMode="grouped"
                             colors={{ scheme: 'nivo' }}
                             borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
                             axisTop={null}
@@ -222,4 +240,21 @@ const Stats = (props) => {
     )
 }
 
-export default Stats;
+
+const mapStateToProps = (state) => ({
+    statsData: state.stats.statsData,
+    sumDelta: state.stats.sumDelta,
+    countDeal: state.stats.countDeal,
+    maxDelta: state.stats.maxDelta,
+    sumDeltaGS: state.stats.sumDeltaGS,
+    countDealGS: state.stats.countDealGS,
+    maxDeltaGS: state.stats.maxDeltaGS,
+    sumAllClientInvoices: state.stats.sumAllClientInvoices,
+    sumBNClientInvoices: state.stats.sumBNClientInvoices,
+    sumNNClientInvoices: state.stats.sumNNClientInvoices,
+    managerName: state.authBlock.name,
+})
+export default connect(mapStateToProps, {
+    loadingStatsData,
+    getGeneralStats
+})(Stats);

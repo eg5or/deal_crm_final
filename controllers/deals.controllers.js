@@ -7,12 +7,13 @@ const Driver = require('../models/Driver')
 const Forwarder = require('../models/Forwarder')
 const Company = require('../models/Company')
 const errorHandler = require('../utils/errorHandler')
+const config = require('config')
 
 // Загрузка файлов MULTER
 // настройка:
 const storageConfig = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'client/public/uploads'); // путь для загружаемых файлов
+        cb(null, config.get('pathUploads')); // путь для загружаемых файлов
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname)); // устанавливаем новое имя файлу

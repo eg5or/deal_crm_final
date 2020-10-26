@@ -13,6 +13,7 @@ import profileReducer from "./profileReducer";
 import notificationsReducer from "./notificationsReducer";
 import settingsReducer from "./settings-reducer";
 import releasesReducer from "./releases-reducer";
+import statsReducer from "./stats-reducer";
 
 let reducers = combineReducers({
     app: appReducer,
@@ -28,6 +29,7 @@ let reducers = combineReducers({
     notifications: notificationsReducer,
     settings: settingsReducer,
     releases: releasesReducer,
+    stats: statsReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

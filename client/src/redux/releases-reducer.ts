@@ -13,7 +13,7 @@ let initialState: InitialStateType = {
     lastReleaseData: []
 }
 
-const settingsReducer = (state = initialState, action: any): InitialStateType => {
+const releasesReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case SET_RELEASES_DATA:
             return {
@@ -82,4 +82,4 @@ export const deleteRelease = (id: string) => async (dispatch: any) => {
 };
 
 
-export default settingsReducer;
+export default releasesReducer;

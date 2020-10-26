@@ -319,3 +319,11 @@ export const releasesAPI = {
         return instance.delete(`releases/${id}`).then(response => response.data)
     },
 }
+export const statsAPI = {
+    getStatsOfManager(id, year, month) {
+        return instance.get(`stats?id=${id}&year=${year}&month=${month}`).then(response => response.data)
+    },
+    getGeneralStats(id) {
+        return instance.get(`stats/generalstats?id=${id}`).then(response => response.data)
+    },
+}

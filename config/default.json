@@ -1,5 +1,6 @@
 {
   "port": 5000,
   "mongoUri": "mongodb+srv://demo:databasepassword123@cluster0.z1v29.gcp.mongodb.net/deal_crm?retryWrites=true&w=majority\n",
-  "jwt": "dev-jwt"
+  "jwt": "dev-jwt",
+  "pathUploads": "client/public/uploads"
 }
