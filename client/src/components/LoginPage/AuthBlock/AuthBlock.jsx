@@ -60,7 +60,12 @@ const AuthBlock = (props) => {
                         color="primary"
                         onClick={onLogin}
                     >Войти</Button>
-                    3
+                    {/*<Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        onClick={onRegister}
+                    >Регистрация</Button>*/}
                 </ButtonGroup>
             </div>
         </div>

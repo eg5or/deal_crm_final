@@ -10,7 +10,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 class LoginPage extends React.Component {
 
-
     render() {
         if (this.props.isAuth) {
             return <Redirect to={'/dealspage'}/>

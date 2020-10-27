@@ -2,7 +2,7 @@
   "name": "deal_crm_front_end",
   "version": "1.0.1",
   "private": true,
-  "homepage": "http://3803817.ru",
+  "homepage": "http://deal-crm.eg5or.ru",
   "dependencies": {
     "@nivo/bar": "^0.63.1",
     "@testing-library/jest-dom": "^4.2.4",

@@ -1,5 +1,12 @@
 # DealCRM v.1.0.1
 
+### Login to CRM DEMO:
+
+http://deal-crm.eg5or.ru/
+
+> login: enot@mail.ru
+> password: demo
+
 ### Development
 
 Want to contribute? Great!
@@ -21,9 +28,6 @@ deal_crm_final/:
 ```sh
 $ npm run dev
 ```
-Login to CRM DEMO:
-> login: enot@mail.ru
-> password: 123456
 
 # New Features!
 

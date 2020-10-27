@@ -71,3 +71,10 @@
   width: 200px;
   padding-top: 250px;
 }
+
+.buttonChat {
+  position: fixed;
+  top: 85%;
+  left: 90%;
+  z-index: 999;
+}
